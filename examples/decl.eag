@@ -1,0 +1,50 @@
+simple:
+   simple header,
+      declarations (decls>),
+      applications (>decls),
+      simple trailer.
+
+simple header:
+   "BEGIN", layout.
+
+simple trailer:
+   "END", layout.
+
+declarations (decls>):
+   "DECLARE", layout, identifier list (decls>).
+
+identifier list (decls>):
+   identifier (id>), more identifiers (>id * nil, decls>).
+
+more identifiers (>old decls, new decls>):
+   ",", layout,
+      identifier (id>), not in list (>id, >old decls),
+      more identifiers (>id * old decls, new decls>);
+more identifiers (>decls, decls>):.
+
+applications (>decls):
+   "APPLY", layout, applied id list (>decls).
+
+applied id list (>decls):
+   identifier (id>), in list (>id, >decls),
+      more applied ids (>decls).
+
+more applied ids (>decls):
+   ",", layout,
+      identifier (id>), in list (>id, >decls),
+      more applied ids (>decls);
+more applied ids (>decls):.
+
+not in list (>ls, >nil):.
+not in list (>ls, >string * list):
+   not equal (>ls, >string), not in list (>ls, >list).
+
+in list (>ls, >ls * tuple):.
+in list (>ls, >string * tuple):
+   not equal (>ls, >string), in list (>ls, >tuple).
+
+identifier (ls>):
+   {a-z}+! (ls>), layout.
+
+layout: { \n\t}*!.
+   

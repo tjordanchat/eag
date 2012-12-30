@@ -1,0 +1,54 @@
+\chapter {Introduction}
+This book intends to introduce the Extended Affix Grammar
+formalism \cite{watt} and its compiler. The Extended Affix Grammar
+formalism, or shortly \EAGns, is a formalism for describing both
+the context free and the context sensitive syntax of languages.
+\EAG is a member of the family of two-level grammars. They are
+very closely related to two-level van Wijngaarden grammars
+\cite {revised report}. To a description in \EAG the \EAG compiler
+may be applied, generating either a recognizer or a transducer or
+a translator or a syntax directed editor for the language described.
+
+We will not discuss the exact details of the formalism, but we will
+pay more attention to the ideas behind the language and
+elucidate the language concepts by many examples. All these
+examples can be found in the example subdirectory ({\tt examples})
+of the compiler package. We will also discuss the use of the
+compiler and the options that may be used to steer the
+generation process. We will assume that the reader has
+some basic knowledge of context free grammars.
+
+In the following chapters we will use the {\tt typewriter} font to
+indicate examples in \EAGns. In chapter 2 we will
+discuss context free descriptions in \EAGns. Chapter 3 will 
+introduce the second level of the formalism.
+The next chapter introduces meta rules, which may impose a context free
+grammar on the second level of the formalism.
+In chapter 5 we will see how the compiler may be used for
+generating a syntax directed editor from an \EAG description.
+Finally, chapter 6 indicates the direction of future research.
+
+There are 3 appendices. Appendix A gives some more details
+of the package (It is useful to read the first two sections if you
+wish to install the package). Appendix B gives a description of the
+\EAG formalism in \EAGns. Finally the last appendix contains some
+references.
+
+This is the first version of a new major release (2.0) of the
+\EAG compiler. As such, it is quite experimental and bugs may
+turn up. Bug reports may therefore be sent to marcs@cs.kun.nl,
+so that these bugs may be corrected in later versions.
+\section*{Copyright Notice}
+The copyright of the \EAG compiler package and its documentation
+is held by the Computing Science Department of the University of
+Nijmegen. Permission is hereby granted to make and distribute copies
+of the source code and the documentation, provided the copyright
+notice is preserved on all copies.
+\section*{Warranty}
+Because the \EAG compiler package is licensed free of charge, we
+provide absolutely no warranty, to the extent permitted by
+applicable law. The University of Nijmegen provides the \EAG
+compiler package ``as is" without warranty of any kind.
+\section*{Distribution}
+The \EAG compiler package is available by ftp at {\tt ftp.cs.kun.nl}
+in the directory {\tt /pub/eag}.

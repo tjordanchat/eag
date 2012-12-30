@@ -1,0 +1,53 @@
+#
+# File: eag_stddefs.eag
+# Defines standard meta rules and predicates
+#
+# CVSID: "$Id: eag_stddefs.eag,v 1.3 2008/06/21 14:13:17 marcs Exp $" 
+#
+
+# standard predefines
+# meta rules
+$ int :: int, recognizer, may produce empty.
+$ real :: real, recognizer, may produce empty.
+$ string :: string, recognizer, may produce empty.
+$ tuple :: tuple, recognizer, never produces empty.
+$ nonlat :: nonlat, recognizer, may produce empty.
+$ nil :: tuple, single, never produces empty.
+
+# standard meta rules
+empty ::.
+nlcr :: "\n".
+quote :: "\"".
+back slash :: "\\".
+tab :: "\t".
+
+# hyper rules
+empty: .
+nlcr: "\n".
+quote: "\"".
+back slash: "\\".
+tab: "\t".
+
+# semi predicates: they need not be delayed
+$ end of sentence: semipredicate.
+$ column (int>): semipredicate.
+$ row (int>): semipredicate.
+
+# predicates
+$ equal (>nonlat, >nonlat): predicate.
+$ not equal (>nonlat, >nonlat): predicate.
+
+$ minus (>int, >int, int>): predicate.
+$ mul (>int, >int, int>): predicate.
+$ div (>int, >int, int>): predicate.
+$ power (>int, >int, int>): predicate.
+
+$ int to string (>int, string>): predicate.
+$ string to int (>string, int>): predicate.
+$ real to string (>real, string>): predicate.
+$ string to real (>string, real>): predicate.
+$ uppercase (>string, string>): predicate.
+
+$ not in reserved word list (>string, >tuple): predicate.
+
+$ dump affix (>nonlat): predicate.

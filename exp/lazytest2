@@ -1,0 +1,5 @@
+BEGIN
+   DECL a;
+   APPLY a
+END
+

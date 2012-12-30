@@ -1,0 +1,13 @@
+GRAMMAR simpfin.
+
+USES simplex.
+
+PERS :: first | second | third.
+
+NUMBER :: singular | plural.
+
+simple sentence (NUMBER, PERS):
+   layout, pers pron (NUMBER, PERS), layout,
+      to be (NUMBER, PERS), layout, adjective, layout.
+
+layout: { \t\n} *!.

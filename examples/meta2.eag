@@ -1,0 +1,9 @@
+start (specid + nlcr):
+   layout, id (specid).
+
+specid :: ^{k}*! + "k" + ^{k}*! + "k" + ^{k}*!.
+
+id (l + ls):
+   {a-z} (l), {a-z0-9}*! (ls), layout.
+
+layout: { \t\n}*!.

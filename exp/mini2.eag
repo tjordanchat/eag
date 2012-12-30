@@ -1,0 +1,680 @@
+#1.2.1. Metaproduction rules of nodes #
+ 
+mode::
+        plain; stowed; ref to*mode; procedure.
+plain::
+        "integral"; "boolean".
+stowed::
+        rows of*mode.
+rows::
+        "row".
+rows of::
+        rows+"of".
+ref::
+        "reference".
+ref to::
+        ref+"to".
+reference to::
+        "reference"+"to".
+procedure::
+        "procedure"*"yielding"*moid;
+        "procedure"*"with"*mode*"parameter"*"yielding"*moid.
+moid::
+        mode; "void".
+ 
+#1.2.2. Metaproduction rules associated with phrases and coercion #
+ 
+sort::
+        "strong"; "firm"; "meek".
+ 
+ 
+#1.2.3. Metaproduction rules associated with nests #
+ 
+nest::
+        layer; nest*layer.
+layer::
+        decsety labsety.
+decsety labsety::
+        decsety labsety*dec; labsety.
+decsety::
+        decsety*dec; empty.
+dec::
+        mode*tag.
+prio::
+        1; 2; 3; 4; 5; 6.
+labsety::
+        labsety*lab; empty.
+#labs::#
+#        lab; labs*lab.#
+lab::
+        "label"*tag.
+ 
+#.4.2. TAG symbols #
+ 
+tag::
+	letter;
+	letter+letgits.
+
+letter::
+	{abcdefghijklmnopqrstuvwxyz}.
+letgits::
+	{abcdefghijklmnopqrstuvwxyz0123456789}+.
+ 
+ 
+tag token (tag>):
+  pragment sequence option,
+    tag (tag>).
+ 
+tag (letter>):
+        letter (letter>);
+tag (letter+rest tag>):
+        letter (letter>),
+          rest tag (rest tag>).
+ 
+rest tag (letgits+rest tag>):
+        letgits (letgits>),
+          rest tag (rest tag>);
+rest tag (rest tag>):
+        layout item sequence,
+          rest tag (rest tag>);
+rest tag (letgits>):
+        letgits (letgits>).
+ 
+letter (letter>):
+	{abcdefghijklmnopqrstuvwxyz} (letter>).
+ 
+letgits (letgits>):
+	{abcdefghijklmnopqrstuvwxyz0123456789} +(letgits>).
+ 
+layout item sequence:
+        layout item,
+          layout item sequence;
+layout item sequence:
+        layout item.
+ 
+layout item:
+  { } +! (spaces>);
+layout item:
+  nlcr.
+ 
+#Auxiliary predicates #
+ 
+tree (>left,>right,left*right>):
+        .#1.3.1. Syntax of general predicates #
+ 
+ 
+#2.2. The program #
+ 
+program:
+        (>"strong","void">,>empty) closed clause,
+          pragment sequence option.
+ 
+#3.1. Closed clauses #
+ 
+(>sort,moid>,>nest) closed clause:
+        begin token,
+          (>sort,moid>,>nest) serial clause defining (layer>),
+            end token;
+(>sort,moid>,>nest) closed clause:
+        open token,
+          (>sort,moid>,>nest) serial clause defining (layer>),
+            close token.
+ 
+#3.2. Serial clauses #
+ 
+(>sort,moid>,>nest) serial clause defining (propsety>):
+        (>sort,moid>,>nest*propsety) series with (propsety>).
+ 
+ 
+(>sort,moid>,>nest) series with (propsety>):
+        (>"strong","void">,>nest) unit,
+          go on token,
+            (>sort,moid>,>nest) series with (propsety>);
+(>sort,moid>,>nest) series with (decsety labsety*dec>):
+        (>nest) declaration of (dec>),
+          go on token,
+            (>sort,moid>,>nest) series with (decsety labsety>);
+(>sort,moid>,>nest) series with (labsety*lab>):
+        (>nest) label definition of (lab>),
+          (>sort,moid>,>nest) series with (labsety>);
+(>sort,moid>,>nest) series with (empty>):
+        (>sort,moid>,>nest) unit.
+ 
+(>nest) label definition of ("label"*tag>):
+        (>"label",>nest) defining identifier with (tag>),
+          label token.
+ 
+ 
+#3.4. Conditional clause #
+ 
+(>sort,moid>,>nest1) conditional clause:
+        if token,
+          (>sort,moid>,>nest1) chooser choice clause,
+            fi token.
+ 
+(>sort,moid>,>nest1) chooser choice clause:
+        ("boolean">,>nest1) enquiry clause defining (layer2>),
+          (>sort,moid>,>nest1*layer2) alternate choice clause.
+ 
+("boolean">,>nest1) enquiry clause defining (decsety2>):
+        (>"meek","boolean">,>nest1*decsety2) series with (decsety2>).
+ 
+(>sort,"void">,>nest2) alternate choice clause:
+        (>sort,"void">,>nest2) then part;
+(>sort,moid>,>nest2) alternate choice clause:
+        (>sort,moid>,>nest2) then part,
+          (>sort,moid>,>nest2) else part.
+ 
+(>sort,moid>,>nest2) then part:
+        then token,
+          (>sort,moid>,>nest2) serial clause defining (layer3>).
+ 
+(>sort,moid>,>nest2) else part:
+        else token,
+          (>sort,moid>,>nest2) serial clause defining (layer3>);
+(>sort,moid>,>nest2) else part:
+        elif token,
+          (>sort,moid>,>nest2) chooser choice clause.
+ 
+ 
+#3.5. Loop clauses #
+ 
+ 
+(>"strong","void">,>nest1) loop clause:
+        (>nest1) while do part.
+ 
+(>nest1) while do part:
+        (>nest1) while part defining (layer2>),
+          (>nest1*layer2) do part.
+ 
+(>nest1) while part defining (layer2>):
+        while token,
+          ("boolean">,>nest1) enquiry clause defining (layer2>).
+ 
+(>nest2) do part:
+   do token,
+     (>"strong","void">,>nest2) serial clause defining (layer3>),
+       od token.
+ 
+#4.1. Declarations #
+ 
+(>nest) declaration of (dec>):
+        (>nest,mode>) variable declaration of (dec>);
+        (>nest) routine identity declaration of (dec>).
+ 
+ 
+#4.4. Identifier declarations #
+ 
+(>nest) routine identity declaration of (dec>):
+        procedure token,
+          (>nest) routine identity definition of (dec>).
+ 
+(>nest) routine identity definition of (mode*tag>):
+        (>mode,>nest) defining identifier with (tag>),
+          is defined as token,
+            (mode>,>nest) routine text.
+ 
+(>nest,reference to*mode>) variable declaration of (dec>):
+        actual (mode>,>nest) declarer,
+          (>nest,>reference to*mode) variable definition of (dec>).
+ 
+(>nest,>reference to*mode) variable definition of
+                                 (reference to mode*tag>):
+        (>reference to*mode,>nest) defining identifier with (tag>),
+           tree (>reference to,>mode,reference to mode>).
+ 
+ 
+ 
+#4.6. Declarers #
+ 
+actual (moid>,>nest) declarer:
+        actual (moid>,>nest) declarator;
+        (moid>,>nest) applied mode indication.
+ 
+formal (moid>,>nest) declarer:
+        formal (moid>,>nest) declarator;
+        (moid>,>nest) applied mode indication.
+ 
+actual (rows of*plain>,>nest) declarator:
+        sub token,
+          actual (rows>,>nest) rower,
+            bus token,
+              actual (plain>,>nest) declarer.
+ 
+formal (reference to*mode>,>nest) declarator:
+        reference to token,
+          formal (mode>,>nest) declarer;
+formal (rows of*plain>,>nest) declarator:
+         sub token,
+           formal (rows>,>nest) rower,
+             bus token,
+               formal (plain>,>nest) declarer;
+formal (procedure>,>nest) declarator:
+        procedure token,
+          formal (procedure>,>nest) plan.
+ 
+actual ("row">,>nest) rower:
+        (>nest) lower bound,
+          up to token,
+            (>nest) upper bound.
+ 
+formal ("row">,>nest) rower:
+        up to token;
+        .
+ 
+(>nest) lower bound:
+        (>"meek","integral">,>nest) unit.
+ 
+(>nest) upper bound:
+        (>"meek","integral">,>nest) unit.
+ 
+formal ("procedure"*"yielding"*moid>,>nest) plan:
+        formal (moid>,>nest) declarer;
+formal ("procedure"*"with"*mode*"parameter"*"yielding"*moid>,>nest) plan:
+        open token,
+          formal (mode>,>nest) declarer,
+            close token,
+              formal (moid>,>nest) declarer.
+ 
+(moid>,>nest) applied mode indication:
+        moid token (moid>).
+#4.8. Indicators #
+ 
+propsety::
+        propsety*prop; empty.
+#props::#
+#        prop; props*prop.#
+prop::
+        dec; lab.
+quality::
+        mode; "label".
+ 
+(>quality,>nest*propsety) defining identifier with (tag>):
+        (>propsety) splits to (>quality*tag,propsety1 propsety2>),
+          where (>quality*tag) independent (>propsety1 propsety2),
+            tag token (tag>).
+ 
+(>propsety*quality tag) splits to (>quality tag,propsety>):
+        ;
+(>propsety*prop) splits to (>quality tag,propsety1*prop>):
+        not equal (>prop,>quality tag),
+          (>propsety) splits to (>quality tag,propsety1>).
+ 
+(quality>,>nest) applied identifier with (tag>):
+        where (quality>,>tag) identified in (>nest),
+          tag token (tag>).
+ 
+ 
+#5. Units #
+ 
+ 
+(>sort,moid>,>nest) unit:
+#       (>sort,moid1>,>nest) assignation,          #
+#         (>sort) coerce (>moid1) to (moid>);      #
+#       (>sort,moid>,>nest) jump;                  #
+#       (>sort,moid>,>nest) skip;                  #
+        (>sort,moid1>,>nest,adic>) formula,
+          (>sort) coerce (>moid1) to (moid>).
+ 
+(>sort,moid>,>nest) primary:
+#       (>sort,moid1>,>nest) slice,                #
+#         (>sort) coerce (>moid1) to (moid>);      #
+#       (>sort,moid1>,>nest) call,                 #
+#         (>sort) coerce (>moid1) to (moid>);      #
+        (>sort,moid1>,>nest) denoter,
+          (>sort) coerce (>moid1) to (moid>).
+#       (moid1>,>nest) applied identifier with (tag>),   #
+#         (>sort) coerce (>moid1) to (moid>);            #
+#       (>sort,moid>,>nest) closed clause;               #
+#       (>sort,moid>,>nest) conditional clause;          #
+#       (>sort,moid>,>nest) loop clause.                 #
+ 
+ 
+#5.2.1 Assignations #
+ 
+(>sort,ref to*plain>,>nest) assignation:
+        (ref to*plain>,>nest) destination,
+          becomes token,
+            (plain>,>nest) source.
+ 
+(ref to*mode>,>nest) destination:
+        (>"meek",mode1>,>nest,adic>) formula,
+          (>"meek") coerce (>mode1) to (ref to*mode>).
+ 
+(mode>,>nest) source:
+        (>"strong",mode>,>nest) unit.
+ 
+ 
+#5.3.2. Slices #
+ 
+(>sort,ref to*mode>,>nest) slice:
+  (>"meek",ref to*rows of*mode>,>nest) primary,
+    sub token,
+      (>nest) subscript,
+        bus token.
+ 
+(>nest) subscript:
+        (>"meek","integral">,>nest) unit.
+ 
+#5.4.1. Routine texts #
+ 
+("procedure"*"yielding"*moid>,>nest1) routine text:
+        formal (moid>,>nest1) declarer,
+          routine token,
+            (>"strong",moid>,>nest1) unit.
+ 
+("procedure"*"with"*mode*"parameter"*"yielding"*moid>,>nest1) routine text:
+        open token,
+          (>nest*mode tag) declarative defining (mode*tag>),
+            close token,
+              formal (moid>,>nest1) declarer,
+                routine token,
+                  (>"strong",moid>,>nest1*mode tag) unit,
+                    tree (>mode,>tag,mode tag>).
+ 
+(>nest2) declarative defining (mode*tag>):
+        formal (mode>,>nest2) declarer,
+          (>nest2,>mode) parameter definition of (mode*tag>).
+ 
+(>nest2,>mode) parameter definition of (mode*tag>):
+        (>mode,>nest2) defining identifier with (tag>).
+ 
+ 
+#5.4.2. Formulas #
+ 
+dyadic::
+        "priority"+prio.
+monadic::
+        "priority"+7.
+ 
+adic::
+        dyadic; monadic.
+ 
+ 
+#(>sort,mode3>,>nest,dyadic>) formula=                             #
+#        (>sort,mode1>,>nest,dyadic+1>) formula,                   #
+#          ("procedure"*"with"*mode1*"parameter"*mode2*"parameter" #
+#             *"yielding"*mode3>,dyadic>) operator,                #
+#              (>sort,mode2>,>nest,dyadic>) formula;               #
+#(>sort,moid>,>nest,dyadic>) formula:                              #
+#        (>sort,moid>,>nest,dyadic+1>) formula;                    #
+ 
+#(>sort,mode2>,>nest,monadic>) formula:                            #
+#        ("procedure"*"with"*mode1*"parameter"                     #
+#          *"yielding"*mode2>,monadic>) operator,                  #
+#           (>sort,mode1>,>nest,monadic>) formula;                 #
+(>sort,moid>,>nest,monadic>) formula:
+        (>sort,moid>,>nest) primary.
+ 
+ 
+#5.4.3. Calls #
+ 
+(>sort,moid1>,>nest) call:
+        (>"meek","procedure"*"with"*mode*"parameter"*"yielding"*moid1>,
+           >nest) primary,
+              open token,
+                actual (>nest,mode*"parameter">),
+                  close token.
+ 
+actual (>nest,mode*"parameter">):
+        (>"strong",mode>,>nest) unit.
+ 
+ 
+#5.4.4. Jumps #
+ 
+(>"strong","void">,>nest) jump:
+         goto token,
+           ("label">,>nest) applied identifier with (tag>).
+ 
+(>"strong","void">,>nest) skip:
+         skip token.
+#6.1. Coercees #
+ 
+strong::
+        firm; "voided to".
+firm::
+        meek.
+meek::
+        "unchanged from";
+        "dereferenced to";
+        "deprocedured to".
+nonproc::
+        plain; stowed; ref to*nonproc;
+        "procedure"*"with"*mode*"parameter"*"yielding"*moid.
+ 
+ 
+ 
+(>"strong") coerce (>moid1) to (moid>):
+      (>strong,>moid1) to (moid>) coercing;
+(>"firm") coerce (>moid1) to (moid>):
+      (>firm,>moid1) to (moid>) coercing;
+(>"meek") coerce (>moid1) to (moid>):
+      (>meek,>moid1) to (moid>) coercing.
+ 
+(>"unchanged from",>moid) to (moid>) coercing:
+      ;
+ 
+#6.2. Dereferencing #
+ 
+ 
+(>"dereferenced to",>ref to*mode1) to (mode>) coercing:
+      (>meek) coerce (>mode1) to (mode>);
+ 
+ 
+#6.3. Deproceduring #
+ 
+ 
+(>"deprocedured to",>"procedure"*"yielding"*moid1) to (moid>) coercing:
+      (>meek) coerce (>moid1) to (moid>);
+ 
+ 
+#6.7. Voiding #
+ 
+ 
+ 
+(>"voided to",>nonproc) to ("void">) coercing:
+        (>"deprocedured to",>nonproc) to ("void">) coercing;
+        (>"unchanged from",>nonproc) to (nonproc>) coercing.   #ambiguous #
+ 
+ 
+ 
+#7. Modes and nests #
+ 
+#7.1. Independece of properties #
+ 
+where (>prop1) independent (>props2*prop2):
+        where (>prop1) independent (>props2),
+          where (>prop1) independent (>prop2);
+where (>prop) independent (>empty):
+        ;
+where (>quality1*tag1) independent (>quality2*tag2):
+        not equal (>tag1,>tag2).
+ 
+ 
+#7.2. Identification in nests #
+ 
+where (quality>,>tag) identified in (>nest*propsety):
+        where (quality>,>tag) resides in (>propsety);
+where (quality>,>tag) identified in (>nest*propsety):
+        where (>quality*tag) independent (>propsety),
+          where (quality>,>tag) identified in (>nest).
+ 
+where (quality>,>tag) resides in (>props2*prop2):
+        where (quality>,>tag) resides in (>props2);
+        where (quality>,>tag) resides in (>prop2);
+where (quality>,>tag) resides in (>quality*tag):
+        .
+ 
+ 
+#8. Denotations #
+ 
+(>sort,mode>,>nest) denoter:
+        pragment sequence option,
+          (mode>) denotation.
+ 
+ 
+ 
+#.4.1. Representation of symbols #
+ 
+#a) Letter symbols #
+ 
+#b) Denotation symbols #
+ 
+#c) Operator symbols #
+ 
+("procedure"*"with"*"integral"*"parameter"*"integral"*"parameter"
+                   *"yielding"*"integral">,"priority"+1>) operator:
+        pragment sequence option,
+          "+";
+("procedure"*"with"*"integral"*"parameter"*"integral"*"parameter"
+                   *"yielding"*"integral">,"priority"+1>) operator:
+        pragment sequence option,
+          "-";
+("procedure"*"with"*"integral"*"parameter"
+                   *"yielding"*"integral">,monadic>) operator:
+        pragment sequence option,
+          "+";
+("procedure"*"with"*"integral"*"parameter"
+                   *"yielding"*"integral">,monadic>) operator:
+        pragment sequence option,
+          "-".
+ 
+#d) Declaration symbols #
+ 
+#e) Mode standards #
+ 
+#f) Syntactic symbols #
+ 
+#g) Loop symbols #
+ 
+#h) Pragment symbols #
+#8.1. Plain denotations #
+ 
+("integral">) denotation:
+        fixed point numeral;
+("boolean">) denotation:
+        true token;
+("boolean">) denotation:
+        false token.
+ 
+fixed point numeral:
+        {0123456789} +! (numeral>).
+ 
+ 
+#9. Tokens and symbols #
+ 
+moid token ("integral">):
+        pragment sequence option, "INT";
+moid token ("boolean">):
+        pragment sequence option, "BOOL".
+ 
+begin token:
+        pragment sequence option, "BEGIN".
+end token:
+        pragment sequence option, "END".
+open token:
+        pragment sequence option, "(".
+close token:
+        pragment sequence option, ")".
+goon token:
+        pragment sequence option, ";".
+label token:
+        pragment sequence option, ":".
+if token:
+        pragment sequence option, "IF".
+fi token:
+        pragment sequence option, "FI".
+then token:
+        pragment sequence option, "THEN".
+else token:
+        pragment sequence option, "ELSE".
+elif token:
+        pragment sequence option, "ELIF".
+while token:
+        pragment sequence option, "WHILE".
+do token:
+        pragment sequence option, "DO".
+od token:
+        pragment sequence option, "OD".
+procedure token:
+        pragment sequence option, "PROC".
+is defined as token:
+        pragment sequence option, "=".
+reference to token:
+        pragment sequence option, "REF".
+sub token:
+        pragment sequence option, "[".
+bus token:
+        pragment sequence option, "]".
+up to token:
+        pragment sequence option, ":".
+becomes token:
+        pragment sequence option, ":=".
+routine token:
+        pragment sequence option, ":".
+goto token:
+        pragment sequence option, "GOTO".
+skip token:
+        pragment sequence option, "SKIP".
+true token:
+        pragment sequence option, "TRUE".
+false token:
+        pragment sequence option, "FALSE".
+ 
+pragment sequence option:
+        pragment,
+          pragment sequence option;
+        .
+ 
+ 
+#9.2. Comments and pragmats #
+ 
+pragment:
+        layout;
+        pragmat;
+        comment.
+ 
+pragmat:
+        pragmat symbol,
+          pragmat item sequence option,
+            pragmat symbol.
+ 
+comment:
+        comment symbol,
+          comment item sequence option,
+            comment symbol.
+ 
+pragmat item sequence option:
+        pragmat item,
+          pragmat item sequence option;
+        .
+ 
+pragmat item:
+        { } +! (spaces>);
+        {abcdefghijklmnopqrstuvwxyz} +! (pragmat item>).
+ 
+comment item sequence option:
+        comment item,
+          comment item sequence option;
+        .
+ 
+comment item:
+        { } +! (spaces>);
+        "{";
+        "}";
+        {abcdefghijklmnopqrstuvwxyz} +! (comment item>);
+        {ABCDEFGHIJKLMNOPQRSTUVWXYZ} +! (comment item>);
+        {0123456789!@#$%^&*()_+~`[]:;"|\\<>,.?/} +! (comment item>);
+        nlcr.
+ 
+comment symbol:
+        "#".
+ 
+pragmat symbol:
+        "PR".
+ 
+layout:
+        { } +! (spaces>);
+        nlcr.
+program.
+

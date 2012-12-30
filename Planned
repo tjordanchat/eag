@@ -1,0 +1,10 @@
+The EAG compiler and its libraries will head off into two seperate
+directions:
+
+Version 3.0 will be directed towards a syntactical (but not a
+semantical) unification of the three affix formalisms EAG, AGFL
+and CDL3. In particular tuple types will be replaced by the term
+types already present in CDL3. 
+
+However both versions of EAG will use the same runtime system. They
+will therefore be provided as two compilers in the same package.

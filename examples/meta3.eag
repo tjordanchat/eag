@@ -1,0 +1,42 @@
+start (xout>):
+   layout, begin symbol, units (out>), end symbol,
+   endofsentence, xformunits (>out, xout>).
+
+units (unit * units>):
+   unit (unit>), semicolon symbol, units (units>);
+units (unit>):
+   unit (unit>).
+
+unit (ident * id>): identifier (id>);
+unit (number * int>): number (int>);
+unit (skip>): skip symbol.
+
+xformunits (>unit * units, xunit + xunits>):
+   xformunit (>unit, xunit>), xformunits (>units, xunits>);
+xformunits (>unit, xunit>):
+   xformunit (>unit, xunit>).
+
+xformunit (>ident * string, string + ";"+ nlcr>):;
+xformunit (>number * int, string + ";" + nlcr>):
+   int to string (>int, string>);
+xformunit (>skip, empty>):.
+
+unit :: ident * string;
+	number * int;
+	skip.
+
+skip :: "skip" * nil.
+ident :: "identfier".
+number :: "number".
+
+identifier (ls>):
+   {a-z}+! (ls>), layout.
+
+number (int>):
+   {0-9}+! (digits>), layout, string to int (>digits, int>).
+
+begin symbol: "BEGIN", layout.
+end symbol: "END", layout.
+skip symbol: "SKIP", layout.
+semicolon symbol: ";", layout.
+layout: { \n\t}*!.

@@ -1,0 +1,8 @@
+count (out).
+
+count (1 + ct>):
+   identifier (id), count (ct>);
+count (0>):.
+
+identifier (l + ls>):
+   {a-z} (l>), {a-z0-9}*! (ls>), { \t\n}*!.

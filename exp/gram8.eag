@@ -1,0 +1,129 @@
+start (preamble+decl+decls+main+code+more code>):
+   layout, preamble (preamble>),
+      first rule (start>, decl>, code>), main part (>start, main>),
+      more rules (decls>, more code>), end of sentence.
+
+preamble ("#include "+quote+"runtime2.h"+quote+nlcr>):.
+
+more rules (decl+decls>, code+more code>):
+   rule (decl>, code>), more rules (decls>, more code>);
+more rules (empty>, empty>): .
+
+first rule (id>, "extern void parse_N_"+id+" ();"+nlcr>,
+      "void parse_N_"+id+" ()"+nlcr+
+      "\t{"+nlcr+
+      code+
+      "\t}"+nlcr+nlcr>):
+   nonterminal (id>), colon symbol, alternatives (code>), point symbol.
+
+main part (>start,
+	   "extern void success ();"+nlcr+
+	   "extern void read_all_input ();"+nlcr+
+	   "extern void dump_info ();"+nlcr+nlcr+
+	   "void main ()"+nlcr+
+	   "\t{ read_all_input ();"+nlcr+
+	   "\t  pushq (success);"+nlcr+
+	   "\t  pushq (parse_N_"+start+");"+nlcr+
+	   "\t  callq();"+nlcr+
+	   "\t  dump_info ();"+nlcr+
+	   "\t};"+nlcr+nlcr>):.
+
+rule ("extern void parse_N_"+id+" ();"+nlcr>,
+      "void parse_N_"+id+" ()"+nlcr+
+      "\t{"+nlcr+
+      code+
+      "\t}"+nlcr+nlcr>):
+   nonterminal (id>), colon symbol, alternatives (code>), point symbol.
+
+alternatives (code+nlcr+more code>):
+   alternative (code>), semicolon symbol, alternatives (more code>);
+alternatives (code>):
+   alternative (code>).
+
+alternative (code+
+	     "\t  callq();"+nlcr+
+	     "\t  popq("+snr+");"+nlcr>):
+   members (code>, nr>), int to string (>nr, snr>).
+
+members (more code+code>, nr+nr2>):
+   member (code>, nr>), rest members (more code>, nr2>);
+members (empty>, 0>):.
+
+restmembers (code>, nr>):
+   comma symbol, members (code>, nr>);
+restmembers (empty>, 0>):
+   .
+
+member ("\t  pushq(parse_N_"+id+");"+nlcr>, 1>):
+   nonterminal (id>);
+member (code>, 2>):
+   terminal (code>);
+member (code>, 2>):
+   terminal set (code>).
+
+nonterminal (id>):
+   small identifier (id>).
+
+small identifier (let+letgits>):
+   small letter (let>), small letgits (letgits>), layout.
+
+small letter (let>):
+   {abcdefghijklmnopqrstuvwxyz} (let>).
+
+small letgits (letgits1+letgits2>): 
+   {abcdefghijklmnopqrstuvwxyz0123456789}*! (letgits1>),
+   rest small letgits (letgits2>).
+
+rest small letgits (letgits1+letgits2>):
+   { }+! (ignore>), {abcdefghijklmnopqrstuvwxyz0123456789}+! (letgits1>),
+   rest small letgits (letgits2>);
+rest small letgits (empty>):
+   .
+
+terminal ("\t  pushs("+quote+as+quote+");"+nlcr+
+	  "\t  pushq(parse_terminal);"+nlcr>):
+   quote, alphas (as>), quote, layout.
+
+terminal set ("\t  pushs("+quote+as+quote+");"+nlcr+
+	      "\t  pushq(parse_"+ex+mult+strict+"terminal_set);"+nlcr>):
+   up option (ex>), "{", alphas (as>), "}", layout, 
+      multiplicity option (mult>), strict option (strict>).
+
+up option ("ex_">): up symbol, layout;
+up option (empty>):.
+
+multiplicity option ("star_">):
+   "*", layout;
+multiplicity option ("plus_">):
+   "+", layout;
+multiplicity option (empty>):
+   .
+
+strict option ("strict_">):
+   "!", layout;
+strict option (empty>):.
+
+alphas (cs+spec+as>):
+   chars (cs>), specsym (spec>), alphas (as>);
+alphas (cs>):
+   chars (cs>).
+
+specsym ("\\"+"n">): backslash, "n";
+specsym ("\\"+"t">): backslash, "t";
+specsym ("\\"+quote>): backslash, quote;
+specsym ("\\"+"\\">): backslash, backslash;
+specsym ("{">): backslash, "{";
+specsym ("}">): backslash, "}".
+
+chars (cs>):
+   ^{\"\\\{\}}*! (cs>).
+
+colon symbol:		":", layout.
+up symbol:		"^", layout.
+semicolon symbol:	";", layout.
+comma symbol:		",", layout.
+point symbol:		".", layout.
+
+
+layout:
+   { \n\t}*! (ignore>).

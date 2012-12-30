@@ -1,0 +1,993 @@
+\documentstyle[elan,12pt]{article}
+\setlength{\topmargin}{0cm}
+\setlength{\topsep}{2mm}
+\setlength{\oddsidemargin}{0cm}
+\setlength{\evensidemargin}{0cm}
+\setlength{\textheight}{23.5cm}
+\setlength{\textwidth}{16cm}
+
+\pagestyle{empty}
+\title{\protect\vspace{-1.5cm}Affix Grammars for Natural Languages}
+\author{C.H.A. Koster\thanks{Prepared while the author was visiting the
+Technical University of Budapest on a {\sc tempus}-grant.}\\
+Department of Informatics, University of Nijmegen\\
+Toernooiveld 1, 6525 ED Nijmegen, The Netherlands}
+\date{}
+\begin{document}
+\maketitle
+\begin{abstract}
+Affix Grammars over a Finite Lattice ({\sc agfl}s), a simple form of two-level
+grammars admitting quite efficient implementations, are proposed as a
+formalism to express the syntax of natural languages. In this
+paper the concepts and notation of {\sc agfl}s are described. A brief example
+is given of their use in describing a fragment of the English language,
+followed by a discussion of issues like parsing and ambiguity.
+\end{abstract}
+\section{Informatics and Linguistics}
+Informatics and Linguistics have a common interest in syntax.
+In the sixties of this century
+the emerging science of Informatics wholeheartedly embraced the theory
+of Formal Languages, which was already at that time available from
+Logics and Mathematical Linguistics.
+
+In the next decades, informaticians
+have greatly enlarged and enriched Formal Language theory. They have
+devised efficient
+parsing algorithms and put the theory to useful work in the description
+of programming languages and the construction of compilers, software
+engineering environments, interactive user interfaces and other forms
+of syntax-directed software.
+
+This whole body of theory and practice is available in its turn to
+modern Linguistics. Informatics can now pay back its historical debt
+to Linguistics --- with interest.
+\subsection{On a division of labour}
+Linguists should not write programs. To begin with, they are ill-equipped
+and ill-educated for the profession of software developer. Furthermore,
+a fascination with programming
+tends to keep them from exercising their own speciality. 
+
+Linguists should write grammars rather than programs. Linguistic knowledge
+encapsulated in a program is like a corpse in a white-plastered grave.
+Even if the program works correctly and efficiently, it is doomed to disappear
+in the end, due to lack of maintenance. Nobody shall resuscitate the knowledge
+from the ashes of a C-program or LISP-program: we can be sure the programmer
+has reveled in the exploitation of clever tricks and could not be bothered
+to write documentation. On the other hand, a grammar
+is a ``pure" description, without any operational considerations,
+which admits of many different implementations. A grammar can serve as the
+basis of many different pieces of software (analysers, spelling checkers,
+syntax- and style-checkers, natural language interfaces,
+translators). Since it captures only the essential, it may well be updated,
+improved and maintained by linguists over a long period of time,
+new versions of the software being generated as needed.
+
+Turning a grammar for some language into a correct and efficient recognizer or
+parser is work for an informatician. Employing existing compiler construction
+methodology, also linguistic parsers can be generated automatically.
+Their correctness and efficiency is a worthy subject for Informatics research.
+
+Conversely, informaticians should promise not to write grammars
+for natural languages, or at least
+not to pretend to any linguistic relevance of the grammars they do write ---
+such as the examples in this paper.
+
+\subsection{Corpus Linguistics at Nijmegen University}
+The University of Nijmegen in The Netherlands (KUN) has an active group of
+corpus linguists, centered around the TOSCA-project
+\cite{tosca:basis,tosca:manual}, with which I have the pleasure to cooperate.
+
+Corpus Linguistics is that branch of Mathematical Linguistics that is
+concerned with the derivation of consistent and relatively complete
+grammars for natural languages, which are validated with respect to
+given corpora of text. Corpus linguists are the empirical scientists among
+grammarians. Rather than investigating isolated linguistic phenomena
+like the negation in Swahili or the expression of causality in
+Indo-European languages, they attempt to integrate the various theories
+regarding the structure of some particular language into a consistent whole.
+They are not afraid of formality and computers, and thus are excellent
+partners for collaboration with informaticians.
+
+The group in Nijmegen has, after a large scale investigation of English
+using Context-Free Grammars, decided in the late seventies
+to adopt the formalism of Extended Affix Grammars
+({\sc eag}s, see \cite{l20}) in projects describing a number of languages:
+\begin{itemize}
+\item English (J. Aarts and N. Oostdijk \cite{l23})
+\item Spanish (J. Hallebeek \cite{l26,hallebeek:diss})
+\item Modern Standard Arabic (E. Ditters \cite{l25}), and recently
+\item German (J. Aarts and J. Cloeren, KUN in collaboration with the
+University of Mainz).
+\end{itemize}
+Furthermore it should be mentioned that a group at Delft University \cite{l29}
+has been successfully using a related form of Affix Grammars in the description of Dutch.
+
+In the course of the TOSCA project, a number
+of increasingly powerful parser generators have been used,
+which translate slightly restricted forms of {\sc eag} into equivalent
+nondeterministic parsers in machine code \cite{l20}. The {\sc eag} parser generators
+have been used rather successfully in these linguistic projects, in spite of
+the fact that they were primarily developed for applications in Informatics.
+
+In applying the general {\sc eag}-system to linguistic applications, a number
+of problems were encountered:
+\begin{itemize}
+\item the large size of linguistic grammars
+\item the high degree of ambiguity found
+\item the need for a large and efficient lexicon, and
+\item the necessity to allow leftrecursion (which was until recently
+not supported by the {\sc eag} system).
+\end{itemize}
+In fact, these same problems are encountered when using
+{\sc prolog} + {\sc dcg}s in realistic linguistic applications.
+
+On the other hand, sentences in a natural language tend to be much
+shorter than those in programming languages (programs!).
+Upon inspection of the grammars written, the use made
+by linguists of the {\sc eag} formalism turns out to be exceedingly
+simple, none of its costly features (like delayed
+affix evaluation and unification) being exploited.
+
+All these experiences point to the fact that it is advantageous to
+implement a simpler formalism, sufficient for these applications,
+which can deal well with the problems mentioned.
+
+\section{Affix Grammars over a Finite Lattice}
+{\sc agfl}s are a formalization of a notion well known to linguists
+(see e.g. \cite{krulee:compprocnatlan}):
+Context Free grammars are augmented with features for expressing agreement
+between parts of speech, where the features form a finite categorization.
+Such grammars have been used extensively in classical Linguistics
+(albeit in a non-formal form) for more than two thousand years.
+
+Conjugation and declination rules based on feature
+distinctions can be modelled easily in an {\sc agfl}.
+Indeed the original motivation for Affix Grammars was linguistic,
+and their first application was a generative grammar for a small
+part of English \cite{meko}, which was presented to the
+Euratom-colloquium organized by prof. E.W. Beth in 1962.
+
+In this section, we give an informal description of {\sc agfl}s and introduce
+some notation and concepts.
+
+An {\sc agfl} consists of meta-rules and rules. Their order is arbitrary.
+\subsection{The meta-rules}
+The {\em meta-rules} or {\em affix rules} are a collection of restricted
+Context Free
+rules, together forming the second level of the {\sc agfl}. Each affix rule
+defines the direct productions of a nonterminal affix.
+Such a direct production is either a terminal affix or a nonterminal affix, and
+recursion is not allowed. Consequently, a nonterminal affix has one or more
+terminal affixes as terminal productions. These must all be different.
+
+Terminal affixes (or, rather, their representations) are written in small
+letters.
+Nonterminal affixes (or, rather, their names) are written with capital letters.
+Spaces may be used within nonterminal affixes to enhance readability.
+
+Meta-rules can be recognized by the double colon separating their left-
+and right-hand-side. The meta-rule
+\begin{elan}
+NUMB :: singular; plural.
+\end{elan}
+\noindent
+defines the nonterminal affix {\tt NUMB} to have two direct productions.
+These two productions are terminal affixes and therefore also its terminal
+productions. Similarly,
+\begin{elan}
+NUMBER :: NUMB; dual.
+\end{elan}
+\noindent
+defines {\tt NUMBER} to have three terminal productions, of which it has
+two in common with {\tt NUMB}.
+
+When no confusion arises, we may use the word {\em affix}
+as a shorthand for {\em terminal affix} or {\em nonterminal affix}, as
+the context demands.
+\subsubsection{Domains}
+By the {\em domain} of a nonterminal affix we mean the set of its terminal
+productions. The meta-rules may be seen as a type-system, in which the
+nonterminal affixes, with their respective domains, are the types.
+
+Since its domain is a finite enumeration of terminal affixes, any
+affix variable may be eliminated from a rule by systematically rewriting
+that rule into a number of rules, in each of which the affix variable
+is replaced by one of its terminal productions. By doing this for
+all affix variables, a {\sc cf} grammar is obtained which is equivalent
+to the original {\sc agfl}.
+
+Since an {\sc agfl} is therefore no more powerful than a {\sc cf}
+grammar one might be tempted to use {\sc cf} grammars instead.
+The {\sc cf} grammar
+resulting from such an expansion may however be exceedingly large.
+The introduction of affixes in a
+{\sc cf} grammar serves to shorten it considerably, making it possible
+to handle much more complicated grammars.
+\subsection{The rules}
+The {\em rules} of an {\sc agfl} are Context Free rules augmented with affixes.
+A rule consists of a left-hand-side, followed by a single colon, followed by
+a right-hand-side, e.g.
+\begin{elan}
+noun group (NUMB) :
+  adjective, noun group (NUMB);
+  subst (NUMB).
+\end{elan}
+The left-hand-side of a rule consists of a
+{\em nonterminal symbol}, the {\em head}, optionally followed by a list
+of {\em affix expressions}, the {\em parameters}, enclosed between
+brackets.
+
+The right-hand-side of a rule consists of one or more {\em alternatives},
+separated from one another by semicolons. An alternative is a (possibly
+empty) list of {\em members}, separated by comma's. A member is either
+a {\em terminal symbol} or it is a {\em call}, which looks just like a
+left-hand-side. Nonterminal symbols can be written in small or large letters,
+spaces can be used to enhance readability. A terminal symbol is written
+as its representation enclosed between quotes.
+
+A member that is optional is put between square brackets;
+given the rule
+\begin{elan}
+circumstance option :
+  circumstance;  .
+\end{elan}
+\noindent
+the member {\tt [circumstance]} means the same as {\tt circumstance option}.
+
+An affix expression is either a nonterminal affix (which is then termed an
+{\em affix variable}), or it consists
+of one or more terminal affixes separated from one another by
+the {\em set union-operator} {\tt |}.
+
+All rules with a given nonterminal symbol as head together form the
+{\em definition} for that nonterminal.
+The rules that make up one definition may differ in {\em arity} (= number of
+parameters).
+
+An example of a multi-rule definition involving union-operators is
+\begin{elan}
+to be (sing, 1) : "am".
+to be (plur, 1) : "are".
+to be (NUMB, 2 | 3) : "are".
+\end{elan}
+\subsubsection{Consistent substitution}
+{\sc agfl}s use a modified form of the {\em consistent substitution} rule which
+states that, in rewriting a rule, all occurrences of one same
+affix variable obtain the same value.
+In {\sc agfl} that value is the set of \underline{all}
+terminal affixes for which rewriting succeeds. Thus according to
+\begin{elan}
+PERS :: 1; 2; 3.
+\end{elan}
+\begin{elan}
+simple sentence :
+  pers pron (NUMB, PERS), to be (NUMB, PERS), adjective.
+\end{elan}
+\begin{elan}
+pers pron (sing, 1) : "I".
+pers pron (plur, 1) : "we".
+pers pron (NUMB, 2) : "you".
+pers pron (sing, 3) : "he"; "she"; "it".
+pers pron (plur, 3) : "they".
+\end{elan}
+\begin{elan}
+adjective : "great".
+\end{elan}
+the sentence {\sl you are great} has one parsing, with the affix {\tt numb}
+assuming the value {\tt \{sing, plur\}}.
+
+Affix varables may be indexed with a number, to denote different instance
+of the same affix nonterminal; thus, {\tt PERSON1} is another instance of
+{\tt PERSON}, which is substituted for independently.
+\subsubsection{The lattice structure}
+\newcommand{\cbox}[1]{\makebox(0,0){#1}}
+\begin{figure}[ht]\centering
+\begin{center}
+\begin{picture}(330,160)(-25,0)
+\put(100,150){\cbox{$\top$ = \{{\tt first}, {\tt second}, {\tt third}\} = {\tt PERSON}}}
+\put(0,100){\cbox{\{{\tt first}, {\tt second}\}}}
+\put(100,100){\cbox{\{{\tt first}, {\tt third}\}}}
+\put(200,100){\cbox{\{{\tt second}, {\tt third}\}}}
+\put(0,50){\cbox{\{{\tt first}\}}}
+\put(100,50){\cbox{\{{\tt second}\}}}
+\put(200,50){\cbox{\{{\tt third}\}}}
+\put(100,0){\cbox{$\bot$}}
+\multiput(100,10)(100,50){2}{\line(0,1){35}}
+\multiput(0,60)(100,50){2}{\line(0,1){35}}
+\multiput(120,10)(0,50){2}{\line(2,1){70}}
+\multiput(20,60)(0,50){2}{\line(2,1){70}}
+\multiput(80,10)(0,50){2}{\line(-2,1){70}}
+\multiput(180,60)(0,50){2}{\line(-2,1){70}}
+\put(255,150){unspecified}
+\put(255,100){less specified}
+\put(255,50){more specified}
+\put(255,0){overspecified}
+\put(250,0){\vector(0,1){160}}
+\put(250,160){\vector(0,-1){160}}
+\end{picture}
+\end{center}
+\caption{The lattice of values for the affix {\tt PERSON}}\label{p2}
+\end{figure}
+
+The possible values of an affix variable form a mathematical object called
+a lattice. The lattice for the affix defined by
+\begin{elan}
+PERSON :: first; second; third.
+\end{elan}
+\noindent
+can be depicted as in fig.\ \ref{p2}.
+
+The {\em top}-element $\top$ of the lattice over three elements in fig.
+\ref{p2} can be seen as the union of all possibilities (the value may be
+{\tt first} or {\tt second} or {\tt third} or any combination).
+As we obtain more information, the number of possibilities may
+be narrowed down to a particular value, or even further to the
+{\em bottom}-element $\bot$, which indicates inconsistency. We will denote
+the top-element by the affix {\em PERSON} itself.
+By the introduction of suitable affix rules, any point
+in the lattice can be given a nonterminal affix as name, e.g.\
+\begin{verbatim}
+WE :: first; second.
+\end{verbatim}
+can be used to give the name {\tt WE} to the point marked
+{\tt \{first, second\}}.
+
+This particular kind of lattice over a set, with the set-union and
+set-intersection as operations, is called the {\em powerset lattice} of the
+set-valued affix.
+
+Another form of lattice which we admit is the {\em flat
+lattice} of (bounded) integers, without any further operations.
+As an example, an enumeration of all verbs in a language, without any
+further operations, can be seen as a flat lattice, as in fig.\ \ref{p3}.
+\begin{figure}[hb]\centering
+\begin{center}
+\begin{picture}(160,100)(-10,0)
+\put(50,100){\cbox{$\top$ = \{verb$_1$, verb$_2$, verb$_3$, ..., verb$_n$\} = {\tt verb}}}
+\put(5,55){\line(1,1){40}}
+\put(5,45){\line(1,-1){40}}
+\put(50,55){\line(0,1){40}}
+\put(50,45){\line(0,-1){40}}
+\put(95,55){\line(-1,1){40}}
+\put(95,45){\line(-1,-1){40}}
+\put(120,55){\line(-3,2){60}}
+\put(120,45){\line(-3,-2){60}}
+\put(145,55){\line(-2,1){80}}
+\put(145,45){\line(-2,-1){80}}
+\put(0,50){\cbox{\{verb$_1$\}}}
+\put(50,50){\cbox{\{verb$_2$\}}}
+\put(100,50){\cbox{\{verb$_3$\}}}
+\put(160,50){\cbox{\{verb$_n$\}}}
+\put(130,50){\cbox{\dots}}
+\put(50,0){\cbox{$\bot$}}
+\end{picture}
+\end{center}
+\caption{A flat lattice}\label{p3}
+\end{figure}
+Apart from finite lattices, with the union and intersection as
+operations, it is possible to introduce Affix Grammars over infinite
+lattices (see e.g.\ \cite{l21}). In {\sc agfl} we restrict ourselves to
+finite lattices, obtaining a formalism which admits of highly efficient
+implementation.
+\section{An example}
+Before discussing in the next sections some finer points of the application
+of {\sc agfl}s to natural languages, we shall first, by way of example,
+introduce
+a grammar for a fragment of the English language. It should be stressed that
+this grammar is not meant to have any linguistic merit. It merely serves to
+clarify the notation and concepts described and to provide some material
+for the following discussion.
+
+We start by choosing a metasyntax, which is small and quite conventional,
+not to say classical.
+\begin{elan}
+NUMB :: sing; plur.
+\end{elan}
+\begin{elan}
+PERS :: 1; 2; 3.
+\end{elan}
+As good latinists we shall distinguish four cases:
+\begin{elan}
+CASE :: nom; gen; dat; acc.
+\end{elan}
+Verbs can be either transitive or intransitive:
+\begin{elan}
+TRAN :: trav; intv.
+\end{elan}
+We intend to deal with the fact that some verbs have one or more
+associated preferred prepositions ({\sl to look \underline{at}}, {\sl to look
+\underline{for}}, {\sl to shout \underline{at}}, ...) and therefore introduce
+an affix enumerating such prepositions.
+\begin{elan}
+PREP :: none; to; from; at; in.
+\end{elan}
+Now we come to the syntax. We shall describe only one type of English
+sentence, which displays the basic order {\tt subject-verb-object}
+or {\tt subject-verb-comple\-ment-ob\-ject}, abusing the term {\tt complement}
+for the prepositional object found with many verbs.
+\begin{elan}
+SVCO phrase :
+  [circumstance], subject (NUMB, PERS), VCO phrase (NUMB, PERS).
+\end{elan}
+The first member, enclosed between square brackets, is an optional
+{\tt circumstance} (an indication of time or place). The other two
+members have to agree in number and person.
+\begin{elan}
+subject (NUMB, PERS):
+  pers pron (NUMB, PERS, nom);
+  noun phrase (NUMB, PERS, nom).
+\end{elan}
+\begin{elan}
+noun phrase (NUMB, PERS, CASE):
+  noun phrase (NUMB, PERS, CASE), rel phrase (NUMB, PERS, CASE1).
+noun phrase (NUMB, 3, CASE):
+  noun part (NUMB), [modifier].
+noun phrase (plur, 3, CASE):
+  noun phrase (NUMB, PERS, CASE),
+     coordinator, noun phrase (NUMB1, PERS1, CASE).
+\end{elan}
+These three rules have the head {\tt noun phrase} in common. The first one
+indicates that a subject may have (through recursion) any number of
+relative phrases. Notice the treatment of coordinated noun phrases
+like {\sl Tricky Dicky and the Cool Cats}.
+\begin{elan}
+noun part (NUMB):
+  noun group (NUMB);
+  determiner (NUMB), noun group (NUMB);
+  poss pron, noun group (NUMB).
+\end{elan}
+\begin{elan}
+noun group (NUMB):
+  adjective, noun group (NUMB);
+  subst (NUMB).
+\end{elan}
+Now we come to the pi\`ece de r\'esistance of this fragmentary grammar.
+\begin{elan}
+rel phrase (NUMB, PERS, nom):
+  rel pron (nom), VCO phrase (NUMB, PERS).
+rel phrase (NUMB, PERS, gen):
+  rel pron (gen), oSVC phrase.
+rel phrase (NUMB, PERS, dat):
+  preposition (prep), rel pron (dat), SVO phrase (prep);
+  rel pron (dat), SVO phrase (prep);
+  SVO phrase (prep).
+rel phrase (NUMB, PERS, acc):
+  rel pron (acc), SVC phrase (trav);
+  SVC phrase (trav).
+\end{elan}
+Somehow this looks more like Latin than like English, but it is not totally
+unfounded. Let me give one example for each production:
+
+{\sl the man who owes me a dollar}
+
+{\sl the man whose dollar I stole}
+
+{\sl the man to whom I must give the money}
+
+{\sl the man whom I must give the money}
+
+{\sl the man I must give the money}
+
+{\sl the man whom I hit with my hammer}
+
+{\sl the man I hit with my hammer}
+
+\noindent
+The rest of this grammar is left to the imagination of the reader.
+\section{Parsing AGFLs}	
+Parsing a sentence according to an {\sc agfl} can be accomplished either by first
+parsing the sentence according to the underlying {\sc cf} grammar and later
+computing the affix values, or by computing the affix values on-the-fly
+during the parsing process.
+The second approach is more desireable, because it allows
+to weed out at an early stage those {\sc cf} parsings that are impossible
+according to the affix values and context dependencies.
+\subsection{Ambiguity}
+Ambiguity is the bane of Computational Linguistics. Any nontrivial
+grammar for a natural language will attribute more than one structure to
+some sentences.
+
+There are many legitimate sources of ambiguity:
+\begin{itemize}
+\item (lexical ambiguity) At the lexical level, many word forms may possess
+multiple interpretations. In English, for instance, the fact that ``any
+noun can be verbed" leads to an interesting confusion of plural noun
+forms and verb forms ending in {\sl s}.
+\item (subordination) Parts of a phrase, like preposition clauses, may be
+subordinated to others in more
+than one way. Sequences of such parts lead to a combinatorial explosion
+of trivial ambiguities. For each subordination structure, examples can
+be found and none may be ruled out on syntactic grounds alone. In our
+daily use of language, we are hardly aware of this phenomenon, since we
+tend to exploit semantic clues and intonation to disambiguate our
+communications, but to a simple syntactic parser these are not available.
+\item (apposition) The fact that whole constructs may serve to modify
+other constructs by apposition (e.g. of noun phrases) is a dependable
+source of ambiguity.
+\end{itemize}
+We shall give just a few examples of subordination ambiguities that need
+some semantic knowledge for their resolution.
+
+{\sl eat the food on the table}
+
+{\sl eat the food on the couch}
+
+\noindent
+(subordination of preposition phrase to nounpart or verbpart), and
+
+{\sl there is a man in this house with one leg}
+
+{\sl there is food on the table with one leg}.
+
+The famous sentence {\sl time flies like an arrow} displays lexical
+ambiguity as well as subordination ambiguity. Appositions of many nouns, like
+
+{\sl software quality assurance conference}
+
+\noindent
+are ambiguous as soon as they consist of more than two parts.
+
+Ambiguity is a fact of life, with which we have to deal in a responsible
+fashion. Certainly it does not go away by ignoring it. We must
+therefore employ parsers that can find all correct analyses of a sentence.
+
+A secondary but not negligible problem is that multiple parsing trees,
+richly decorated with affixes, tend to demand an excessive amount of
+storage and i/o. We must therefore employ economic representations for
+ambiguous parse trees, like the condensed trees described in \cite{l15}.
+
+\subsection{Context-Free parsing}
+In Informatics, many forms of deterministic top-down and bottom-up
+parsers for {\sc cf} grammars have been designed
+(LL(k), LR(k), SLR(k), LALR(k), ...), which are highly efficient in
+parsing even very long sentences (e.g.\ programs) provided their grammar
+is not ambiguous. In Informatics this is the usual situation.
+
+For Linguistics the work on nondeterministic parsers is more relevant:
+\begin{itemize}
+\item Earley's algorithm \cite{l4} and related algorithms (for
+an overview see Harrison \cite{l6}).
+\item Tomita's algorithm \cite{l15}.
+\item The Recursive Backup parsing algorithm \cite{l10} and its Left
+Corner variant \cite{meijer:diss}.
+\end{itemize}
+The first two algorithms are extremely efficient (recognizing any {\sc cf}
+language in $O(n^3)$ time, where $n$ is the number of words in the
+sentence). They achieve this efficiency, however, by combining parser
+states as much as possible (a kind of maximal leftfactoring). This
+makes it difficult to compute affix values on-the-fly. There is no opportunity
+to use agreement information and semantic clues to steer the parsing process.
+Furthermore the construction of the parser from the grammar is a relatively
+time-consuming process, making it hard to experiment with evolving grammars.
+Lastly, the number of parse trees to be generated need not be
+polynomially bounded.
+
+That is why the use of bactracking parsing algorithms like Left Corner Recursive
+Backup may be attractive in spite of their exponentially bounded behaviour
+\cite{l27}. In particular, it is quite simple to extend this algorithm with
+on-the-fly affix evaluation. The same holds for {\sc prolog} with {\sc dcg}s, but its
+implementation can unfortunately not in general deal with leftrecursion.
+\subsection{Computing affix values}
+In scanning a sentence from left to right, we have a
+gradually increasing knowledge of the values of the affixes. We
+may consider as an example the French sentence:
+\begin{quote}
+{\sl je travaillais comme serveuse dans un restaurant}
+\end{quote}
+\noindent
+where it transpires half-way that the subject is feminine. Similarly,
+in parsing a sentence according to
+\begin{elan}
+sentence : noun phrase (NUMB, PERS), verb phrase (NUMB, PERS).
+\end{elan}
+\noindent
+upon recognizing the noun phrase we will have acquired at least partial
+information about the value of {\tt numb}, but recognizing the verb phrase
+may give us further information about its value, in sentences like
+
+{\sl you are a very beautiful person}
+
+The gradual acquisition of knowledge about an affix can be seen as
+a process in which a particular instance of the affix may initially
+have any value in its domain (represented by the set of all values in that
+domain). At each application of the affix, we
+obtain some information about its value, which may serve to restrict
+the set of values it possesses (a simple form of {\em unification}).
+
+If at any stage in the parsing process the set of values for
+an affix becomes empty, no consistent valuation of the affix is
+possible and the corresponding parse can be rejected.
+\subsubsection{Left-recursion}
+Linguists prefer to describe some constructs by left-recursion,
+e.g.:
+\begin{elan}
+noungroup:
+    noun; noungroup, postmodifier.
+\end{elan}
+which leads to a left-going parse tree:
+\begin{figure}[htb]\centering
+\begin{picture}(160,130)(40,120)
+\thicklines
+\put(140,240){O}
+\put(85,240){noungroup}
+\put(143,240){\line(-1,-2){16}}
+\put(145,240){\line(1,-2){16}}
+\put(120,200){O}
+\put(65,200){noungroup}
+\put(160,200){O}
+\put(170,200){postmodifier}
+\put(123,200){\line(-1,-2){16}}
+\put(125,200){\line(1,-2){16}}
+\put(100,160){O}
+\put(140,160){O}
+\put(45,160){noungroup}
+\put(150,160){postmodifier}
+\put(103,160){\line(-1,-2){16}}
+\put(80,120){O}
+\put(90,120){noun}
+\end{picture}
+\caption{A left-going parse tree}
+\label{fig:lrec parsetree}
+\end{figure}
+
+\noindent
+Removing left-recursion in the obvious way
+\begin{elan}
+noungroup: noun, poms.
+poms: postmodifier, poms; .
+\end{elan}
+leads to a right-going parse tree instead, with different node
+labels:
+\begin{figure}[htb]\centering
+\begin{picture}(150,130)(-66,120)
+\thicklines
+\put(40,240){O}
+\put(50,240){noungroup}
+\put(43,240){\line(-1,-2){16}}
+\put(45,240){\line(1,-2){16}}
+\put(20,200){O}
+\put(-5,200){noun}
+\put(60,200){O}
+\put(70,200){poms}
+\put(63,200){\line(-1,-2){16}}
+\put(65,200){\line(1,-2){16}}
+\put(40,160){O}
+\put(80,160){O}
+\put(-26,160){postmodifier}
+\put(90,160){poms}
+\put(83,160){\line(-1,-2){16}}
+\put(85,160){\line(1,-2){16}}
+\put(60,120){O}
+\put(100,120){O}
+\put(-6,120){postmodifier}
+\put(110,120){poms}
+\end{picture}
+\caption{A right-going parse tree}
+\label{fig:rrec parsetree}
+\end{figure}
+
+For many applications, the difference in parse tree may not matter,
+but for some linguistic applications it is essential that the parse
+trees should follow the original (left-recursive) syntax.
+
+In the {\sc agfl}-system, all left-recursions are transformed away
+automatically by the LC-heuristic, but the resulting parse trees
+are given in terms of the original syntax. The net effect is that
+a left-recursive formulation is just as acceptable as a right-recursive
+one, and that it may even be somewhat more efficient to parse.
+\subsection{Checking}
+It is as easy to make errors in writing a grammar as it is in
+writing a program: spelling errors, forgotten definitions, missing affixes,
+wrong or interchanged affixes, etc. Testing a large nondeterministic
+program (like a grammar) is not a simple business, no matter what
+formalism it is written in.
+
+The type-restrictions imposed by the metarules of the {\sc agfl} permit
+a quite thorough consistency and completeness check, which turns out
+to be very valuable in developing a grammar with the {\sc agfl}-system.
+This system also provides useful information about the underlying
+CF grammar (leftrecursion, emptyness, hidden leftrecursion, common
+starters of alternatives). As a further diagnostic aid, it can
+be used generatively to produce (random) examples of terminal
+productions of any nonterminal.
+
+\section{Some linguistic issues}
+In this section we shall briefly discuss some important issues that arise
+in describing natural languages by {\sc agfl}.
+\subsection{Underspecification}
+In parsing a sentence, the value of some affix may not be specified
+uniquely, as in:
+\begin{quote}
+{\sl you are not satisfied}
+\end{quote}
+\noindent
+in which the {\tt number} of the subject may be either singular or plural.
+Apart from this, the two analyses have the same parse tree.
+
+It is useful to distinguish this form of ambiguity ({\em affix-ambiguity})
+from the structural ambiguity in the famous sentence
+\begin{quote}
+{\sl they are flying planes}
+\end{quote}
+\noindent
+where the various analyses have different parse trees.
+
+In {\sc agfl}, any set of terminal affixes can be denoted by an affix nonterminal
+with that set as domain. This makes it easy to express any degree of
+knowledge about possible values by a nonterminal affix. In the example given,
+the underspecified value for {\tt numb} is denoted by {\tt numb} itself.
+
+This is preferable to the introduction of a special affix terminal to express
+underspecification, as in
+\begin{elan}
+NUMB :: sing; plur; both.
+\end{elan}
+\subsection{Directions}
+Often the agreement between various parts of the sentence is considered
+as a (directed) dependency, one part prescribing an affix value for another.
+Upon closer inspection, the directionality of these dependencies may be
+quite vague.
+
+In particular, dependencies need not always be from left to right,
+since parts of speech may often occur in different orders, as is the case
+for the subject and the verb form in the Dutch sentences:
+\begin{quote}
+{\sl ik ga naar school}\\
+{\sl in de winter ga ik naar school}
+\end{quote}
+\noindent
+In {\sc agfl}s there is no notion of directionality, the consistent substitution
+rule guides all agreements. In this respect they are preferable over
+Attribute
+Grammars, which tend to rely strongly on dependency information for the
+efficient computation of attributes.
+\subsection{Dependent affixes}
+Some parts possess affixes that may or may not be present, depending
+on the value of some other affix. As an example, consider verb forms in
+English: a verb form has a tense, which indicates whether it is an
+infinitive or a participle or a finite verb,
+and only in the last case does it also possess a number and person.
+It is tedious to have to attribute some dummy number and person to,
+say, an infinitive.
+
+This situation might be expressed in a meta-rule (in a notation inspired by
+\cite{l29}) by attaching those latter affixes as parameters to the terminal
+affix to which they belong:
+\begin{elan}
+TENSE :: infinitive; particle (TIME); finite (TIME, NUMB, PERS).
+\end{elan}
+\noindent
+thus opening the door to a form of polymorphy.
+
+In {\sc agfl}, we have chosen rather to allow one same nonterminal
+to be used with different arities.
+\subsection{Inheritance and defaults}
+Conventional linguistic syntactic notations, such as ATN and various
+forms of Attribute Grammars, have rather elaborate mechanisms for describing
+the inheritance of features and the default values for features.
+
+In GPSG \cite{gazdar:gpsg} for instance, a construct
+may inherit feature values from the context, or from its own constituents.
+More defined values may override less defined values, and the inheritance
+process is mixed with the agreement rules. Since most of this activity
+takes place behind the scenes (the features being implicit in the grammar,
+rather than explicit as they are in {\sc agfl}), the result is very hard to describe,
+comprehend or verify. 
+
+In {\sc agfl} all inheritance relations are completely explicit in the grammar.
+The consistent substitution rule is the one mechanism expressing both
+agreement and inheritance. The
+nonterminal affixes may act as default values, defaults being seen as a
+form of underspecification. The rule
+\begin{elan}
+subject (NUMB, PERS):
+  pers pron (NUMB, PERS, nom);
+  subject (NUMB, PERS), rel phrase (NUMB, PERS, CASE).
+subject (NUMB, 3):
+  noun part (NUMB).
+subject (plur, 3):
+  subject (NUMB, PERS), coordinator, subject (NUMB1, PERS1).
+\end{elan}
+\noindent
+shows that quite complicated relationships can be succinctly expressed.
+\subsection{Word order}
+It is claimed for many natural languages that certain parts can
+occur in any order. Since all Phrase Structure grammars (like {\sc agfl})
+impose a strict order of parts, such a free word order may be hard or
+even impossible to describe.
+
+For example in \cite{l28} the claim that ``the Hungarian
+word order is free" is adstructed by the simple sentence, consisting of seven
+elements
+\begin{quote}
+{\sl a fiam elk\"uldte a k\"onyvet a bar\'atj\'anak}\\
+{\sl (my son sent the book to his friend)}
+\end{quote}
+\noindent
+for which a total of 25 word order permutations is given.
+
+In spite of appearances, 25 is much smaller than 7{\sl !}, so only a small
+fraction of all possible permutations is realized. Furthermore, upon closer
+inspection only seven forms turn out to be pure permutations of the original
+sentence, from which they differ only in topicalization.
+The others employ a different form of the verb ({\em k\"uldte el}),
+in which a preposition has been split off.
+
+In fact any language employs some mixture of constituent ordering and agreement
+as clues to the syntactic structure of a sentence and to the functions of
+its parts. The fact that English relies mostly on constituent order may
+have given rise to the impression that Context-Free structure is paramount,
+but formalisms like {\sc agfl} can exploit agreement clues just
+as well.
+
+Still, there is no denying that a relatively free word order leads to
+tediously enumerative syntactic descriptions. Some notational extension
+like the one proposed by Gazdar in Generalized Phrase Structure Grammars
+\cite{gazdar:gpsg} may alleviate the problem.
+
+Let me in passing mention the phenomena of ellipsis (in a suitable
+context, various parts of speach may be left out) and extraposition (some
+words may wander out of their part of speach to other positions in the
+sentence). These may again be hard to describe in a Phrase Structure
+grammar without special extensions.
+
+The fact that these phenomena complicate a syntactic description enormously
+is a cause for serious concern. The fact that they also complicate parsing
+should however be no concern for linguists.
+Informaticians will use their ingenuity
+to achieve acceptable parsing speed, in spite of all handicaps.
+\subsection{Adequacy}
+Are {\sc agfl}s adequate to describe the syntax of natural languages?
+This question can be answered both yes and no.
+
+There is no such thing as \underline{the} syntax of a natural language.
+Some linguistic phenomena can be captured easily and neatly in this
+formalism, others strain the notation and some may continue to elude
+formalization. Therefore it is not hard to say no. The question is rather,
+whether the use of {\sc agfl} can bring us further in the development of
+reliable, comprehensive, elegant, communicable and utilizable syntactic
+descriptions. And that remains to be seen.
+
+There is, however, a respectable school in Linguistic that holds that
+{\sc cfg}s can offer an adequate description of the structure of
+natural languages,
+or at least that ``every published argument purporting that one or another
+natural language is not a Contex-Free language is invalid, either formally,
+or empirically, or both" \cite{l30}. Hiding behind Gazdar's broad back, I
+dare to think the answer to the second question is yes.
+
+Every {\sc cf} grammar is of course an {\sc agfl}, but the use of affixes may lead
+to an appreciable reduction in the size of the grammar.
+More importantly, in using a two-level grammar the questions
+of agreement can be factored out of the questions of sentence structure.
+This makes it feasible to construct large and complicated grammars with
+more confidence.
+\section{Afterword}
+The early work on formal languages and parsing methods in
+Informatics has benefited greatly from the syntactic theories and
+techniques already developed in Linguistics. Chomsky can be seen
+as one of the founding fathers of Informatics. It is my conviction
+that Linguistics can now benefit substantially from the syntactic
+technology developed in Informatics.
+
+The same holds for Artificial Intelligence:
+It is interesting to note that the first implementation of {\sc prolog}
+by Colmerauer was based on the work he did in 1969-1970 on
+Metamorphosis grammars, another form of two-level grammars.
+This is the reason for the famous adage that {\sc prolog} was designed
+by Kowalski in 1972 and implemented by Colmerauer in 1971.
+
+In Informatics the interest in formal grammars for natural
+languages is growing, owing to the present interest in expert
+systems. An {\em expert system} is a programmed system that, in
+important respects, behaves like an expert on some specific
+subject.  It needs a fund of factual knowledge (in the fifth-generation
+jargon a {\em knowledge-base}), inference rules for making
+logical deductions from facts, and also a linguistic component for
+input and output in natural language form, or in a form near to it.
+
+It is in this area that Informatics and Linguistics will have
+increasing contact and, I hope, collaboration. In the coming years,
+linguists will have to provide a collection af relatively complete
+and linguistically sound formal grammars of natural languages,
+suitable as a framework for attaching semantics (there is
+no sense in dealing with semantics without an adequate syntax:
+syntax is the backbone of semantics). The task can be best
+performed in direct professional collaboration between linguists (who provide
+the grammars) and informaticians (who provide  the technology and
+the programming). The field of expert systems is too important to
+leave it to hobbyists.
+\begin{thebibliography}{88}
+\bibitem{tosca:basis}
+AARTS, J. and VAN DEN HEUVEL, Th. (1985),
+{\em Computational tools for the syntactic analysis of corpora}.
+In: Linguistics 23, 303-335.
+\bibitem{l25}
+DITTERS, E (1988),
+{\em A Formal Grammar for Automatic Syntactic Analysis and other Applications},
+In: {\em Proceedings of the Regional Conference on Informatics and
+Arabization}, IRSIT, Tunis, Vol.1, 128-45.
+\bibitem{l4}
+EARLEY, J. (1970),
+{\em An efficient context-free parsing algorithm}.
+Communications of the ACM 13, 94-102.
+\bibitem{gazdar:gpsg}
+GAZDAR, G. et al. (1985),
+{\em Generalized Phrase Structure Grammar},
+Harvard University Press, Cambridge Mass.
+\bibitem{l26}
+HALLEBEEK, J. (1987),
+{\em Hacia un sistema de an\'alisis sint\'actico automatizado:
+el proyecto ASATE}.
+In: Martin Vide, C. (Ed), {\em Actas del II Congreso de
+Lenguajes Naturales y Lenguajes Formales.} Universidad de Barcelona,
+545-558.
+\bibitem{hallebeek:diss}
+HALLEBEEK, J. (1990),
+{\em Een grammatica voor automatische analyse van het Spaans}.
+Diss. University of Nijmegen. In Dutch, French translation to appear.
+\bibitem{l6}
+HARRISON, M.A. (1987),
+{\em Introduction to Formal Language Theory}.
+Addison-Wesley.
+\bibitem{tosca:manual}
+HEUVEL, Th. van de, et al. (1983),
+{\em Extended Affix Grammars in Linguistics. A Manual.}
+English Department, University of Nijmegen.
+\bibitem{l28}
+K\'AROLY, S. (1972),
+{\em The Grammatical System of Hungarian},
+In: Lor\'and Benk\"o and Samu Imre (Eds),
+{\em The Hungarian Language}, Akad\'emiai Kiad\'o, Budapest.
+\bibitem{l10}
+KOSTER, C.H.A. (1975),
+{\em A technique for parsing ambiguous grammars},
+In: {\em GI 4. Jahrestagung}, D. Siefkes (Ed.),
+Lecture Notes in Computer Science 26, Springer Verlag.
+\bibitem{krulee:compprocnatlan}
+KRULEE, G.K. (1991),
+{\em Computer Processing of Natural Language},
+Prentice Hall.
+\bibitem{l27}
+LEO, J. (1986),
+{\em On the Complexity of Top-Down Backtrack Parsers; A Reexamination},
+In: Proceedings Annual NGI Conference, Utrecht.
+\bibitem{meko}
+MEERTENS, L.G.L.Th. \& C.H.A. KOSTER (1962), 	
+{\em An affix grammar for a part of the English language}, presented at
+Euratom Colloquium, University of Amsterdam, 1962.
+Not published. Reprints may be obtained from the author.
+\bibitem{meijer:diss}
+MEIJER, H. (1986),
+{\em PROGRAMMAR a Translator Generator.}
+Diss. University of Nijmegen.
+\bibitem{l20}
+MEIJER H. (1990),
+{\em The project on Extended Affix Grammars at Nijmegen},
+In: {\em Attribute Grammars and their Applications}, SLNC 461, 130-142.
+\bibitem{l21}
+MORITZ, M.P.G. (1989),
+{\em Description and Analysis of Static Semantics by Fixed Point Equations.}
+Diss. University of Nijmegen.
+\bibitem{l23}
+OOSTDIJK, N. (1984),
+{\em An Extended Affix Grammar for the English Noun Phrase}, In:
+J. Aarts and W. Meijs (eds),
+{\em Corpus Linguistics. Recent Developments in the Use of Computer
+Corpora in English Language Research}, Amsterdam: Rodopi.
+\bibitem{l30}
+PULLUM, G. and GAZDAR, G. (1982)
+{\em Natural Languages and Context Free Languages},
+Linguistics and Philosophy 4.
+\bibitem{l29}
+SCHOORL, J.J and BELDER, S. (1990),
+{\em Computational Linguistics at Delft, a Status Report},
+Report WTM/TT 90-09, Delft University of Technology.
+\bibitem{l15}
+TOMITA, M (1988),
+{\em Efficient Parsing for Natural Language, a Fast Algorithm for
+Practical Systems}.
+Kluwer.
+\end{thebibliography}
+\end{document}
+

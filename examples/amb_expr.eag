@@ -1,0 +1,11 @@
+start.
+
+start: expr, nlcr.
+
+expr: expr, "+", expr.
+expr: term.
+
+term: term, "*", term.
+term: id.
+
+id: "a"; "b"; "c"; "d"; "e"; "f".

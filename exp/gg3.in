@@ -1,0 +1,45 @@
+
+start:
+   layout, rules.
+
+rules:
+   rule, rules;
+   rule.
+
+rule:
+   nonterminal, colon symbol, alternatives, point symbol.
+
+alternatives:
+   alternative, semicolon symbol, alternatives;
+   alternative.
+
+alternative:
+   members.
+
+members:
+   member, comma symbol, members;
+   member.
+
+member:
+   nonterminal;
+   terminal;
+   terminal set;
+   .
+
+nonterminal:
+   small identifier.
+
+small identifier:
+   small letter, small letgits, layout.
+
+small letter:
+   {abcdefghijklmnopqrstuvwxyz}.
+
+small letgits:
+   {abcdefghijklmnopqrstuvwxyz0123456789 \t}*.
+
+terminal:
+   quote, alphas, quote, layout.
+
+quote:
+   "\"".

@@ -1,0 +1,285 @@
+\chapter {Meta rules}
+\section {Introduction and syntax}
+Meta rules are used to impose restrictions on the values of affixes.
+These restrictions are specified by means of a context free grammar,
+called the {\em meta grammar} of the \EAGns.
+
+A meta rule consists of a {\em meta nonterminal} followed by a
+double colon (\verb+::+), followed by one or more {\em meta alternatives},
+separated by semicolons, ending in a period. Meta nonterminals are
+identifiers not ending in an integer suffix. A meta alternative consists
+of an optional affix expression. 
+Examples:
+\begin{verbatim}
+   gender :: male | female | neutral.
+
+   number :: 1; 2; 3.
+
+   expr :: dyop * op * expr * expr;
+           monop * op * expr;
+           factor.
+
+   preamble :: "void main (argc, argv)" + nlcr +
+               " int argc;" + nlcr +
+               " char **argv;" + nlcr +
+               "\t{".
+
+   empty ::.
+\end{verbatim}
+There are a number of context conditions, to which the meta grammar
+must comply:
+\begin{itemize}
+\item Identifiers occurring in union expressions in the right hand
+side of a meta rule, for which there is no meta rule with the same
+name, introduce elements of a finite lattice.
+\item For all other identifiers occurring in the right hand side of a
+meta rule there must be a corresponding (possibly builtin) meta
+rule with the same name.
+\item All meta alternatives of one meta rule should have the same
+type (string, int, tuple or lattice). An empty alternative has type
+string and describes the empty string.
+\end {itemize}
+\section {Meta rules and affix propagation}
+We call an affix nonterminal, for which there exists a meta rule
+with the same name {\em minus a possible integer suffix}
+a {\em meta defined} affix nonterminal. Thus \verb+mode+ and
+\verb+mode2+ may be used as two different instances of the same
+meta rule \verb+mode+. A meta defined affix nonterminal
+can only have a value that is in the language described by the
+corresponding meta rule. An affix nonterminal that is not meta
+defined is called a {\em free} affix nonterminal and may therefore
+have any value. Whenever a value is propagated to an affix that
+is meta defined a check is made whether this value is admissable.
+
+We can distinguish two kinds of meta rules by the size of the
+produced language, namely meta rules that correspond to a language
+with one element and meta rules that correspond to a language
+with more than one element. If the language of a meta rule contains
+only one element (such as the meta rule {\tt preamble} in the above
+examples) this element is computed at compile time by the \EAG compiler
+and hardcoded in the generated parser. The previously mentioned 
+checks at propagation time are then omitted, since the value carried by
+these affix nonterminals is by default in the language of the
+corresponding meta rules. These meta rules are typically used
+to introduce names for affix constants.
+
+For the other two kinds of meta rules, recognizers are generated
+by the compiler which are called at propagation time. For a
+meta rule of type tuple, a recognizer is generated that checks
+the structure of the corresponding composed value at propagation
+time. For meta rules of the other two types a {\em topdown}
+parser is generated (with some heuristics) to check if an
+affix value is in the language described by the meta rule.
+This means that meta rules of the string or integer type may not
+be leftrecursive.
+\section {Finite lattices and affix restriction}
+Union affix expressions serve to introduce finite lattices. The domain
+of such affixes is the powerset of the set of all elements belonging
+to the lattice. Consequently the values that these affixes may take
+are sets instead of single values. This construction, first introduced
+in \AGFL (Affix Grammars over Finite Lattices), is often used in
+describing natural languages and reflects the gradual increase in
+knowledge while parsing. Consider the following example ({\tt simpfin.eag}):
+\begin{verbatim}
+   PERS :: first | second | third.
+
+   NUMBER :: singular | plural.
+
+   simple sentence (NUMBER, PERS):
+      layout, pers pron (NUMBER, PERS),
+         to be (NUMBER, PERS), adjective.
+
+   pers pron (singular, first): "I", layout.
+   pers pron (plural, first): "we", layout.
+   pers pron (NUMBER, second): "you", layout.
+   pers pron (singular, third):
+      "he", layout;
+      "she", layout;
+      "it", layout.
+   pers pron (plural, third): "they", layout.
+
+   to be (singular, first): "am", layout.
+   to be (NUMBER, second): "are", layout.
+   to be (singular, third): "is", layout.
+   to be (plural, first | third): "are", layout.
+
+   adjective: "great", layout.
+   adjective: "small", layout.
+
+   layout: { \t\n} *!.
+\end{verbatim}
+Affixes take the subset corresponding to their indicated domain as
+initial value. In this case the affix \verb+NUMBER+ is given the
+set \verb+{singular, plural}+ as initial value. Furthermore we
+follow the \AGFL convention, that elements may be used in syntax
+rules to denote their corresponding singleton sets. Union expressions
+may also occur in syntax rules: the \EAG compiler will evaluate them
+and replace them by the corresponding subsets in the affix domain.
+
+Consistent substitution demands that all affixes with the same name
+in an alternative have the same value. This means that whenever a
+value gets propagated to such an affix, it is intersected with the
+value of that affix. If this results in the empty set, the parse is
+rejected. If it results in a smaller set, this smaller set is propagated
+to all occurrences of the affix in the alternative. Thus the actual
+propagation mechanism for affixes over finite lattices is set restriction
+instead of value propagation. Since all affixes over finite lattices get
+a single initial value and their value may only become smaller during
+the parsing process, no recognizer routines are necessary for these
+meta rules.
+
+Values resulting from the parsing process need not be singleton sets.
+For instance, after parsing the sentence \verb+"you are great"+, the
+affix \verb+NUMBER+ will still have the set \verb+{singular, plural}+
+as value, indicating that the sentence gives insufficient information
+to decide if it is used in singular or plural form. When the start rule
+of the grammar has affixes over lattices, a text representation of the
+resulting sets is printed on a succesfull parse.
+\section {Meta rules as abstraction}
+One of the very first lessons in software engineering dictates that
+programs should never contain unnamed constants. The same holds
+for \EAGns. When an affix constant is very large or when an affix
+constant is used at several places in an \EAGns, it is useful
+to introduce a name for it by means of a meta definition. Consider
+for instance the following example, that codes a (rather silly)
+\C program out of a list of identifiers ({\tt meta1.eag}):
+\begin{verbatim}
+   program (preamble + prints + postamble):
+      layout, identifiers (prints).
+
+   preamble ::
+           "#include <stdio.h>" + nlcr + nlcr +
+           "main ()" + nlcr + tab + "{ ".
+
+   postamble ::
+           "exit (0);" + nlcr + tab + "}" + nlcr.
+
+   identifiers (prints + print header + id + print trailer):
+      identifiers (prints), identifier (id).
+   identifiers (empty):.
+
+   print header :: "printf (" + quote.
+   print trailer :: "\\n" + quote + ");" + nlcr + tab +"  ".
+
+   identifier (l + ls):
+      {a-z} (l), {a-z0-9}*! (ls), layout.
+
+   layout: { \t\n}*!.
+\end{verbatim}
+In this example we can observe three builtin meta defined affix
+nonterminals namely {\tt nlcr}, {\tt quote}, and {\tt tab} whose
+value should be self exemplifying.
+\section {Meta rules and sets}
+Sets may also occur in the right hand side of a meta rule. In this
+way one can easily specify a regular expression to which affix values
+must comply. Consider for instance the following example
+({\tt meta2.eag}):
+\begin{verbatim}
+   start (specid + nlcr):
+      layout, id (specid).
+
+   specid :: ^{k}*! + "k" + ^{k}*! + "k" + ^{k}*!.
+
+   id (l + ls):
+      {a-z} (l), {a-z0-9}*! (ls), layout.
+
+   layout: { \t\n}*!.
+\end{verbatim}
+In this way we can easily specify the intersection of two
+context free grammars.
+
+A grammar writer may also specify sets in affix positions. For these
+sets anonymous meta rules are generated by the compiler, which will
+check propagated affix values at runtime.
+\section {Meta rules for describing datastructures}
+Meta rules may also be used to specify datastructures, which may
+be built while parsing and transformed after parsing. Such a 
+specification of composite affix values serves the readability
+of the grammar. It may also speed up the splitting of composite
+affix values, because the affix values resulting from a split
+can be checked. A small example is the following description
+({\tt meta3.eag}):
+\begin{verbatim}
+   start (xout>):
+      layout, begin symbol, units (out>), end symbol,
+      endofsentence, xformunits (>out, xout>).
+
+   units (unit * units>):
+      unit (unit>), semicolon symbol, units (units>);
+   units (unit>):
+      unit (unit>).
+
+   unit (ident * id>): identifier (id>);
+   unit (number * int>): number (int>);
+   unit (skip>): skip symbol.
+
+   xformunits (>unit * units, xunit + xunits>):
+      xformunit (>unit, xunit>), xformunits (>units, xunits>);
+   xformunits (>unit, xunit>):
+      xformunit (>unit, xunit>).
+
+   xformunit (>ident * string, string + ";"+ nlcr>):;
+   xformunit (>number * int, string + ";" + nlcr>):
+      int to string (>int, string>);
+   xformunit (>skip, empty>):.
+
+   unit :: ident * string;
+           number * int;
+           skip.
+
+   skip :: "skip" * nil.
+   ident :: "identfier".
+   number :: "number".
+
+   identifier (ls>):
+      {a-z}+! (ls>), layout.
+
+   number (int>):
+      {0-9}+! (digits>), layout, string to int (>digits, int>).
+
+   begin symbol: "BEGIN", layout.
+   end symbol: "END", layout.
+   skip symbol: "SKIP", layout.
+   semicolon symbol: ";", layout.
+   layout: { \n\t}*!.
+\end{verbatim}
+\section {Meta rules and typing}
+Not only meta rules but every affix and affix position must have one
+of the four basic types (string, int, tuple (composed) or finite lattice)
+or have a polymorfic type (nonlat or any). Polymorfic affixes may be
+passed on, but they may not be manipulated. Polymorfic affixes can only
+be introduced by the builtin metarule {\tt nonlat}, indicating
+a non lattice type.
+
+The \EAG compiler will try and infer the types of the affixes and the
+positions. Sometimes, it may occur that the compiler can not infer
+the type of an affix. In those cases it will give an error message.
+Such is for instance the case in the following piece of a grammar.
+\begin{verbatim}
+   not in list (>ls, >nil):.
+   not in list (>ls, >ls2 * list):
+      not equal (>ls, >ls2), not in list (>ls, >list).
+\end{verbatim}
+From the affix {\tt nil}, the compiler can infer that the second
+position of this predicate has type tuple. Consequently it can infer
+from the call of {\tt not in list} in the second alternative that
+the affix {\tt list} must also have type tuple, because the
+corresponding affix positions must have the same type.
+
+From the usage of a predicate or syntax rule the compiler can
+often infer the type of the positions. Suppose that it can indeed
+infer that the first affix position has type string. Consequently
+the affix {\tt ls} in both alternatives must also have type
+string.
+
+There is, however, no way by which it may infer that the affix {\tt ls2}
+in the second alternative has type string ({\tt not equal} is a
+polymorfic predicate). We may correct this example in the following
+way, using the builtin meta rule {\tt string}:
+\begin{verbatim}
+   not in list (>ls, >nil):.
+   not in list (>ls, >string * list):
+      not equal (>ls, >string), not in list (>ls, >list).
+\end{verbatim}
+For typing purposes, four builtin meta rules are provided namely
+{\tt int}, {\tt string}, {\tt tuple} or {\tt nonlat}.

@@ -1,0 +1,4 @@
+start (out>).
+
+start ("Wow, it works!!\n"):
+   end of sentence.

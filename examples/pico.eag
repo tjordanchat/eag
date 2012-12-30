@@ -1,0 +1,66 @@
+picoprogram:
+   layout, "BEGIN", layout,
+   declarations, series,
+   "END", layout.
+
+declarations:
+   "DECLARE", layout, identifierlist, ";", layout.
+
+identifierlist: type, identifier;
+identifierlist:
+   identifierlist, ",", layout,
+   type, identifier.
+
+series: statement;
+series: series, ";", layout, statement.
+
+statement: assignation;
+statement: ifstatement;
+statement: whilestatement.
+
+assignation:
+   identifier, ":=", layout, expression.
+
+ifstatement:
+   "IF", layout, expression,
+   "THEN", layout, series, elsepart,
+   "FI", layout.
+
+elsepart:
+   "ELSE", layout, series;
+elsepart:
+   "ELIF", layout, expression,
+   "THEN", layout, series, elsepart;
+elsepart:.
+
+whilestatement:
+  "WHILE", layout, expression,
+  "DO", layout, series, "OD", layout.
+
+expression: expression, "=", layout, expression;
+expression: expression, "/=", layout, expression;
+expression: expression, "+", layout, term;
+expression: term.
+
+term: term, "*", layout, factor;
+term: factor.
+
+factor: "(", layout, expression, ")", layout;
+factor: identifier;
+factor: number;
+factor: boolean.
+
+type: "BOOL", layout;
+type: "INT", layout.
+
+identifier: {a-z}, letgits, layout.
+
+letgits: { }*!, {a-z0-9}+!, letgits;
+letgits:.
+
+number: {0-9}+!, layout.
+
+boolean: "TRUE", layout;
+boolean: "FALSE", layout.
+
+layout: { \t\n}*!.

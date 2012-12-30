@@ -1,0 +1,61 @@
+From comp.compilers Mon Aug 24 10:07:13 1992
+Path: wn1.sci.kun.nl!sun4nl!mcsun!uunet!ogicse!das-news.harvard.edu!spdcc!iecc!compilers-sender
+From: bburshte@pyrps5.eng.pyramid.com (Boris Burshteyn)
+Newsgroups: comp.compilers
+Subject: Full LR(1) Parser Generator
+Keywords: LR(1), comment
+Message-ID: <92-08-138@comp.compilers>
+Date: 21 Aug 92 22:13:11 GMT
+Article-I.D.: comp.92-08-138
+Sender: compilers-sender@iecc.cambridge.ma.us
+Reply-To: bburshte@pyrps5.eng.pyramid.com (Boris Burshteyn)
+Organization: Compilers Central
+Lines: 45
+Approved: compilers@iecc.cambridge.ma.us
+
+USSA (Universal Syntax and Semantics Analyzer) is a minimal state full LR1
+parser generator. It uses an optimized version of David Spector's
+algorithm published in SIGPLAN NOTICES, V.23 N. 12 1988 ("Efficient Full
+LR(1) Parser Generation").
+
+USSA is written in C++ and produces tables in the form of C++ objects.
+The skeleton parser is also written in C++. USSA has some additional
+features such as several grammars in a single source (converted to several
+C++ parser objects which can be executed from a single program), multiple
+grammar inheritance, regular expressions, real time parsing, generator
+(which automatically generates sample sentences of the defined language),
+run-time communication between compilers for different grammars, default
+lexer... YACC grammar definitions may be easily converted to USSA format.
+
+USSA is already a production quality parser generator and is intensively
+used in one of Pyramid Technology Corporation's development projects. We
+intend to optimize it to run faster and to produce smaller tables.  The
+following is a comparison between USSA and YACC on Pyramid S-series
+machines (MIPS R3000, UNIX SVR4).
+
+In most cases USSA has better or comparable with YACC tables.  Note, that
+space is measured in the number of elements.  However, YACC generates
+tables from int(s) (on PYRAMID), but USSA - from short(s).  
+
+Time is min from several runs of YACC and USSA by UNIX time command.  
+
+grammar         yacc      ussa             yacc     ussa
+		space     space            time     time
+-------         ----      ----             ----     ----
+
+ansic           3661      2674             3.0      0.7
+ussa(incomplete)2381      1945             0.9      0.6
+dBase4          8939      5890             14.8     3.2
+f77             4597      4650             3.0      1.3
+lex             373       281              1.0      0.0
+yacc            563       278              0.0      0.0
+pascal          1957      2160             0.9      0.4
+prolog          877       784              0.2      0.1
+
+
+Sincerely, Boris Burshteyn (bburshte@pyramid.com).
+[So can we get a copy?  Sounds great. -John]
+-- 
+Send compilers articles to compilers@iecc.cambridge.ma.us or
+{ima | spdcc | world}!iecc!compilers.  Meta-mail to compilers-request.
+

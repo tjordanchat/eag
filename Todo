@@ -1,0 +1,19 @@
+Fix bug in affix checking: inconsistent affix bugs when it is
+a lattice affix which is not declared by a metarule.
+Fix bug in output affixes when using the C-interface
+Update user manual from EAG2.0 to EAG2.3
+Addition of REAL affixes
+Implement segment parsing
+Making a better choice for end of text (^D?)
+Accept Unicode in UTF-8 encoding
+  Unicode range		UTF-8 encoding
+  U+0000 - U+007F	0xxxxxxx
+  U+0080 - U+07FF	110xxxxx 10xxxxxx
+  U+0800 - U+FFFF	1110xxxx 10xxxxxx 10xxxxxx
+  U+10000 - U+10FFFF	11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+Improve syntax directed editors:
+  Check during transformation of parse tree into editor tree
+  whether a node corresponds to the empty string. If so, remove layout.
+Improve parsing: what is exactly needed to allow local groups.
+Improve parsing: what is exactly needed to allow free member order.
+Implement EAG-3

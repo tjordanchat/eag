@@ -1,0 +1,8 @@
+start (div>):
+   layout, as (div>), endofsentence.
+
+as (tt>):
+   {a}+! (tt>), layout.
+
+layout:
+   { \n\t}*! (ign>).

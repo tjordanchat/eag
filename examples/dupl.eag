@@ -1,0 +1,5 @@
+duplicate (id + " + " + id + " = " + id + id +"\n">):
+   identifier (id>).
+
+identifier (l + ls>):
+   {a-z} (l>), {a-z0-9}*! (ls>), { \t\n}*!.

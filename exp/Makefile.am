@@ -1,0 +1,45 @@
+## Process this file with automake to produce Makefile.in
+EXTRA_DIST = bla.eag \
+             brroem.eag \
+             bug.eag \
+             bug2.eag \
+             burk.eag \
+             burk2.eag \
+             cdl3.eag \
+             demo.eag \
+             diggy.eag \
+             div1.eag \
+             div1a.eag \
+             div1b.eag \
+             div2.eag \
+             dupl.eag \
+             dupl2.eag \
+             eag-syntax \
+             eag.eag \
+             eng.eag \
+             eng2.eag \
+             engtest \
+             expr3.eag \
+             gg3.in \
+             gram3.eag \
+             gram8.eag \
+             gram9.eag \
+             in.pico \
+             lazy.eag \
+             lazytest \
+             lazytest2 \
+             maxi.eag \
+             mini.eag \
+             mini.test \
+             mini2.eag \
+             minitest \
+             pascal.eag \
+             pico.eag \
+             simpfin.eag \
+             simplex.lex \
+             symbols.eag \
+             testic.c \
+             testic.eag \
+             turf.eag \
+             turfout \
+             turftest

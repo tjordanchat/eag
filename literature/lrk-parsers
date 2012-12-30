@@ -1,0 +1,60 @@
+From comp.compilers Mon Aug 17 10:11:43 1992
+Path: wn1.sci.kun.nl!sun4nl!mcsun!uunet!sun-barr!rutgers!faatcrl!iecc!compilers-sender
+From: bromage@mullauna.cs.mu.oz.au (Andrew Bromage)
+Newsgroups: comp.compilers
+Subject: Re: A Non-LALR(1) Parser Generator
+Keywords: parse, bibliography
+Message-ID: <92-08-090@comp.compilers>
+Date: 17 Aug 92 01:04:02 GMT
+References: <92-08-016@comp.compilers>
+Sender: compilers-sender@iecc.cambridge.ma.us
+Reply-To: bromage@mullauna.cs.mu.oz.au (Andrew Bromage)
+Organization: Computer Science, University of Melbourne, Australia
+Lines: 44
+Approved: compilers@iecc.cambridge.ma.us
+
+dan%npt1@uunet.UU.NET (Dan White) writes:
+>   Do you know of any parser generators that will generate parsers for
+>languages that are not LALR(1)? Specifically, I want to generate a parser
+>for a language called CMS-2.
+
+D Pager has produced a few algorithms which may be of some use. They are
+designed to handle LR(1) grammars (a proper superset of LALR(1)), but
+produce parsers of realistic size. He does this by merging sets (as in the
+standard LALR construction algorithm), but using a different criterion
+than equality of cores.
+
+The references are:
+Pager, "A practical general method for constructing LR(k) parsers", Acta
+Informatica, 7, pp 249-268, 1977.
+
+Pager, "The lane tracing algorithm for constructing LR(k) parsers",
+Information Science, 12, pp 19-42, 1977.
+
+The first (ie simpler) algorithm was used in a parser compiler called
+"LR", the availability of which I know nothing about.
+
+It was reviewed in:
+Wetherell and Shannon, "LR - automatic parser generator and LR(1) parser",
+IEEE Transactions on Software Engineering, SE-7, pp 274-278, 1981.
+
+>[A common approach is to twist the syntax around until it's LALR, either by
+>accepting a superset of the legal language and throwing out the bad cases
+>semantically, or else by using lexical feedback kludges to guide the parser,
+>typically by passing up special tokens from the lexer. -John]
+
+This is a really bad hack, and should be avoided. I know it's common
+practice, but I don't believe that it's particularly marvellous.
+
+A nice approach was used in Gofer, where operator precedences are
+redefinable from the source. The way this was fixed was to store
+expressions as a linked list and writing another parser to handle these
+expressions. It's a bit like the LL and operator precedence parsers of
+yesteryear. I think that the moral of the story is to only use other
+techniques when the LR approach genuinely fails, and not before.
+
+bromage@mullauna.cs.mu.oz.au
+-- 
+Send compilers articles to compilers@iecc.cambridge.ma.us or
+{ima | spdcc | world}!iecc!compilers.  Meta-mail to compilers-request.
+

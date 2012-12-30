@@ -1,0 +1,93 @@
+From comp.compilers Mon Aug 31 10:55:49 1992
+Path: wn1.sci.kun.nl!sun4nl!mcsun!Germany.EU.net!math.fu-berlin.de!Sirius.dfn.de!darwin.sura.net!jvnc.net!yale.edu!qt.cs.utexas.edu!cs.utexas.edu!sun-barr!ames!agate!stanford.edu!rutgers!faatcrl!iecc!compilers-sender
+From: eifrig@beanworld.cs.jhu.edu (Jonathan Eifrig)
+Newsgroups: comp.compilers
+Subject: LR(0) vs. LALR, and the Great Parsing War
+Keywords: parse, bibliography
+Message-ID: <92-08-179@comp.compilers>
+Date: 30 Aug 92 02:40:50 GMT
+Sender: compilers-sender@iecc.cambridge.ma.us
+Reply-To: eifrig@beanworld.cs.jhu.edu (Jonathan Eifrig)
+Organization: Johns Hopkins Computer Science Department, Baltimore, MD
+Lines: 78
+Approved: compilers@iecc.cambridge.ma.us
+
+
+	It being near the start of the new school year and all, it seems
+appropriate to start the (N+1)th Annual Comp.Compilers Parsing Argument.
+Let's see if we can finish it up before Thanksgiving this year!  :-)
+
+	Seriously, I came across a _hint_ of a surprising result that I
+was hoping someone could either confirm or refute:
+
+	In a paper in this year's ACM SIGPLAN Workshop on ML and its
+Applications, Pettersson and Fritzson [1] claim that using Tomita's
+pseudo-parallel LR(0) parsing scheme [2] "in practice" only takes about
+10% longer than using an SLR or LALR parser.  They reference a result by
+Lankhorst [3] as justification for this claim, which I simply _cannot_ get
+my hands on.  (Read the reference; you'll understand my difficulty.)
+
+	This seems quite surprising to me, given that Tomita's algorithm
+basically has to spin off on the fly new parsing automatons to follow each
+possible path in a derivation.  Now, while I can see that this might be
+true if you're implementing in a language with a nice GC-ed heap like
+Lisp, it's not so clear if you have to keep cloning stacks all the time.
+
+	Can someone who's read the paper post or mail me some sort of
+synopsis?
+
+ObRefs:
+
+@string{mlwork92 = "Proceedings of the 1992 ACM SIGPLAN Workshop on ML and
+	Its Applications"}
+@string{ijcai85 = "Proceedings of the 1985 International Joint Conference
+	on Artificial Intelligence"}
+
+@inproceedings{pettersson92,
+author = "Mikael Pettersson and Peter Fritzon",
+title = "A General and Practical Approach to Concrete Syntax Objects
+	within ML",
+booktitle = mlwork92,
+year = 1992,
+pages = "17--27",
+abstract = "In this paper we present an approach to concrete syntax
+objects within ML, which is both general and efficiently implementable.
+These language enhancements add BNF rules for abstract syntax declarations
+and ``{\em semantic brackets}'' with inline concrete syntax and pattern
+matching for readability and conciseness.  This approach has several
+improvements integrated together which either do not appear in previous
+works, or appear in forms which are very restrictive or have very
+inefficient implementations.  Our improvements are: (1) inline concrete
+syntax within ``semantic brackets'' has been integrated bot with the ML
+type system and the ML scope rules, (2) concrete syntax can appear both as
+{\em syntactic patterns} for pattern matching and as {\em syntactic
+expressions} for building objects, (3) patterns can be nested to arbitrary
+depth, (4) concrete syntax and ML objects can be mixed; so-called {\em
+anti-quotations} are supported directly, (5) patterns and parts of
+patterns can be augmented with type information, (6) efficient integration
+with a general incremental LR(1) parsing mechanism.
+	These extentions have been efficiently implemented within our DML
+system.  DML, the Denotational Meta-Language, is a dialect of Standard ML
+with extentions aimed at making it (even more) useful for implementing
+denotational specifications of programming languages."  }
+
+@inproceedings{tomita85,
+author = "Masaru Tomita",
+title = "An Efficient Context-Free Parsing Algorithm for Natural Languages",
+booktitle = ijcai85,
+year = 1985
+}
+
+@inproceedings{lankhorst91,
+author = "M. M. Lankhorst",
+title = "An Empirical Comparison of Generalized LR Tables",
+booktitle = "Proceedings of the Workshop on Tomita's Algorithm - Extensions
+	and Applications",
+year = 1991
+}
+--
+Jack Eifrig (eifrig@cs.jhu.edu)       The Johns Hopkins University, C.S. Dept.
+-- 
+Send compilers articles to compilers@iecc.cambridge.ma.us or
+{ima | spdcc | world}!iecc!compilers.  Meta-mail to compilers-request.
+

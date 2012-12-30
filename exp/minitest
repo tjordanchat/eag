@@ -1,0 +1,7 @@
+BEGIN
+   INT a;
+   BOOL b;
+   a := 0;
+   b := TRUE;
+   SKIP
+END

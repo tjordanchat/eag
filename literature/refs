@@ -1,0 +1,9 @@
+@article {TOPLAS:Ganapathi85,
+        author   = "Mahadevan Ganapathi and Charles N. Fischer",
+        title    = "Affix Grammar Driven Code Generation",
+        journal  = TOPLAS,
+        month    = oct,
+        year     = 1985,
+        pages    = "560-599"
+        }
+

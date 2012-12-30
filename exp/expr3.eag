@@ -1,0 +1,71 @@
+program (unit):
+   layout, unit (unit).
+
+# meta grammar for syntax tree
+mode :: plain * string.
+plain ::	"plain".
+boolean ::	"bool".
+integral ::	"int".
+
+unit :: dyop * op * unit * unit;
+	monop * op * unit;
+	applied id * string;
+	denoter * mode * int;
+	skip.
+
+op :: string.
+
+# skip is nullary
+skip ::		"skip" * nil.
+
+monop ::	"monop".
+dyop ::		"dyop".
+denoter ::	"denoter".
+applied id ::	"applied id".
+
+where (>tuple, tuple>):.
+
+prio :: 1; 2; 3; 4; 5; 6; 7.
+mprio :: 8.
+
+unit (skip): "SKIP", layout;
+unit (form): secondary (form).
+
+secondary (sec):
+   formula (1, sec).
+
+formula (prio, dyop * op * form1 * form2):
+   formula (prio, form1), operator (prio, op), formula (prio+1, form2);
+formula (prio, form):
+   formula (prio + 1, form);
+formula (mprio, monop * op * form):
+   operator (mprio, op), formula (mprio, form);
+formula (mprio, form): primary (form).
+
+operator (mprio, "+"):	"+", layout.
+operator (mprio, "-"):	"-", layout.
+operator (mprio, "!"):	"NOT", layout.
+operator (7, "*"):	"*", layout.
+operator (7, "/"):	"/", layout.
+operator (6, "+"):	"+", layout.
+operator (6, "-"):	"-", layout.
+operator (5, "<"):	"<", layout.
+operator (5, "<="):	"<=", layout.
+operator (5, ">"):	">", layout.
+operator (5, ">="):	">=", layout.
+operator (4, "="):	"=", layout.
+operator (4, "<>"):	"<>", layout.
+operator (3, "&"):	"AND", layout.
+operator (2, "|"):	"OR", layout.
+operator (1, ":="):	":=", layout.
+
+primary (applied id * id): identifier (id>);
+primary (denoter * mode * value):
+   number (value>), where (plain * "integral", mode);
+primary (denoter * mode * 1): "TRUE", layout, where (plain * boolean, mode);
+primary (denoter * mode * 0): "FALSE", layout, where (plain * boolean, mode);
+primary (form): "(", layout, unit (form), ")", layout.
+
+identifier (id>): {a-z}+! (id>), layout.
+number (int): {0-9}+! (ds), layout, string to int (ds, int).
+layout: { \t\n}*!.

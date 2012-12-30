@@ -1,0 +1,9 @@
+#
+# File: alib.eag
+# Defines an example user extension
+# CVS ID: "$Id: alib.eag,v 1.2 2002/11/12 13:24:47 marcs Exp $"
+# 
+$ make empty field (>int, >int): predicate.
+$ take (>int, >int): predicate.
+$ is empty (>int, >int): predicate.
+$ show field: semipredicate.

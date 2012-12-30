@@ -1,0 +1,10 @@
+start (div>).
+
+start (div>):
+   layout, as (div+"aa">).
+
+as (tt>):
+   {a}+! (tt>), layout.
+
+layout:
+   { \n\t}*!.

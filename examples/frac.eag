@@ -1,0 +1,20 @@
+numeral (value+nlcr):
+   layout, rational (value), layout.
+
+rational (whole value + "+" + fractional value):
+   number (whole value, whole length, ""), ".",
+      number (fractional value, fractional length, "-" + fractional length).
+rational (value):
+   number (value, length, "").
+
+number (digit value + "+" + number value, "1" + length, suffix):
+   digit (digit value, length + suffix),
+      number (number value, length, suffix).
+number (digit value, "1", suffix):
+   digit (digit value, suffix).
+
+digit ("11^(" + exponent + ")",  exponent): "1".
+digit ("0",                      exponent): "0".
+
+layout:
+   { \t\n}*!.

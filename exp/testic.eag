@@ -1,0 +1,9 @@
+st (>in, out>).
+
+st (in, in + l):
+  arph (l), layout.
+
+arph (l):
+   {a-z}*! (l).
+
+layout: { \t\n}*!.

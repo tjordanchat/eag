@@ -1,0 +1,146 @@
+\newskip\Xflushglue \Xflushglue = 0pt plus 1fil
+
+
+% \Xnoligs prevents ?` and !` from being treated as ligatures
+
+\begingroup
+  \catcode``=13
+  \gdef\Xnoligs{\let`=\Xlquote}
+\endgroup
+
+{\catcode`\^^M=13 \gdef\Xgobblecr{\Xifnextchar
+{\Xgobble}{\ignorespaces}}}
+
+\def\Xgobble#1{}
+
+\def\Xlquote{{\kern\zX}`}
+
+\def\Xmakeother#1{\catcode`#112\relax}
+
+\newdimen\zX \zX=0pt
+
+{\catcode`\ =\active\gdef\Xvobeyspaces{\catcode`\ \active \let \Yobeysp}}
+ 
+\def\Yobeysp{\leavevmode{} }
+
+% define elanverb group
+
+\def\Xelanverb {
+  \trivlist \item[]\vskip 3pt plus 3pt %\parskip
+  \leftskip 12pt \rightskip\zX
+  \parindent\zX \parfillskip\Xflushglue \parskip\zX
+  \obeylines \tt \catcode``=13 \Xnoligs \let\do\Xmakeother \dospecials }
+
+\begingroup
+  \catcode `|=0 \catcode `[= 1 \catcode`]=2
+  \catcode `\{=12 \catcode `\}=12 \catcode`\\=12
+  |gdef |Yelanverb#1\end{elanverb}[|vbox[#1] |end[elanverb]]
+|endgroup
+
+\outer\def \elanverb{ \Xelanverb \frenchspacing \Xvobeyspaces \Yelanverb }
+\let\endelanverb=\endtrivlist
+
+% define elan group
+
+\def\Xelan {
+  \trivlist \item[]\vskip 3pt plus 3pt %\parskip
+  \leftskip 12pt \rightskip\zX
+  \parindent\zX \parfillskip\Xflushglue \parskip\zX
+  \obeylines \tt \catcode``=13 \Xnoligs \let\do\Xmakeother }
+
+\def \Zelan#1{}
+
+\begingroup
+  \gdef \Yelan#1\end{\vbox{#1}\end{elan} \Zelan }
+\endgroup
+
+\outer\def \elan{ \Xelan \frenchspacing \Xvobeyspaces  \Yelan }
+\let\endelan=\endtrivlist
+
+% define syntax group
+
+\def\Xsyntax {
+  \trivlist \item[]\vskip\parskip
+  \leftskip 12pt \rightskip\zX
+  \parindent\zX \parfillskip\Xflushglue \parskip\zX
+  \obeylines \sy
+%%%% \catcode``=13 \Xnoligs
+ \let\do \Xmakeother\dospecials }
+
+\begingroup
+  \catcode `|=0 \catcode `[= 1 \catcode`]=2
+  \catcode `\{=12 \catcode `\}=12 \catcode`\\=12
+  |gdef |Ysyntax#1\end{syntax}[|vbox[#1] |end[syntax]]
+|endgroup
+
+\outer\def \syntax{ \Xsyntax \frenchspacing \Xvobeyspaces \Ysyntax }
+\let\endsyntax=\endtrivlist
+
+% define means for syntax-diagrams
+
+%\def\pic(#1,#2)#3{\vspace{-8pt}\begin{center}\fbox{\begin{picture}(#1,#2)#3\end{picture}}\end{center}\vspace{-8pt}}
+\def\pic(#1,#2)#3{\vspace{-8pt}\begin{center}\begin{picture}(#1,#2)#3\end{picture}\end{center}\vspace{-8pt}}
+
+\newlength{\x}
+
+\newcommand{\ntbox}[2]{\raisebox{-007\unitlength}{\framebox(#1,013){\sf\strut#2}}\ignorespaces}%
+
+\newcommand{\tbox}[2]{\setlength{\x}{#1\unitlength}\setlength{\x}{0.5\x}%
+\raisebox{-007\unitlength}{\makebox(#1,013){\tt\strut#2}}%
+\hspace{-1\x}\oval(#1,012)\hspace{\x}\ignorespaces}
+\newcommand{\ix}[1]{\index{#1}\marginpar{\bf\footnotesize \rm #1}}
+\newcommand{\iy}[2]{\index{#1 #2}\index{#2, #1}\marginpar{\bf\footnotesize \rm #1 #2}}
+\newcommand{\iz}[1]{{\em #1}\index{#1}\marginpar{\bf\footnotesize\rm #1}}
+\newcommand{\ixsf}[1]{\underline{\sf #1}\index{\sf #1}}
+
+% Some tools for signature diagrams
+
+\newcommand{\elbow}[1]{\oval(30,30)[#1]}
+\newcommand{\typebox}[1]{%
+  \hbox{%
+    \begin{picture}(0,0)%
+      \put(0,0){\oval(70,30)}%
+      \put(0,0){\makebox(0,0){#1}}%
+    \end{picture}%
+  }%
+}
+\newcommand{\operbox}[1]{\framebox(40,30){#1}}
+
+% Yet another elan style 
+
+%\def\regeltje{\par\futurelet\n\handlenext}
+%\def\handlenext{\ifx\n\regeltje%
+%\penalty10000\vskip\baselineskip\penalty5000\vskip 0pt plus 0.30ex\penalty10000%
+%\else%
+%\penalty10000\strut%
+%\fi}
+%{\catcode`\^^M=\active % these lines must end with %
+%  \gdef\obblns{\catcode`\^^M\active \let^^M\regeltje}%
+%  \global\let^^M\regeltje} % this is in case ^^M appears in a \write
+%\def\obbspc{\catcode`\ \active}
+%{\obbspc\global\let =\space}
+%
+%\newenvironment{litout}{\begingroup\obblns\obbspc\frenchspacing\parskip 0pt}{\endgroup}
+\newenvironment{literal}{\begin{litout}\strut}{\end{litout}\strut\par}
+%\newenvironment{elan}{\vspace{0.5\baselineskip}\begin{litout}\tt\strut}{\end{litout}\vspace{0.5\baselineskip}\par}
+
+\def\cursor#1{\setlength{\fboxsep}{0pt}\fbox{\tt\strut#1}}
+
+
+
+\hyphenation{Nijmegen}
+
+\setlength{\textheight}{554.0pt}
+\setlength{\textwidth}{11.5cm}
+
+\pagestyle{plain}
+
+\def\regeltje{\par\futurelet\n\handlenext}
+\def\handlenext{\ifx\n\regeltje\penalty-5000\vskip\baselineskip\vskip 0pt plus 0.3ex\penalty-5000\else\penalty5000\strut\fi}
+{\catcode`\^^M=\active % these lines must end with %
+  \gdef\obblns{\catcode`\^^M\active \let^^M\regeltje}%
+  \global\let^^M\regeltje} % this is in case ^^M appears in a \write
+\def\obbspc{\catcode`\ \active}
+{\obbspc\global\let =\space}
+
+

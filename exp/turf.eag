@@ -1,0 +1,59 @@
+start (>"This is a burp\n", xout>).
+
+start (>burp, burp+xout>):
+   layout,
+   begin symbol,
+   units (out>),
+   end symbol,
+   endofsentence,
+   xform (>out, xout>).
+
+units (unit * units>):
+   unit (unit>), semicolon symbol, units (units>);
+units (unit>):
+   unit (unit>).
+
+unit (ID * filter>):
+   identifier (filter>);
+unit (INT * int>):
+   integer number (int>);
+unit (REAL * real>):
+   real number (real>).
+
+filter :: {abcdef}*!.
+
+xform (>out, xout>):
+   xformunits (>out, xout>).
+  
+xformunits (>unit * units, xunit + xunits>):
+   xformunit (>unit, xunit>), xformunits (>units, xunits>);
+xformunits (>unit, xunit>):
+   xformunit (>unit, xunit>).
+
+xformunit (>ID * string, string + ";"+ nlcr>):;
+xformunit (>INT * int, string + ";" + nlcr>): int to string (>int, string>).
+xformunit (>REAL * real, string + ";" + nlcr>): real to string (>real, string>).
+
+unit :: ID * string;
+	INT * int;
+	REAL * real.
+
+ID :: "ID".
+INT :: "INT".
+REAL :: "REAL".
+
+identifier (ls>):
+   {abcdefghijklmnopqrstuvwxyz}+! (ls>), layout.
+
+integer number (inum>):
+   {0-9}+! (ls), string to int (ls, inum>), layout.
+
+real number (rnum>):
+   {0-9}+! (ls), ".", {0-9}+! (ls2), string to real (ls + "." + ls2, rnum>), layout.
+
+begin symbol: "BEGIN", layout.
+end symbol: "END", layout.
+semicolon symbol: ";", layout.
+
+layout:
+   { \n\t}*! (ignore>).

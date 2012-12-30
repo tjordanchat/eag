@@ -1,0 +1,244 @@
+\chapter {Details of the compiler package}
+\section {The package}
+The following files and directories should be present in the compiler
+package:
+\begin {list}{-}
+{\setlength \leftmargin {7em}
+\setlength \labelwidth {6em}
+\setlength \labelsep {1em}}
+\item [{\tt Copyright}] Copyright notice.
+\item [{\tt Warranty}] Warranty notice.
+\item [{\tt Install}] Installation notes.
+\item [{\tt History}] History of changes to the compiler package.
+\item [{\tt Planned}] Planned changes to the compiler package.
+\item [{\tt Makefile}] Makefile to make all libraries and the compiler.
+\item [{\tt libalib}] An example user extension of the standard library.
+\item [{\tt bin}] Directory to install binaries (initially empty).
+\item [{\tt buglist}] List of known bugs.
+\item [{\tt doc}] Directory containing the source files of this document.
+\item [{\tt examples}] Directory containing the examples in this
+document.
+\item [{\tt gen}] Directory containing the source files of the compiler
+and skeleton generator.
+\item [{\tt include}] Directory to install header files (initially empty).
+\item [{\tt lib}] Directory to install libraries (initially empty).
+\item [{\tt libXedt}] Directory containing the source files of the
+\Xelf window system support library. In particular it provides
+two widgets that are used by syntax directed editors.
+\item [{\tt libebs}] Directory containing the source files of the
+\EAG basic support library.
+\item [{\tt libeag}] Directory containing the source files of the
+\EAG runtime system.
+\item [{\tt libedt}] Directory containing the source files of the
+runtime system necessary for syntax directed editors.
+\end{list}
+\section{Installation}
+To install the \EAG compiler and its libraries, edit the {\tt Makefile}
+in the top directory and adapt the variables {\tt IDIR}, {\tt LDIR},
+{\tt BDIR}, {\tt DCFL} and {\tt X11TREE} to suit your local system
+(The makefile contains two possible suggestions, depending whether you
+wish to install the compiler locally or system wide). Then enter
+{\tt make} to create and install the necessary libraries and the
+compiler.
+
+The software has been tested on the following platforms:
+\begin {list}{-}{}
+\item Sun SPARCstation-20 under Solaris 2.7
+\item Sun 4/670 under SunOs 4.1.4
+\item Sun 3/80 under SunOs 4.1.1
+\item HP 9000/735 under HP-UX 9.0.5
+\item i686 PC under Linux 2.2.12
+\end {list}
+\section{Compiler options}
+The syntax to use the compiler is:
+\begin{verbatim}
+   eag-compile [flags] [name]
+\end{verbatim}
+The default extension of \EAG is {\tt eag}. Preferably, the name
+of the file should be given without this extension. The compiler will
+generate a \C file with name \verb+<name>_<type>.c+ where
+\verb+<name>+ is the name given as argument and
+\verb+<type>+ is either {\tt topdown} or {\tt leftcorner},
+depending on the type of parser wanted.
+When no input file is given, the compiler will read a grammar from
+standard input giving it {\tt stdin} as name.
+
+The meaning of the flags is as follows:
+\begin {list}{-}{}
+\item [{\tt -h}] Provide a short help.
+\item [{\tt -V}] Show the current version of the compiler package.
+\item [{\tt -v}] Verbose mode. Provide an overview of the passes
+of the compiler.
+\item [{\tt -fv}] Full Verbose mode. Provide an overview of the passes
+and dump intermediate analysis results on standard error. This option
+is provided mainly for debugging purposes, since it will create
+large amounts of output.
+\item [{\tt -p name}] Include {\tt name.eag} as extra prelude.
+This option is mainly used to include user extensions of the
+standard library.
+\item [{\tt -v1}] Accept \EAG version 1.6 syntax and semantics.
+This is a compatibility flag.
+\item [{\tt -ed}] Generate a syntax directed editor.
+\item [{\tt -td}] Generate a topdown parser.
+\item [{\tt -lc}] Generate a leftcorner parser.
+\item [{\tt -lr}] Generate a lr parser (not yet implemented).
+\item [{\tt -nl}] Do not generate lookahead code. Setting this flag
+will degrade the performance of the generated parsers. However, the
+error messages generated when a parse can not be found will improve
+much.
+\item [{\tt -gl}] Generate code to report error messages upon
+lookahead failure. This will improve the error messages generated
+when a parse can not be found.
+\item [{\tt -ic}] Generate code to interface with \Cns.
+\item [{\tt -il}] Do not code any actions on the syntax tree for the
+syntax rule {\tt layout}. This rule should comply to the rules
+given in section 5.3. Setting this flag will improve the execution
+time of generated parsers by some 20\%. This flag is implied by the
+{\tt -ed} flag.
+\item [{\tt -pp}] Generate code to parse placeholders. This flag is
+implied by the {\tt -ed} flag.
+\item [{\tt -it}] Generate code to show {\em indirect templates} too. An
+indirect template is a template derived from a template that consists
+of a single typed placeholder by replacing this placeholder by one
+of its corresponding templates.
+\item [{\tt -D}] Generate code to dump the parse tree when a
+succesful parse is found.
+\item [{\tt -M}] Generate code that dumps the number of {\em matches}
+found while parsing. A match is the succesful recognition of a terminal.
+This number is often used by linguists to compare various implementations
+of \EAG or \AGFLns.
+\item [{\tt -T}] Generate code to trace the execution of a parser.
+\item [{\tt -qc}] Generate code to check the proper behaviour
+of the continuation stack. This flag is solely used for debugging
+purposes.
+\end {list}
+\section {Scripts}
+Four shell scripts are generated by the installation procedure.
+Their usage is as follows:
+\begin{verbatim}
+   <script> <name>_<type> [options]
+\end{verbatim}
+where \verb+<script>+ is one of these four scripts, \verb+<name>+
+and \verb+<type>+ are as above. The options are only used for user
+extensions. These scripts are used to compile and link generated
+parsers or editors with the proper libraries. They will result
+in an executable with the name \verb+<name>_<type>+. The four
+scripts and their functions are:
+\begin {list}{-}
+{\setlength \leftmargin {5em}
+\setlength \labelwidth {4em}
+\setlength \labelsep {1em}}
+\item [{\tt eagcc}] Compile and link a generated transducer.
+\item [{\tt eagccl}] Only link a generated transducer.
+\item [{\tt eaged}] Compile and link a generated syntax directed editor.
+\item [{\tt eagedl}] Only link a generated syntax directed editor.
+\end {list}
+\section {The standard library}
+Before a grammar is parsed by the \EAG compiler a prelude containing
+builtin definitions is parsed ({\tt stddefs.eag}). The contents
+of this file are as follows:
+\begin{verbatim}
+   # standard predefines
+   # meta rules
+   $ int :: int, recognizer, may produce empty.
+   $ string :: string, recognizer, may produce empty.
+   $ tuple :: tuple, recognizer, never produces empty.
+   $ nonlat :: nonlat, recognizer, may produce empty.
+   $ nil :: tuple, single, never produces empty.
+
+   # standard meta rules
+   empty ::.
+   nlcr :: "\n".
+   quote :: "\"".
+   back slash :: "\\".
+   tab :: "\t".
+
+   # hyper rules
+   empty: .
+   nlcr: "\n".
+   quote: "\"".
+   back slash: "\\".
+   tab: "\t".
+
+   # semi predicates: they need not be delayed
+   $ end of sentence: semipredicate.
+   $ column (int>): semipredicate.
+   $ row (int>): semipredicate.
+
+   # predicates
+   $ equal (>nonlat, >nonlat): predicate.
+   $ not equal (>nonlat, >nonlat): predicate.
+
+   $ minus (>int, >int, int>): predicate.
+   $ mul (>int, >int, int>): predicate.
+   $ div (>int, >int, int>): predicate.
+   $ power (>int, >int, int>): predicate.
+
+   $ int to string (>int, string>): predicate.
+   $ string to int (>string, int>): predicate.
+   $ uppercase (>string, string>): predicate.
+
+   $ not in reserved word list (>string, >tuple): predicate.
+   $ dump affix (>nonlat): predicate.
+\end{verbatim}
+Definitions that do not start with a dollar sign are merely included
+and thus hardcoded in generated parsers. For definitions that do start
+with a dollar sign actual code is present in the \EAG runtime library.
+
+For a meta rule in the last category the type, kind and emptiness is
+specified (The type is one of the basic types. The kind is
+either {\tt single} or {\tt recognizer}. A meta rule may produce
+empty or not).
+
+A rule that is coded in the runtime library is either a predicate
+or a semipredicate. Its formal left hand side is specified and
+typed and its kind is specified.
+\section {User extensions}
+It is possible for users to extend the standard library with their
+own libraries. The first step in making a private library is
+writing its specification which should comply to the same syntax
+as given for the standard library. Such a specification should
+have {\tt eag} as its extension. An example of such a specification
+can be found in the example extension library ({\tt libalib}) in the
+compiler package by the name {\tt alib.eag}:
+\begin{verbatim}
+   $ make empty field (>int, >int): predicate.
+   $ take (>int, >int): predicate.
+   $ is empty (>int, >int): predicate.
+   $ show field: semipredicate.
+\end{verbatim}
+
+The second step to take is to apply the skeleton generator
+(\verb+eag-skel+), which is also installed by the installation
+procedure, to this specification:
+\begin{verbatim}
+   eag-skel <name>
+\end{verbatim}
+This will result in two files namely \verb+<name>.h+ and
+\verb+<name>.c+. The latter gives a template in which the user
+only has to fill in the \C code that implements the actual
+specification. The code to needed to delay the execution
+of predicates is already coded by the skeleton generator. Before
+taking this step it may be very useful to read the file
+{\tt ds.h} in the directory {\tt libeag} of the package
+which describes the datastructures used by the
+\EAG runtime system. It is also advisable to inspect the file
+{\tt stddefs.c} in the same directory to observe how the
+standard library is implemented.
+
+After filling in the actual code one must compile this \C file
+and construct a small library called \verb+lib<name>.a+ for it.
+This library should be installed in the {\tt lib} directory
+of the package and the files \verb+<name>.eag+ and \verb+<name>.h+
+should be placed in the {\tt include} directory. Compilation
+of an \EAG using this user defined library needs adding the flag
+\verb+-p <name>+ for the compilation and the flag \verb+-l<name>+
+for the \C compilation and linking. For example, the file
+{\tt cactus.eag} in the example user extension library
+directory {\tt libalib} may be compiled and linked by entering the
+following two commands:
+\begin{verbatim}
+   eag-compile -p alib -td cactus
+   eagcc cactus_topdown -lalib
+\end{verbatim}
+This example also shows the usage of \EAG in nondeterministic programming.

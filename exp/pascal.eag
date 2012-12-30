@@ -1,0 +1,108 @@
+mini pascal.
+
+mini pascal:
+   layout, program header, declarations,
+      block, point symbol, end of sentence.
+
+program header:
+   program symbol, identifier, semicolon symbol.
+
+declarations:
+   var declarations option.
+
+var declarations option:
+   var symbol, variable declarations;
+   .
+
+variable declarations:
+   variable declarations, variable declaration;
+   variable declaration.
+
+variable declaration:
+   identifier list, colon symbol, type, semicolon symbol.
+
+type:
+   standard type.
+
+standard type: boolean symbol;
+standard type: integer symbol.
+
+block:
+   begin symbol, statements, end symbol.
+
+statements:
+   statements, semicolon symbol, statement.
+
+statement:
+   assignation;
+statement:.
+
+assignation:
+   identifier, becomes symbol, expression.
+
+expression:
+   expression, plus symbol, term;
+   expression, minus symbol, term;
+   term.
+
+term:
+   term, star symbol, factor;
+   term, divides by symbol, factor;
+   factor.
+
+factor: plus symbol, unsigned factor;
+factor: minus symbol, unsigned factor;
+factor: unsigned factor.
+
+unsigned factor:
+   number;
+   identifier.
+
+identifier list:
+   identifier list, comma symbol, identifier;
+   identifier.
+
+identifier:
+   letter (l>), letgits (ls>), layout,
+      not in reserved word list (>l+ls, reserved word list).
+
+letter (l>): {a-z} (l>).
+letgits (ls>): {a-z0-9_}*! (ls>).
+number: {0-9}+! (n>), layout.
+
+reserved word list ::
+   "program" *
+   "label" *
+   "const" *
+   "type" *
+   "var" *
+   "procedure" *
+   "function" *
+   "boolean" *
+   "integer" *
+   "begin" *
+   "if" *
+   "then" *
+   "else" *
+   "while" *
+   "do" *
+   "end".
+
+program symbol: 	"program", layout.
+var symbol:		"var", layout.
+boolean symbol:		"boolean", layout.
+integer symbol:		"integer", layout.
+begin symbol:		"begin", layout.
+end symbol:		"end", layout.
+
+colon symbol:		":", layout.
+comma symbol:		",", layout.
+semicolon symbol:	";", layout.
+becomes symbol:		":=", layout.
+point symbol:		".", layout.
+star symbol:		"*", layout.
+divides by symbol:	"/", layout.
+plus symbol:		"+", layout.
+minus symbol:		"-", layout.
+
+layout: { \t\n}*! (ignore).

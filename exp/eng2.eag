@@ -1,0 +1,730 @@
+engels (out>).
+
+engels ("i">):
+  sentence, endofsentence.
+
+sentence:
+  statement;
+sentence:
+  svco phrase,
+    coordinator,
+      sentence.
+
+statement:
+  svco phrase,
+    optional dot.
+
+optional dot: ".", ->, layout.
+optional dot: .
+
+coordinator:
+  "and", ->, layout;
+coordinator:
+  "or", ->, layout;
+coordinator:
+  ",", layout.
+
+localisator:
+   "when", ->, layout;
+localisator:
+   "where", ->, layout;
+localisator:
+   "why", ->, layout.
+
+svco phrase:
+  optional circumstance,
+    subject (numb, pers),
+      vco phrase (numb, pers).
+
+optional circumstance: circumstance.
+optional circumstance: .
+
+circumstance:
+  modifier;
+circumstance:
+  subordinator,
+    svco phrase;
+circumstance:
+  localisator,
+    svco phrase.
+
+subordinator:
+  "if", ->, layout;
+subordinator:
+  "since", ->, layout;
+subordinator:
+  "because", ->, layout;
+subordinator:
+  "although", layout.
+
+subject (numb, pers):
+  noun phrase (numb, pers, "nom").
+
+noun phrase (numb, pers, case):
+  noun part(numb, pers, case),
+    optional rel phrase;
+noun phrase ("plu", pers, case):
+  noun part (numb, pers, case),
+    coordinator,
+      noun phrase (numb1, pers1, case).
+
+optional rel phrase: rel phrase.
+optional rel phrase: .
+
+noun part (numb, "third", case):
+  lex art (numb),
+    noun group (numb);
+noun part (numb, "third", case):
+  lex det (numb),
+    noun group (numb);
+noun part (numb, "third", case):
+  lex poss pron,
+    noun group(numb);
+noun part (numb, "third", case):
+  noun group(numb),
+    optional modifier;
+noun part ("sing", "third", case):
+  "what", layout,
+    svc phrase;
+noun part ("sing", "third", case):
+  "that", layout,
+    svco phrase;
+noun part ("sing", "third", case):
+  optional not,
+    participle (tran, prep, "prpl"),
+      co phrase (tran, prep);
+noun part ("sing", "third", case):
+  "to", layout,
+    infinitive (tran, prep),
+      co phrase (tran, prep);
+noun part(numb, pers, case):
+  lex pers pron (numb, pers, case).
+
+optional modifier: modifier.
+optional modifier: .
+
+optional not: "not", ->, layout.
+optional not: .
+
+noun group (numb):
+  adjective phrase,
+    noun group (numb);
+noun group (numb):
+  participle (tran, prep, "prpl"),
+    noun group (numb);
+noun group (numb):
+  participle (tran, prep, "papl"),
+    noun group (numb);
+noun group (numb):
+  lex noun (numb);
+noun group (numb):
+  lex noun (numb1),
+    lex noun (numb).
+
+rel phrase:
+  lex rel pron ("nom"),
+    vco phrase (numb, pers);
+rel phrase:
+  lex rel pron ("gen"),
+    osvc phrase;
+rel phrase:
+  lex rel pron ("gen"),
+    ssvc phrase;
+rel phrase:
+  lex prep (prep),
+    lex rel pron ("dat"),
+      svo phrase;
+rel phrase:
+  option lex rel pron ("dat"),
+    svo phrase;
+rel phrase:
+  option lex rel pron ("acc"),
+    svc phrase.
+
+option lex rel pron (case): lex rel pron (case).
+option lex rel pron (case): .
+
+osvc phrase:
+  object without determiner,
+    svc phrase.
+
+object without determiner:
+  noun group (numb).
+
+ssvc phrase:
+  subject without determiner (numb, pers),
+    verb phrase ("intv", prep, time, numb, pers),
+      weak object compl option (prep),
+        optional circumstance.
+
+subject without determiner (numb, "third"):
+  noun group (numb).
+
+svo phrase:
+  subject (numb, pers),
+    vo phrase (prep, numb, pers),
+      preposition option (prep),
+        optional circumstance.
+
+vo phrase (prep, numb, pers):
+  verb phrase(tran, prep, time, numb, pers),
+    object option (tran),
+      optional circumstance.
+
+svc phrase:
+  subject (numb, pers),
+    vc phrase (numb, pers).
+
+vc phrase (numb, pers):
+  verb phrase ("trav", prep, time, numb, pers),
+    weak object compl option (prep),
+      optional circumstance.
+
+weak object compl option (prep): weak object compl (prep).
+weak object compl option (prep): .
+
+object compl option (prep): object compl (prep).
+object compl option (prep): .
+
+object compl (prep):
+  lex prep (prep),
+    object.
+
+weak object compl(prep):
+  lex prep (prep),
+    object;
+weak object compl(prep):
+  object.
+
+preposition option (prep): lex prep (prep).
+preposition option (prep): .
+
+modifier:
+  lex prep (prep),
+    noun phrase(numb, pers, "acc").
+
+object option ("trav"): object;
+object option ("intv"): .
+
+object:
+  noun phrase (numb, pers, "acc").
+
+predicate:
+  adjective phrase;
+predicate:
+  noun phrase (numb, pers, "nom");
+predicate:
+  noun phrase (numb, pers, "acc");
+predicate:
+  circumstance;
+predicate:
+  participle (tran, prep, "papl"),
+    object compl option (prep).
+
+vco phrase (numb, pers):
+  verb phrase (tran, prep, time, numb, pers),
+    co phrase(tran, prep),
+      optional circumstance;
+vco phrase (numb, pers):
+   lex to be (time, numb, pers),
+     optional not,
+       predicate,
+         optional circumstance.
+
+co phrase ("intv", prep):
+  object compl option (prep);
+co phrase ("trav", prep):
+  weak object compl option (prep),
+    object;
+co phrase ("trav", prep):
+  object,
+    object compl (prep).
+
+verb phrase (tran, prep, time, numb, pers):
+  optional adverb,
+    verb form(tran, prep, time, numb, pers);
+verb phrase (tran, prep, time, numb, pers):
+  lex to be (time, numb, pers),
+    participle (tran, prep, "prpl");
+verb phrase (tran, prep, time, numb, pers):
+  auxv (time, numb, pers),
+    infinitive (tran, prep);
+verb phrase (tran, prep, time, numb, pers):
+  lex to have (time, numb, pers),
+    participle (tran, prep, "papl");
+verb phrase (tran, prep, time, numb, pers):
+  lex to have (time, numb, pers),
+    optional adverb,
+      lex to be ("papl", numb, pers),
+        participle (tran, prep, "prpl");
+verb phrase("intv", prep, time, numb, pers):
+  lex to be (time, numb, pers),
+    participle ("trav", prep, "papl");
+verb phrase (tran, prep, time, numb, pers):
+  lex to have (time, numb, pers),
+    optional adverb,
+      lex to be ("papl", numb, pers),
+        participle ("trav", prep, "papl").
+
+optional adverb: adverb.
+optional adverb: .
+
+adjective phrase:
+  lex adje;
+adjective phrase:
+  "as", layout,
+    lex adje,
+      "as", layout,
+        noun phrase (numb, pers, case);
+adjective phrase:
+  adverb,
+    adjective phrase.
+
+adverb:
+  lex advb.
+
+auxv (time, numb, pers):
+  lex auxv (time),
+    optional not.
+
+verb form (tran, prep, tens, numb, pers):
+  adverb,
+    verb form (tran, prep, tens, numb, pers);
+verb form (tran, prep, "prst", numb, "first"):
+  lex verb i (tran, prep);
+verb form (tran, prep, "prst", numb, "secnd"):
+  lex verb i (tran, prep);
+verb form (tran, prep, "prst", "sing", "third"):
+  lex verb s (tran, prep);
+verb form (tran, prep, "prst", "plu", "third"):
+  lex verb i (tran, prep);
+verb form (tran, prep, "past", numb, pers):
+  lex verb past (tran, prep).
+
+short verb form (tran, prep, "prpl"):
+  lex verb prpl (tran, prep);
+short verb form (tran, prep, "papl"):
+  lex verb papl (tran, prep).
+
+infinitive (tran, prep):
+  optional adverb,
+    lex verb i (tran, prep);
+infinitive (tran, prep):
+  lex to be ("infi", numb, pers),
+    participle (tran, prep, "prpl");
+infinitive (tran, prep):
+  lex to have ("infi", numb, pers),
+    participle (tran, prep, "papl");
+infinitive (tran, prep):
+  lex to have ("infi", numb, pers),
+    lex to be ("papl", numb, pers),
+      participle (tran, prep, "prpl");
+infinitive ("intv", prep):
+  lex to be ("infi", numb, pers),
+    participle ("trav", prep, "papl");
+infinitive ("intv", prep):
+  lex to have ("infi", numb, pers),
+    lex to be ("papl", numb, pers),
+      participle ("trav", prep, "papl").
+
+participle (tran, prep, tens):
+  optional adverb,
+    short verb form (tran, prep, tens).
+
+lex adje: "glad", ->, layout;
+lex adje: "sad", ->, layout;
+lex adje: "happy", ->, layout;
+lex adje: "big", ->, layout;
+lex adje: "nice", ->, layout;
+lex adje: "little", ->, layout;
+lex adje: "long", ->, layout;
+lex adje: "red", ->, layout;
+lex adje: "indian", ->, layout.
+
+lex advb: "soon", ->, layout;
+lex advb: "often", ->, layout;
+lex advb: "sometimes", ->, layout;
+lex advb: "never", ->, layout;
+lex advb: "seldom", ->, layout;
+lex advb: "always", ->, layout;
+lex advb: "clearly", ->, layout;
+lex advb: "rather", ->, layout.
+
+lex auxv ("prst"): "can", ->, layout;
+lex auxv ("prst"): "will", ->, layout;
+lex auxv ("prst"): "shall", ->, layout;
+lex auxv ("prst"): "ought", ->, layout, "to", layout;
+lex auxv ("prst"): "must", ->, layout;
+lex auxv ("prst"): "may", ->, layout;
+lex auxv ("prst"): "wont", ->, layout;
+lex auxv ("prst"): "do", ->, layout;
+lex auxv ("past"): "could", ->, layout;
+lex auxv ("past"): "would", ->, layout;
+lex auxv ("past"): "should", ->, layout;
+lex auxv ("past"): "did", ->, layout;
+lex auxv ("past"): "didnt", ->, layout.
+
+lex art ("sing"): "a", layout;
+lex art ("sing"): "an", layout;
+lex art (numb): "the", layout.
+
+lex det ("sing"):
+  "any", layout;
+lex det ("sing"):
+  "this", layout;
+lex det ("sing"):
+  "that", layout;
+lex det ("sing"):
+  "no", layout;
+lex det ("sing"):
+  "every", layout;
+lex det ("sing"):
+  "each", layout;
+lex det ("plu"):
+  "some", layout;
+lex det ("plu"):
+  "all", layout;
+lex det ("plu"):
+  "these", layout;
+lex det ("plu"):
+  "those", layout.
+
+lex prep ("to"):
+  "to", layout;
+lex prep ("from"):
+  "from", layout;
+lex prep ("at"):
+  "at", layout;
+lex prep ("none"):
+  "with", layout;
+lex prep ("none"):
+  "by", layout;
+lex prep ("none"):
+  "of", layout;
+lex prep ("none"):
+  "in", layout;
+lex prep ("none"):
+  "without", layout;
+lex prep ("none"):
+  "within", layout;
+lex prep ("none"):
+  "like", layout.
+
+lex noun ("sing"):
+  "man", layout;
+lex noun ("sing"):
+  "woman", layout;
+lex noun ("sing"):
+  "arrow", layout;
+lex noun ("sing"):
+  "boy", layout;
+lex noun ("sing"):
+  "girl", layout;
+lex noun ("sing"):
+  "teacher", layout;
+lex noun ("sing"):
+  "indian", layout;
+lex noun ("sing"):
+  "book", layout;
+lex noun ("sing"):
+  "pencil", layout;
+lex noun ("sing"):
+  "mouse", layout;
+lex noun ("sing"):
+  "hammer", layout;
+lex noun ("sing"):
+  "watch", layout;
+lex noun ("sing"):
+  "house", layout;
+lex noun ("sing"):
+  "time", layout;
+lex noun ("sing"):
+  "tree", layout;
+lex noun ("sing"):
+  "leaf", layout;
+lex noun ("sing"):
+  "fly", layout;
+lex noun ("sing"):
+  "dollar", layout;
+lex noun ("sing"):
+  "plane", layout;
+lex noun ("sing"):
+  "something", layout;
+lex noun ("sing"):
+  "everything", layout;
+lex noun ("sing"):
+  "nothing", layout;
+lex noun ("plu"):
+  "books", layout;
+lex noun ("plu"):
+  "pencils", layout;
+lex noun ("plu"):
+  "mice", layout;
+lex noun ("plu"):
+  "teeth", layout;
+lex noun ("plu"):
+  "watches", layout;
+lex noun ("plu"):
+  "houses", layout;
+lex noun ("plu"):
+  "times", layout;
+lex noun ("plu"):
+  "trees", layout;
+lex noun ("plu"):
+  "leaves", layout;
+lex noun ("plu"):
+  "flies", layout;
+lex noun ("plu"):
+  "men", layout;
+lex noun ("plu"):
+  "women", layout;
+lex noun ("plu"):
+  "arrows", layout;
+lex noun ("plu"):
+  "boys", layout;
+lex noun ("plu"):
+  "girls", layout;
+lex noun ("plu"):
+  "teachers", layout;
+lex noun ("plu"):
+  "indians", layout;
+lex noun ("plu"):
+  "dollars", layout;
+lex noun ("plu"):
+  "planes", layout.
+
+lex poss pron:
+  "my", layout;
+lex poss pron:
+  "your", layout;
+lex poss pron:
+  "his", layout;
+lex poss pron:
+  "her", layout;
+lex poss pron:
+  "its", layout;
+lex poss pron:
+  "our", layout;
+lex poss pron:
+  "their", layout.
+
+lex verb s ("intv", "none"): "sleeps", layout;
+lex verb s ("intv", "none"): "sneezes", layout;
+lex verb s ("intv", "none"): "weeps", layout;
+lex verb s ("intv", "none"): "flies", layout;
+lex verb s ("intv", "none"): "itches", layout;
+lex verb s ("intv", "none"): "grows old", layout;
+lex verb s ("intv", "none"): "brightens", layout;
+lex verb s ("intv", "none"): "goes", layout;
+lex verb s ("intv", "none"): "walks", layout;
+lex verb s ("intv", "none"): "lies", layout;
+lex verb s ("intv", "none"): "comes", layout;
+lex verb s ("intv", "none"): "listens", layout;
+lex verb s ("trav", "to"): "brings", layout;
+lex verb s ("trav", "to"): "gives", layout;
+lex verb s ("trav", "to"): "owes", layout;
+lex verb s ("trav", "to"): "shows", layout;
+lex verb s ("trav", "to"): "explains", layout;
+lex verb s ("trav", "to"): "lends", layout;
+lex verb s ("trav", "to"): "tells", layout;
+lex verb s ("trav", "from"): "asks", layout;
+lex verb s ("trav", "none"): "hits", layout;
+lex verb s ("trav", "none"): "wants", layout;
+lex verb s ("trav", "none"): "sees", layout;
+lex verb s ("trav", "none"): "likes", layout;
+lex verb s ("trav", "none"): "loves", layout;
+lex verb s ("trav", "none"): "gets", layout;
+lex verb s ("trav", "none"): "hates", layout;
+lex verb s ("trav", "none"): "times", layout;
+lex verb s ("trav", "none"): "flies", layout;
+lex verb s ("trav", "none"): "does", layout;
+lex verb s ("trav", "none"): "has", layout.
+
+lex verb i ("intv", "none"): "sleep", layout;
+lex verb i ("intv", "none"): "sneeze", layout;
+lex verb i ("intv", "none"): "weep", layout;
+lex verb i ("intv", "none"): "itch", layout;
+lex verb i ("intv", "none"): "fly", layout;
+lex verb i ("intv", "none"): "grow old", layout;
+lex verb i ("intv", "none"): "brighten", layout;
+lex verb i ("intv", "none"): "go", layout;
+lex verb i ("intv", "none"): "walk", layout;
+lex verb i ("intv", "none"): "lie", layout;
+lex verb i ("intv", "none"): "come", layout;
+lex verb i ("intv", "none"): "listen", layout;
+lex verb i ("trav", "to"): "bring", layout;
+lex verb i ("trav", "to"): "give", layout;
+lex verb i ("trav", "to"): "owe", layout;
+lex verb i ("trav", "to"): "show", layout;
+lex verb i ("trav", "to"): "explain", layout;
+lex verb i ("trav", "to"): "lend", layout;
+lex verb i ("trav", "to"): "tell", layout;
+lex verb i ("trav", "from"): "ask", layout;
+lex verb i ("trav", "none"): "hit", layout;
+lex verb i ("trav", "none"): "want", layout;
+lex verb i ("trav", "none"): "see", layout;
+lex verb i ("trav", "none"): "like", layout;
+lex verb i ("trav", "none"): "love", layout;
+lex verb i ("trav", "none"): "get", layout;
+lex verb i ("trav", "none"): "hate", layout;
+lex verb i ("trav", "none"): "time", layout;
+lex verb i ("trav", "none"): "fly", layout;
+lex verb i ("trav", "none"): "do", layout;
+lex verb i ("trav", "none"): "have", layout.
+
+lex verb past ("intv", "none"): "slept", layout;
+lex verb past ("intv", "none"): "sneezed", layout;
+lex verb past ("intv", "none"): "wept", layout;
+lex verb past ("intv", "none"): "itched", layout;
+lex verb past ("intv", "none"): "flew", layout;
+lex verb past ("intv", "none"): "grew old", layout;
+lex verb past ("intv", "none"): "brightened", layout;
+lex verb past ("intv", "none"): "went", layout;
+lex verb past ("intv", "none"): "walked", layout;
+lex verb past ("intv", "none"): "lied", layout;
+lex verb past ("intv", "none"): "came", layout;
+lex verb past ("intv", "none"): "listened", layout;
+lex verb past ("trav", "to"): "brought", layout;
+lex verb past ("trav", "to"): "gave", layout;
+lex verb past ("trav", "to"): "owed", layout;
+lex verb past ("trav", "to"): "showed", layout;
+lex verb past ("trav", "to"): "explained", layout;
+lex verb past ("trav", "to"): "lent", layout;
+lex verb past ("trav", "to"): "told", layout;
+lex verb past ("trav", "from"): "asked", layout;
+lex verb past ("trav", "none"): "hit", layout;
+lex verb past ("trav", "none"): "wanted", layout;
+lex verb past ("trav", "none"): "saw", layout;
+lex verb past ("trav", "none"): "liked", layout;
+lex verb past ("trav", "none"): "loved", layout;
+lex verb past ("trav", "none"): "got", layout;
+lex verb past ("trav", "none"): "hated", layout;
+lex verb past ("trav", "none"): "timed", layout;
+lex verb past ("trav", "none"): "flew", layout;
+lex verb past ("trav", "none"): "did", layout;
+lex verb past ("trav", "none"): "had", layout.
+
+lex verb prpl ("intv", "none"): "sleeping", layout;
+lex verb prpl ("intv", "none"): "sneezing", layout;
+lex verb prpl ("intv", "none"): "weeping", layout;
+lex verb prpl ("intv", "none"): "flying", layout;
+lex verb prpl ("intv", "none"): "itching", layout;
+lex verb prpl ("intv", "none"): "growing old", layout;
+lex verb prpl ("intv", "none"): "brightening", layout;
+lex verb prpl ("intv", "none"): "going", layout;
+lex verb prpl ("intv", "none"): "walking", layout;
+lex verb prpl ("intv", "none"): "lying", layout;
+lex verb prpl ("intv", "none"): "coming", layout;
+lex verb prpl ("intv", "none"): "listening", layout;
+lex verb prpl ("trav", "to"): "bringing", layout;
+lex verb prpl ("trav", "to"): "giving", layout;
+lex verb prpl ("trav", "to"): "owing", layout;
+lex verb prpl ("trav", "to"): "showing", layout;
+lex verb prpl ("trav", "to"): "explaining", layout;
+lex verb prpl ("trav", "to"): "lending", layout;
+lex verb prpl ("trav", "to"): "telling", layout;
+lex verb prpl ("trav", "from"): "asking", layout;
+lex verb prpl ("trav", "none"): "hitting", layout;
+lex verb prpl ("trav", "none"): "wanting", layout;
+lex verb prpl ("trav", "none"): "seeing", layout;
+lex verb prpl ("trav", "none"): "liking", layout;
+lex verb prpl ("trav", "none"): "loving", layout;
+lex verb prpl ("trav", "none"): "getting", layout;
+lex verb prpl ("trav", "none"): "hating", layout;
+lex verb prpl ("trav", "none"): "timing", layout;
+lex verb prpl ("trav", "none"): "flying", layout;
+lex verb prpl ("trav", "none"): "doing", layout;
+lex verb prpl ("trav", "none"): "having", layout.
+
+lex verb papl ("intv", "none"): "slept", layout;
+lex verb papl ("intv", "none"): "sneezed", layout;
+lex verb papl ("intv", "none"): "wept", layout;
+lex verb papl ("intv", "none"): "flown", layout;
+lex verb papl ("intv", "none"): "itched", layout;
+lex verb papl ("intv", "none"): "grown old", layout;
+lex verb papl ("intv", "none"): "brightened", layout;
+lex verb papl ("intv", "none"): "gone", layout;
+lex verb papl ("intv", "none"): "walked", layout;
+lex verb papl ("intv", "none"): "lied", layout;
+lex verb papl ("intv", "none"): "come", layout;
+lex verb papl ("intv", "none"): "listened", layout;
+lex verb papl ("trav", "to"): "brought", layout;
+lex verb papl ("trav", "to"): "given", layout;
+lex verb papl ("trav", "to"): "owed", layout;
+lex verb papl ("trav", "to"): "showed", layout;
+lex verb papl ("trav", "to"): "explained", layout;
+lex verb papl ("trav", "to"): "lent ", layout;
+lex verb papl ("trav", "to"): "told", layout;
+lex verb papl ("trav", "from"): "asked", layout;
+lex verb papl ("trav", "none"): "hit", layout;
+lex verb papl ("trav", "none"): "wanted", layout;
+lex verb papl ("trav", "none"): "seen", layout;
+lex verb papl ("trav", "none"): "liked", layout;
+lex verb papl ("trav", "none"): "loved", layout;
+lex verb papl ("trav", "none"): "got", layout;
+lex verb papl ("trav", "none"): "hated", layout;
+lex verb papl ("trav", "none"): "timed", layout;
+lex verb papl ("trav", "none"): "flown", layout;
+lex verb papl ("trav", "none"): "done", layout;
+lex verb papl ("trav", "none"): "had", layout.
+
+lex pers pron ("sing", "first", "nom"): "I", ->, layout;
+lex pers pron ("sing", "first", "acc"): "me", ->, layout;
+lex pers pron ("sing", "first", "acc"): "myself", ->, layout;
+lex pers pron ("plu", "secnd", "acc"): "yourselves", ->, layout;
+lex pers pron ("sing", "secnd", "acc"): "yourself", ->, layout;
+lex pers pron (numb, "secnd", case): "you", ->, layout;
+lex pers pron ("sing", "third", "acc"): "herself", ->, layout;
+lex pers pron ("sing", "third", "acc"): "her", ->, layout;
+lex pers pron ("sing", "third", "nom"): "he", ->, layout;
+lex pers pron ("sing", "third", "acc"): "himself", ->, layout;
+lex pers pron ("sing", "third", "acc"): "him", ->, layout;
+lex pers pron ("sing", "third", "nom"): "she", ->, layout;
+lex pers pron ("sing", "third", "acc"): "itself", ->, layout;
+lex pers pron ("sing", "third", case): "it", ->, layout;
+lex pers pron ("sing", "third", case): "this", ->, layout;
+lex pers pron ("sing", "third", case): "that", ->, layout;
+lex pers pron ("sing", "third", case): "Mary", ->, layout;
+lex pers pron ("sing", "third", case): "Jim", ->, layout;
+lex pers pron ("plu", "first", "nom"): "we", ->, layout;
+lex pers pron ("plu", "third", "nom"): "they", ->, layout;
+lex pers pron ("plu", "first", "acc"): "us", ->, layout;
+lex pers pron ("plu", "first", "acc"): "ourselves", ->, layout;
+lex pers pron ("plu", "third", "acc"): "themselves", ->, layout.
+lex pers pron ("plu", "third", "acc"): "them", layout.
+
+lex rel pron ("gen"): "whose", ->, layout;
+lex rel pron ("dat"): "whom", layout;
+lex rel pron ("acc"): "whom", ->, layout;
+lex rel pron ("nom"): "who", ->, layout;
+lex rel pron ("nom"): "that", layout;
+lex rel pron ("acc"): "that", ->, layout;
+lex rel pron ("nom"): "which", layout;
+lex rel pron ("acc"): "which", ->, layout.
+
+lex to be ("prst", "sing", "first"): "am", ->, layout;
+lex to be ("prst", "sing", "third"): "is", ->, layout;
+lex to be ("prpl", numb, pers): "being", ->, layout;
+lex to be ("papl", numb, pers): "been", ->, layout;
+lex to be ("infi", numb, pers): "be", ->, layout;
+lex to be ("prst", numb, "secnd"): "are", layout;
+lex to be ("prst", "plu", "first"): "are", layout;
+lex to be ("prst", "plu", "third"): "are", ->, layout;
+lex to be ("past", "sing", "first"): "was", layout;
+lex to be ("past", "sing", "third"): "was", ->, layout;
+lex to be ("past", numb, "secnd"): "were", layout;
+lex to be ("past", "plu", "first"): "were", layout;
+lex to be ("past", "plu", "third"): "were", layout.
+
+lex to have ("prst", "sing", "third"): "has", ->, layout;
+lex to have ("prpl", numb, pers): "having", ->, layout;
+lex to have ("past", numb, pers): "had", layout;
+lex to have ("papl", numb, pers): "had", ->, layout;
+lex to have ("prst", "sing", "first"): "have", layout;
+lex to have ("prst", numb, "secnd"): "have", layout;
+lex to have ("prst", "plu", "first"): "have", layout;
+lex to have ("prst", "plu", "third"): "have", layout;
+lex to have ("infi", numb, pers): "have", layout.
+
+layout:
+  { \t\n}*!.

@@ -1,0 +1,6 @@
+BEGIN
+   abc;
+   34;
+   42.3;
+   def
+END

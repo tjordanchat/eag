@@ -1,0 +1,460 @@
+\chapter {Describing context free languages}
+\section {Basic syntax}
+An \EAG consists of {\em syntax rules\/}, {\em affix production
+rules} (also called {\em meta rules)} and an optional {\em start rule}.
+In this chapter we will focus on the syntax rules. A syntax rule
+consists of one or more {\em syntax rule elements}, separated by
+semicolons, ending in a period. A syntax rule element consists of
+a left hand side, a colon and one or more {\em alternatives}.
+Alternatives are separated by semicolons. The left hand side of a
+syntax rule element consists of a {\em nonterminal} identifying
+the syntax rule. For the present, nonterminals are identifiers
+consisting of letters and digits. Blanks may occur in nonterminals
+but they are ignored. Thus {\tt even more elements} and
+{\tt evenmoreelements} denote the same name.
+
+An alternative consists of zero or more members, separated by commas.
+A member can either be a {\em terminal}, a nonterminal, a {\em semiterminal}
+or a {\em commit operator}.  A terminal is a sequence of characters,
+enclosed between quotes. Semiterminals and the commit operator will
+be discussed later. When reading an \EAGns, one can
+read the colon as ``is defined as", the semicolon as ``or",
+the comma as ``followed by" and the period as ``end of definition".
+
+The reader may perhaps wonder why there are two syntactic ways in
+\EAG to indicate choice namely the semicolon between syntax rule
+elements and the semicolon between alternatives. The explanation
+of the reason behind this must unfortunately be postponed to chapter 3.
+Consider the following example:
+\begin{verbatim}
+   smengels:
+      subject, verb, ".".
+
+   subject:
+      article, noun.
+
+   article: "the "; "a ".
+
+   noun: "man ";
+   noun: "dog ".
+
+   verb: "sleeps"; "sits".
+\end{verbatim}
+As we can see this grammar specifies a language of the following 8
+sentences:
+\begin {list}{-}{\setlength {\itemsep}{0ex} \setlength {\parsep}{0ex}}
+\item the man sleeps
+\item a man sleeps
+\item the dog sleeps
+\item a dog sleeps
+\item the man sits
+\item a man sits
+\item the dog sits
+\item a dog sits
+\end {list}
+\EAGs must obey the following context conditions:
+\begin {itemize}
+\item
+All left hand side identifiers of one syntax rule must be the same.
+\item
+The left hand side identifiers of different syntax rules must differ.
+\item
+For every nonterminal occurring in an alternative there must be
+a syntax rule (or possibly a builtin syntax rule) with the same name.
+\end {itemize}
+We will call the application of a nonterminal on the right hand side a
+{\em call} of that nonterminal. The start rule of an \EAG consists of
+a single call of the starting syntax rule, followed by a period.
+There are three (evident) context conditions concerning start rules:
+\begin {itemize}
+\item
+For the nonterminal in the start rule, there must be a (possibly builtin)
+syntax rule with the same name.
+\item
+More than one start rule is not allowed.
+\item
+If an \EAG does not specify a start rule, the textually first
+syntax rule of the \EAG will be taken as start rule.
+\end {itemize}
+\section {A first use of the compiler}
+Suppose we have the file {\tt smengels.eag} in the example directory
+which contains the above syntax rules. We can compile this grammar by
+entering the following two commands:
+\begin{verbatim}
+   eag-compile smengels
+   eagcc smengels_leftcorner
+\end{verbatim}
+The first of these commands compiles the grammar into a recognizer 
+in the programming language \Cns. The second one compiles this recognizer
+into an executable, called {\tt smengels\_leftcorner} (Later we will
+discuss why this name is given to the executable). If one executes
+this file, it will read lines from standard input until an end of file is
+encountered. This input will then be parsed by the recognizer, which
+will then report whether the parse was succesfull or not.
+
+Unfortunately, lines read from stdin in \Unix end in a newline.
+Thus the recognizer will fail and report that no parse could be found.
+We therefore adapt the above grammar in the following way (as given
+in the file {\tt smengels2.eag} in the {\tt examples} subdirectory):
+\begin{verbatim}
+   smengels2.
+
+   smengels2:
+      subject, verb, ".", nlcr.
+
+   subject:
+      article, noun.
+
+   article: "the "; "a ".
+
+   noun: "man ";
+   noun: "dog ".
+
+   verb: "sleeps"; "sits".
+\end{verbatim}
+In this example we use the builtin syntax rule {\tt nlcr} to
+specify the trailing newline.  If we compile the above example
+we will see that the recognizer will not produce any error
+message for grammatically correct input sentences. If
+the recognizer can not find any correct parse it will generate
+an error message including the farthest position in the input upto
+which it could parse.
+
+The \EAG compiler will automatically add a check in the start rule
+to match the end of file at the end of the input. Thus it is
+impossible to report a successfull parse, if any unconsumed
+input remains.
+
+The \EAG compiler generates {\em recursive backup} parsers.
+Such a parser uses recursive procedures for parsing. 
+The parser backtracks when the recognition of a symbol
+fails.
+
+Backtracking means undoing the effect of one or more calls the
+parser has lastly done. If recognition of the whole input 
+succeeds, the parser reports a ``successful parse" and then
+backtracks. If at a certain point several steps are
+possible they will be tried one after the other.
+
+This means that a parser generated by the compiler will find all possible
+parses of the input. Thus the compiler can handle {\em ambiguous}
+grammars (A context free grammar is called ambiguous if there
+exists a string with more than one distinct derivations according to that
+grammar). This is one of the great advantages of the \EAG compiler
+since many interesting languages are inherently ambiguous, such as
+natural languages. The disadvantage of a backtracking parser is
+its high (exponential) time complexity.
+However the \EAG compiler codes several heuristics, such as lookahead,
+in the generated parser to limit the amount of backtracking while parsing.
+An example of an ambiguous grammar is the following (to
+be found in the file {\tt examples/amb\_expr.eag}):
+\begin{verbatim}
+   start.
+
+   start: expr, nlcr.
+
+   expr: expr, "+", expr.
+   expr: term.
+
+   term: term, "*", term.
+   term: id.
+
+   id: "a"; "b"; "c"; "d"; "e"; "f".
+\end{verbatim}
+If we enter {\tt a+b+c} as input the generated parser will report
+two successful parses. If the user wants to inspect the different
+derivations, she must add the flag {\tt -D} when compiling the
+grammar:
+\begin{verbatim}
+   eag-compile -D amb_expr
+   eagcc amb_expr_leftcorner
+\end{verbatim}
+When parsing the input {\tt a+b+c} the parser will give the two
+parse trees corresponding to the two derivations:
+\begin{verbatim}
+Dump of parse tree:              Dump of parse tree:
+rootnode (0)                     rootnode (0)
+ rule_start (11)                  rule_start (11)
+  rule_expr (3)                    rule_expr (3)
+   rule_expr (3)                    rule_expr (4)
+    rule_expr (4)                    rule_term (13)
+     rule_term (13)                   rule_id (5)
+      rule_id (5)                   rule_expr (3)
+    rule_expr (4)                    rule_expr (4)
+     rule_term (13)                   rule_term (13)
+      rule_id (6)                      rule_id (6)
+   rule_expr (4)                     rule_expr (4)
+    rule_term (13)                    rule_term (13)
+     rule_id (7)                       rule_id (7)
+  rule_nlcr (2)                    rule_nlcr (2)
+\end{verbatim}
+Such a dump of the parse tree will only show nonterminals (Terminals
+are not stored in the parse tree built by the parser). The number
+behind the nonterminal indicates which alternative
+of a syntax rule is taken (All alternatives in an \EAG are given a unique
+number by the parser generator. This number is shown in the dump).
+
+Of course the grammar writer can make errors from time to time
+when writing the grammar. Many of these will be flagged by the
+compiler as syntax or identification errors. Sometimes it
+is useful to obtain a trace of the execution of a parser.
+One can obtain a trace by adding the flag {\tt -T} at
+compilation time:
+\begin{verbatim}
+   eag-compile -T amb_expr
+   eagcc amb_expr_leftcorner
+\end{verbatim}
+An example of this trace is the following piece of a trace
+obtained from a parser for the above grammar for the input
+{\tt a+b+c}:
+\begin{verbatim}
+   13 '\n': <red_id
+   12 'c': <get_expr
+   11 'c': <rule_expr
+   10 '+': <red_expr
+   10 '+': -rule_expr, alt 1
+   10 'c': >rule_expr
+   11 'c': >get_expr
+   12 'c': -rule_id, alt 3
+   12 '\n': >red_id
+   :
+   :
+   18 '\n': >get_nlcr
+   19 '\n': -rule_nlcr, alt 1
+   19 '\e': >red_nlcr
+   20 '\e': >red_start
+   A parse was found
+   20 '\e': <red_start
+\end{verbatim}
+The leftmost number of each line indicates the depth in recursion,
+followed by the first unconsumed character in the input. The end
+of file character is indicated by \verb+\e+, as can be seen in the
+example. The remainder of the line indicates the parsing action
+that is being executed at that point of the parse. This example also shows
+the recursive backup nature of the parser (We can see that the parser
+backups until the {\tt +} is reached again and then continue parsing
+according to another alternative).
+\section {Two kinds of parsers}
+The \EAG compiler can generate two kinds of parsers namely
+\begin {itemize}
+\item topdown parsers
+\item leftcorner parsers
+\end {itemize}
+Topdown parsers can be obtained by adding the flag {\tt -td} to
+the command line when generating the parser. The kind of the parser
+is added to the name of the grammar when generating the parser.
+Suppose we want to generate a topdown parser for our {\tt smengels2}
+example we have to enter:
+\begin{verbatim}
+   eag-compile -td smengels2
+   eagcc smengels2_topdown
+\end{verbatim}
+resulting in an executable named {\tt smengels2\_topdown}.
+Leftcorner parsers are obtained by adding the flag {\tt -lc} to
+the command line at generation time. This flag is default.
+
+There is a great difference between the two kinds of parsers.
+Topdown parsers tend to be smaller in size, while leftcorner
+parsers tend to be a little bit faster then topdown parsers.
+However topdown parsers can not cope with {\em leftrecursive}
+grammars. We call a grammar leftrecursive if there is a nonterminal
+and a sentential form derived from that nonterminal in one or
+more steps, starting with the same nonterminal. For such a grammar
+the \EAG compiler will report an error message, when trying to
+generate a topdown parser.
+\section {Semiterminals}
+As we can see from the provious example it is quite tedious
+if we have to describe a syntax rule for a letter in the following way:
+\begin{verbatim}
+   letter: "a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"; "i";
+           "j"; "k"; "l"; "m"; "n"; "o"; "p"; "q"; "r";
+           "s"; "t"; "u"; "v"; "w"; "x"; "y"; "z".
+\end{verbatim}
+A shorthand for the right hand side is therefore available,
+called a semiterminal:
+\begin{verbatim}
+   letter: {abcdefghijklmnopqrstuvwxyz}.
+\end{verbatim}
+This set notation indicates that \verb+letter+ is one of the characters
+in the set. If a set consists of a number of consecutive characters,
+a more consise shorthand is available:
+\begin{verbatim}
+   letter: {a-z}.
+\end{verbatim}
+A semiterminal can have several features. Here is an overview:
+\begin {list}{-}
+{\setlength {\leftmargin}{7em}
+\setlength {\labelwidth}{5em}
+\setlength {\itemsep}{0.3ex}}
+\item [{\tt \{....\}}]
+matches a character of the set.
+\item [{\tt \{....\}*}]
+matches any sequence of zero or more characters of the set.
+\item [{\tt \{....\}+}]
+matches any sequence of one or more characters of the set.
+\item [{\tt \{....\}*!}]
+matches the longest sequence of zero or more characters of the set.
+\item [{\tt \{....\}+!}]
+matches the longest sequence of one or more characters of the set.
+\item [{\tt \^{ }\{....\}}]
+matches any (single) character not in the set.
+\item [{\tt \^{ }\{....\}*}]
+matches any sequence of zero or more characters not in the set.
+\item [{\tt \^{ }\{....\}+}]
+matches any sequence of one or more characters not in the set.
+\item [{\tt \^{ }\{....\}*!}]
+matches the longest sequence of zero or more characters not in the set.
+\item [{\tt \^{ }\{....\}+!}]
+matches the longest sequence of one or more characters not in the set.
+\end {list}
+Usually a character in a semiterminal (or a terminal) denotes itself.
+Some special characters can also be denoted by using an escaping
+mechanism similar to that used in \Cns:
+\begin {center}
+\begin {tabular}{|l|l|}
+notation & denotes\\
+\hline
+\verb+\n+ & newline \\
+\verb+\t+ & tab \\
+\verb+\-+ & minus \\
+\verb+\\+ & backslash \\
+\verb+\"+ & quote \\
+\verb+\}+ & right brace
+\end {tabular}
+\end {center}
+This same escaping mechanism can also be used in terminals.
+
+The following example is a grammar for expressions (It can be
+found in the example directory as {\tt expr.eag}). It also
+indicates more or less a preferred style of writing \EAGns s:
+\begin{verbatim}
+   start:
+      layout, expr.
+   
+   expr:
+      expr, plus symbol, term;
+      expr, minus symbol, term;
+      term.
+   
+   term:
+      term, times symbol, factor;
+      term, divides by symbol, factor;
+      factor.
+   
+   factor:
+      minus symbol, factor;
+      plus symbol, factor;
+      unsigned factor.
+   
+   unsigned factor:
+      identifier;
+      number;
+      left parenthesis, expr, right parenthesis.
+   
+   identifier: {a-z}, {a-z0-9}*!, layout.
+   
+   number: {0-9}+!, layout.
+   
+   plus symbol: "+", layout.
+   minus symbol: "-", layout.
+   times symbol: "*", layout.
+   divides by symbol: "/", layout.
+   left parenthesis: "(", layout.
+   right parenthesis: ")", layout.
+   
+   layout: { \n\t}*!.
+\end{verbatim}
+Observe the clear distinction between the rules of the
+context free syntax and those of the lexical syntax.
+\section {Grammar transformations}
+In many cases the generated parsers may have bad runtime behaviour,
+due to backtracking. However the grammar writer may improve
+the runtime behaviour by transforming the underlying grammar
+or by carefully rewriting it.
+
+As mentioned earlier topdown parsers generated by the compiler are
+smaller than leftcorner parsers. A grammar writer could therefore
+aim at writing a grammar that is topdown parsable. Such a grammar
+may not contain leftrecursive rules. Luckily (almost) every context
+free grammar can be transformed into an equivalent context free
+grammar that does not contain leftrecursive rules. Consider for
+instance the following syntax rule with $k$ alternatives that are
+directly leftrecursive and $l$ alternatives, which are not:
+\begin{verbatim}
+   A: A, rest alt1;
+   A: A, rest alt2;
+    :
+   A: A, rest altk;
+   A: altk+1;
+    :
+   A: altk+m.
+\end{verbatim}
+This syntax rule may be replaced by the following two syntax rules, which
+are not leftrecursive:
+\begin{verbatim}
+   A: altk+1, B;
+   A: altk+2, B;
+    : 
+   A: altk+m, B.
+
+   B: rest alt1, B;
+   B: rest alt2, B;
+    :
+   B: rest altk, B;
+   B: .
+\end{verbatim}
+For example if we apply the above scheme to the syntax rule {\tt expr}
+of the previous example we obtain the following rules:
+\begin{verbatim}
+   expr: term, more terms.
+
+   more terms: plus symbol, term, more terms;
+   more terms: minus symbol, term, more terms;
+   more terms: .
+\end{verbatim}
+The above scheme works for every grammar that only contains
+directly leftrecursive rules. If there are also indirectly
+left recursive calls, a more general scheme must be used for
+this transformation \cite{aho}.
+
+Another technique worthwhile considering is that of leftfactoring.
+By leftfactoring is meant the sharing of common prefixes of different
+alternatives of a syntax rule. Consider for instance the following
+syntax rule:
+\begin{verbatim}
+   asbc: ap, asbc, "b";
+   asbc: ap, asbc, "c".
+\end{verbatim}
+By left factoring this rule we obtain:
+\begin{verbatim}
+   asbc: ap, asbc, rest asbc.
+
+   rest asbc: "b"; "c".
+\end{verbatim}
+This technique can reduce the runtime complexity. In some cases it
+may even reduce the exponential behaviour to a polynomial one. For
+leftcorner parsers, nonterminals are automatically leftfactored by
+the parser generator.
+\section {The commit operator}
+The commit operator may be used to indicate that whenever a topdown
+parse succeeds beyond a certain point in an alternative, indicated by
+this commit operator (\verb+->+), the alternatives succeeding this
+alternative may be ignored by the parser. This operator is extremely
+useful to speed up a topdown parser, whenever the grammar writer is sure
+that two alternatives of a rule are mutually exclusive.
+
+Thus, the commit operator in:
+\begin{verbatim}
+   apbc: ap1, ->, bc;
+   apbc: ap2, bc.
+\end{verbatim}
+guarantees that whenever the parser succeeds beyond the member {\tt ap1},
+the second alternative will not be tried.
+
+The advantages of the commit operator are that it may be used to
+speed up the generated topdown parsers or to make a generated parser
+more deterministic. The disadvantage is that the order of the
+alternatives of a syntax rule is now significant.
+
+The commit operator is only implemented for topdown parsers. It is ignored
+if a leftcorner parser is generated.

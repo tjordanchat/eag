@@ -1,0 +1,21 @@
+program (preamble + prints + postamble):
+   layout, identifiers (prints).
+
+preamble ::
+        "#include <stdio.h>" + nlcr + nlcr +
+        "main ()" + nlcr + tab + "{ ".
+
+postamble ::
+        "exit (0);" + nlcr + tab + "}" + nlcr.
+
+identifiers (prints + print header + id + print trailer):
+   identifiers (prints), identifier (id).
+identifiers (empty):.
+
+print header :: "printf (" + quote.
+print trailer :: "\\n" + quote + ");" + nlcr + tab + "  ".
+
+identifier (l + ls):
+   {a-z} (l), {a-z0-9}*! (ls), layout.
+
+layout: { \t\n}*!.

@@ -1,0 +1,293 @@
+program.
+
+program:
+  closed clause.
+
+closed clause:
+  "BEGIN", layout,
+    serial clause,
+      "END", layout;
+closed clause:
+  "(", layout,
+    serial clause,
+      ")", layout.
+
+
+serial clause:
+  series.
+
+series:
+  unit,
+    ";", layout,
+      series;
+series:
+  declaration,
+    ";", layout,
+      series;
+series:
+  label definition,
+    series;
+series:
+  unit.
+
+label definition:
+  defining identifier with, ":", layout.
+
+
+conditional clause:
+  "IF", layout,
+    chooser choice clause,
+      "FI", layout.
+
+chooser choice clause:
+  enquiry clause,
+    alternate choice clause.
+
+enquiry clause:
+  series.
+
+alternate choice clause:
+  then part;
+alternate choice clause:
+  then part,
+    else part.
+
+then part:
+  "THEN", layout,
+    serial clause.
+
+else part:
+  "ELSE", layout,
+    serial clause;
+else part:
+  "ELIF", layout,
+    chooser choice clause.
+
+
+loop clause:
+  while do part.
+
+while do part:
+  while part,
+    do part.
+
+while part:
+  "WHILE", layout,
+    enquiry clause.
+
+do part:
+  "DO", layout,
+    serial clause,
+      "OD", layout.
+
+declaration:
+  variable declaration;
+declaration:
+  routine identity declaration.
+
+
+routine identity declaration:
+  "PROC", layout,
+    routine identity definition.
+
+routine identity definition:
+  defining identifier with,
+    "=", layout,
+      routine text.
+
+variable declaration:
+  actual declarer,
+    variable definition.
+
+variable definition:
+  defining identifier with.
+
+
+actual declarer:
+  actual declarator;
+actual declarer:
+  applied mode indication.
+
+formal declarer:
+  formal declarator;
+formal declarer:
+  applied mode indication.
+
+actual declarator:
+  "[", layout,
+    actual rower,
+      "]", layout,
+        actual declarer.
+
+formal declarator:
+  "REF", layout, formal declarer;
+formal declarator:
+  "[", layout,
+    formal rower,
+      "]", layout,
+        formal declarer;
+formal declarator:
+  "PROC", layout, formal plan.
+
+actual rower:
+  lower bound,
+    ":", layout,
+      upper bound.
+
+formal rower:
+  ":", layout;
+formal rower:
+  .
+
+lower bound:
+  unit.
+
+upper bound:
+  unit.
+
+formal plan:
+  formal declarer;
+formal plan:
+  "(", layout,
+    formal declarer,
+      ")", layout,
+        formal declarer.
+
+applied mode indication:
+  "INT", layout;
+applied mode indication:
+  "BOOL", layout;
+applied mode indication:
+  "VOID", layout.
+
+
+defining identifier with:
+  identifier (tag>), layout.
+
+applied identifier with:
+  identifier (tag>), layout.
+
+unit:
+  assignation;
+unit:
+  jump;
+unit:
+  skip;
+unit:
+  formula.
+
+primary:
+  simple primary,
+    rest primary.
+
+rest primary:;
+rest primary:
+  slice;
+rest primary:
+  call.
+
+simple primary:
+  denoter;
+simple primary:
+  applied identifier with;
+simple primary:
+  closed clause;
+simple primary:
+  conditional clause;
+simple primary:
+  loop clause.
+
+
+assignation:
+  destination,
+    ":=", layout,
+      source.
+
+destination:
+  formula.
+
+source:
+  unit.
+
+slice:
+  "[", layout,
+    subscript,
+      "]", layout.
+
+subscript:
+  unit.
+
+routine text:
+  formal declarer,
+    ":", layout,
+      unit;
+routine text:
+  "(", layout,
+    declarative,
+      ")", layout,
+        formal declarer,
+          ":", layout,
+            unit.
+
+declarative:
+  formal declarer,
+    parameter definition.
+
+parameter definition:
+  defining identifier with.
+
+formula:
+  term;
+formula:
+  formula,
+    "+", layout,
+      term;
+formula:
+  formula,
+    "-", layout,
+      term.
+
+term:
+  primary;
+term:
+  term,
+    "*", layout,
+      primary;
+term:
+  term,
+    "/", layout,
+      primary.
+
+call:
+  "(", layout,
+    actual parameter,
+      ")", layout.
+
+actual parameter:
+  unit.
+
+jump:
+  "GOTO", layout,
+    applied identifier with.
+
+skip:
+  "SKIP", layout.
+
+denoter:
+  denotation, layout.
+
+denotation:
+  fixed point numeral;
+denotation:
+  "TRUE";
+denotation:
+  "FALSE".
+
+fixed point numeral:
+  {0123456789}+! (numeral>).
+
+layout:
+  { \n}*! (lay>).
+
+identifier (tag>):
+  {abcdefghijklmnopqrstuvwxyz}+! (tag>).

@@ -1,0 +1,6 @@
+diggy (out).
+
+diggy (out):
+   {0123456789abcdef}+! (digs),
+       { \n\t}*!,
+	   string to int (digs, out).

@@ -1,0 +1,697 @@
+### 9.4.1. Repesentation of symbols
+
+start (TAX) : 
+  initial layout, 
+    tax symbol (TAX).
+
+### Typrographical display features
+
+initial layout : { \t\n}*!.
+
+layout : { \t\n}*!.
+
+useless layout : {\t\n}*!.
+
+### Auxilary definitions
+
+bold symbol (symbol>) :
+  bold marks (symbol),
+    layout.
+
+bold marks (bold ABC + bold letgits>) :
+  {ABCDEFGHIJKLMNOPQRSTUVWXYZ} (bold ABC),
+    {ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789}*! (bold letgits).
+
+non letgit marks (marks>) :
+  {%^&*+~-=<>/=:}+ (marks).
+
+(ABC>) mark :
+  {abcdefghijklmnopqrstuvwxyz} (ABC).
+
+(DIGIT>) mark :
+  {0123456789} (DIGIT).
+
+### a) Letter symbols
+
+letter (ABC) symbol :
+  (ABC) mark, layout.
+
+### b) Denotation symbols
+
+digit (DIGIT) symbol :
+  (DIGIT) mark, layout.
+
+point symbol :
+  ".", layout.
+
+times ten to the power symbol :
+  bold symbol ("E").
+
+true symbol :
+  bold symbol ("TRUE").
+
+false symbol :
+  bold symbol ("FALSE").
+
+quote symbol :
+  "\"", layout.
+
+qoute image symbol :
+  "\"\"", layout.
+
+space symbol :
+  " ", layout.
+
+### Layout niet eten binnen string/char denotation !!!!!!!!!
+### -> nog te doen !
+
+comma symbol :
+  ",", layout.
+
+empty symbol :
+  bold symbol ("EMPTY").
+
+### c) Operator symbols
+
+operator marks (or) :
+  bold marks ("OR").
+
+operator marks (and) :
+  bold marks ("AND") ;
+  "&".
+
+operator marks (ampersand) :
+  "&".
+
+operator marks (differs from) :
+  "/=" ;
+  bold marks ("NE").
+
+operator marks (is less than) :
+  "<" ;
+  bold marks ("LT").
+
+operator marks (is at most) :
+  "<=" ;
+  bold marks ("LE").
+
+operator marks (is at least) :
+  ">=" ;
+  bold marks ("GE").
+
+operator marks (is greater than) :
+  ">" ;
+  bold marks ("GT").
+
+operator marks (divided by) :
+  "/" .
+
+operator marks (over) :
+  "%" .
+
+operator marks (percent) :
+  "%" .
+
+operator marks (window) :
+  bold marks ("ELEM").
+
+operator marks (floor) :
+  bold marks ("LWB") ;
+  bold marks ("ENTIER").
+
+operator marks (ceiling) :
+  bold marks ("UPB").
+
+operator marks (plus i times) :
+  bold marks ("I") ;
+  "+*" .
+
+operator marks (not) :
+  bold marks ("NOT") ;
+  "~" .
+
+operator marks (tilde) :
+  "~" .
+
+operator marks (down) :
+  bold marks ("DOWN") ;
+  bold marks ("SHR").
+
+operator marks (up) :
+  "^" ;
+  "**" ;
+  bold marks ("UP") ;
+  bold marks ("SHL").
+
+operator marks (plus) :
+  "+" .
+
+operator marks (minus) :
+  "-" .
+
+operator marks (equals) :
+  "=" ;
+  bold marks ("EQ").
+
+operator marks (times) :
+  "*".
+
+operator marks (asterisk) :
+  "*" .
+
+assigns to symbol :
+  "=:", layout.
+
+becomes symbol :
+  ":=", layout.
+
+### d) Declaration symbols
+
+is defined as symbol :
+  "=", layout.
+
+size symbol (long) :
+  bold symbol ("LONG").
+
+size symbol (short) :
+  bold symbol ("SHORT").
+
+reference to symbol :
+  bold symbol ("REF").
+
+local symbol :
+  bold symbol ("LOC").
+
+heap symbol :
+  bold symbol ("HEAP").
+
+structure symbol :
+  bold symbol ("STRUCT").
+
+flexible symbol :
+  bold symbol ("FLEX").
+
+procedure symbol :
+  bold symbol ("PROC").
+
+union of symbol :
+  bold symbol ("UNION").
+
+operator symbol :
+  bold symbol ("OP").
+
+priority symbol :
+  bold symbol ("PRIO").
+
+mode symbol :
+  bold symbol ("MODE").
+
+### e) Mode standards
+
+mode standard symbol (integral) :
+  bold symbol ("INT").
+
+mode standard symbol (real) :
+  bold symbol ("REAL").
+
+mode standard symbol (boolean) :
+  bold symbol ("BOOL").
+
+mode standard symbol (character) :
+  bold symbol ("CHAR").
+
+mode standard symbol (format) :
+  bold symbol ("FORMAT").
+
+mode standard symbol (void) :
+  bold symbol ("VOID").
+
+mode standard symbol (complex) :
+  bold symbol ("COMPL").
+
+mode standard symbol (bits) :
+  bold symbol ("BITS").
+
+mode standard symbol (bytes) :
+  bold symbol ("BYTES").
+
+mode standard symbol (xstring) :
+  bold symbol ("STRING").
+
+mode standard symbol (sema) :
+  bold symbol ("SEMA").
+
+mode standard symbol (file) :
+  bold symbol ("FILE").
+
+mode standard symbol (channel) :
+  bold symbol ("CHANNEL").
+
+### f) Syntactic symbols
+
+bold begin symbol :
+  bold symbol ("BEGIN").
+
+bold end symbol :
+  bold symbol ("END").
+
+brief begin symbol :
+  "(", layout.
+
+brief end symbol :
+  ")", layout.
+
+and also symbol :
+  ",", layout.
+
+go on symbol :
+  ";", layout.
+
+completion symbol :
+  bold symbol ("EXIT").
+
+parallel symbol :
+  bold symbol ("PAR").
+
+open symbol :
+  "(", layout.
+
+close symbol :
+  ")", layout.
+
+bold if symbol :
+  bold symbol ("IF").
+
+bold then symbol :
+  bold symbol ("THEN").
+
+bold else if symbol :
+  bold symbol ("ELIF").
+
+bold else symbol :
+  bold symbol ("ELSE").
+
+bold fi symbol :
+  bold symbol ("FI").
+
+bold case symbol :
+  bold symbol ("CASE").
+
+bold in symbol :
+  bold symbol ("IN").
+
+bold ouse symbol :
+  bold symbol ("OUSE").
+
+bold out symbol :
+  bold symbol ("OUT").
+
+bold esac symbol :
+  bold symbol ("ESAC").
+
+brief if symbol :
+  "(", layout.
+
+brief then symbol :
+  "|", layout.
+
+brief else if symbol :
+  "|:", layout.
+
+brief else symbol :
+  "|", layout.
+
+brief fi symbol :
+  ")", layout.
+
+brief case symbol :
+  "(", layout.
+
+brief in symbol :
+  "|", layout.
+
+brief ouse symbol :
+  "|:", layout.
+
+brief out symbol :
+  "|", layout.
+
+brief esac symbol :
+  ")".
+
+colon symbol :
+  ":", layout.
+
+brief sub symbol :
+  "[", layout.
+
+brief bus symbol :
+  "]", layout.
+
+style i sub symbol :
+  "(", layout.
+
+style i bus symbol :
+  ")", layout.
+
+up to symbol :
+  ":", layout.
+
+at symbol :
+  "@", layout ;
+  bold symbol ("AT").
+
+is symbol :
+  ":=:", layout ;
+  bold symbol ("IS").
+
+is not symbol :
+  ":/=:", layout ;
+  bold symbol ("ISNT").
+
+nil symbol :
+  bold symbol ("NIL").
+
+of symbol :
+  bold symbol ("OF").
+
+routine symbol :
+  ":", layout.
+
+bold go to symbol :
+  bold symbol ("GOTO").
+
+bold go symbol :
+  bold symbol ("GO").
+
+skip symbol :
+  "~", layout ;
+  bold symbol ("SKIP").
+
+formatter symbol :
+  "$", layout.
+
+### g) Loop symbols
+
+bold for symbol :
+  bold symbol ("FOR").
+
+bold from symbol :
+  bold symbol ("FROM").
+
+bold by symbol :
+  bold symbol ("BY").
+
+bold to symbol :
+  bold symbol ("TO").
+
+bold while symbol :
+  bold symbol ("WHILE").
+
+bold do symbol :
+  bold symbol ("DO").
+
+bold od symbol :
+  bold symbol ("OD").
+
+### h) Pragment symbols
+
+bold comment symbol :
+  bold symbol ("COMMENT").
+
+style i comment symbol :
+  bold symbol ("CO").
+
+style ii comment symbol :
+  "#", layout.
+
+bold pragmat symbol :
+  bold symbol ("PRAGMAT").
+
+style i pragmat symbol :
+  bold symbol ("PR").
+
+### 9.4.2. Other TAX symbols
+
+TAG :: LETTER + LETGITS ; letter aleph.
+LETTER ::  {abcdefghijklmnopqrstuvwxyz}.
+LETGITS :: {abcdefghijklmnopqrstuvwxyz0123456789}*!.
+letter aleph :: "".
+
+bold TAG :: bold LETTER + bold LETGITS.
+bold LETTER ::  {ABCDEFGHIJKLMNOPQRSTUVWXYZ}.
+bold LETGITS :: {ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789}*!.
+
+DIGIT :: {0123456789}.
+
+TAB :: bold TAG * nil ; SIZETY * STANDARD.
+
+STANDARD :: integral ; real ; boolean ; character ; format ; void ;
+            complex ; bits ; bytes ; xstring ; sema ; file ; channel.
+integral ::  "integral".
+real ::      "real".
+boolean ::   "boolean".
+character :: "character".
+format ::    "format".
+void ::      "void".
+complex ::   "complex".
+bits ::      "bits".
+bytes ::     "bytes".
+xstring ::    "string".
+sema ::      "sema".
+file ::      "file".
+channel ::   "channel".
+
+TAD :: bold TAG ; DYAD + BECOMESETY ;
+       DYAD + cum + NOMAD + BECOMESETY.
+cum :: " cum ".
+
+DYAD :: MONAD ; NOMAD.
+
+MONAD :: or ; and ; ampersand ; differs from ; is at most ; is at least ;
+         over ; percent ; window ; floor ; ceiling ; plus i times ; not ;
+         tilde ; down ; up ; plus ; minus.
+or :: "or".
+and :: "and".
+ampersand :: "ampersand".
+differs from :: "differs from".
+is at most :: "is at most".
+is at least :: "is at least".
+over :: "over".
+percent :: "percent".
+window :: "window".
+floor :: "floor".
+ceiling :: "ceiling".
+plus i times :: "plus i times".
+not :: "not".
+tilde :: "tilde".
+down :: "down".
+up :: "up".
+plus :: "plus".
+minus :: "minus".
+
+NOMAD :: is less than ; is greater than ; divided by ; equals ; times ;
+         asterisk.
+is less than :: "is less than".
+is greater than :: "is greater than".
+divided by :: "divided by".
+equals :: "equals".
+times :: "times".
+asterisk :: "asterisk".
+
+BECOMESETY :: cum becomes ; cum assigns to ; empty.
+cum becomes :: "cum becomes".
+cum assigns to :: "cum assigns to".
+
+TAM :: bold TAG ; MONAD + BECOMESETY ;
+       MONAD + cum + NOMAD + BECOMESETY.
+
+ABC :: {abcdefghijklmnopqrstuvwxyz}.
+
+TAX :: tag * TAG ; xtab * TAB ; tad * TAD ; tam * TAM.
+tag :: "tag".
+xtab :: "tab".
+tad :: "tad".
+tam :: "tam".
+
+tax symbol (tag * TAG) :
+  tag symbol (TAG).
+
+tax symbol (xtab * TAB):
+  tab symbol (TAB).
+
+tax symbol (tad * TAD):
+  tad symbol (TAD).
+
+tax symbol (tam * TAM):
+  tam symbol (TAM).
+
+### TAG-symbols
+
+tag symbol (ABC + letgits>) :
+  letter (ABC>) symbol,
+    rest tag symbol (letgits>).
+
+rest tag symbol (letgits1 + letgits2>) :
+  letgits (letgits1>),
+    layout,
+    rest tag symbol (letgits2>).
+rest tag symbol (empty>) :
+  no letgits ahead.
+
+letgits (letgits>) :
+  {abcdefghijklmnopqrstuvwxyz0123456789}+! (letgits).
+
+no letgits ahead :
+  ?^{abcdefghijklmnopqrstuvwxyz0123456789}.
+
+### TAB-symbols
+
+tab symbol (bold TAG * nil) :
+  bold tag symbol (bold TAG).
+
+tab symbol (SIZETY * STANDARD) :
+  sizety standard symbol (SIZETY, STANDARD).
+
+### bold-TAG-symbols
+
+bold tag symbol (bold TAG>) :
+  bold symbol (bold TAG>),
+    unless (>bold TAG) is predefined.
+  
+unless (>bold TAG) is predefined :
+  not equal("AND" , bold TAG),
+  not equal("AT", bold TAG),
+  not equal("BEGIN", bold TAG),
+  not equal("BITS", bold TAG),
+  not equal("BOOL", bold TAG),
+  not equal("BY", bold TAG),
+  not equal("BYTES", bold TAG),
+  not equal("CASE", bold TAG),
+  not equal("CHANNEL", bold TAG),
+  not equal("CHAR", bold TAG),
+  not equal("CO", bold TAG),
+  not equal("COMMENT", bold TAG),
+  not equal("COMPL", bold TAG),
+  not equal("DO", bold TAG),
+  not equal("DOWN", bold TAG),
+  not equal("E", bold TAG),
+  not equal("ELEM", bold TAG),
+  not equal("ELIF", bold TAG),
+  not equal("ELSE", bold TAG),
+  not equal("EMPTY", bold TAG),
+  not equal("END", bold TAG),
+  not equal("ENTIER", bold TAG),
+  not equal("EQ", bold TAG),
+  not equal("ESAC", bold TAG),
+  not equal("EXIT", bold TAG),
+  not equal("FALSE", bold TAG),
+  not equal("FI", bold TAG),
+  not equal("FILE", bold TAG),
+  not equal("FLEX", bold TAG),
+  not equal("FOR", bold TAG),
+  not equal("FORMAT", bold TAG),
+  not equal("FROM", bold TAG),
+  not equal("GE", bold TAG),
+  not equal("GO", bold TAG),
+  not equal("GOTO", bold TAG),
+  not equal("GT", bold TAG),
+  not equal("HEAP", bold TAG),
+  not equal("I", bold TAG),
+  not equal("IF", bold TAG),
+  not equal("IN", bold TAG),
+  not equal("INT", bold TAG),
+  not equal("IS", bold TAG),
+  not equal("ISNT", bold TAG),
+  not equal("LE", bold TAG),
+  not equal("LOC", bold TAG),
+  not equal("LONG", bold TAG),
+  not equal("LT", bold TAG),
+  not equal("LWB", bold TAG),
+  not equal("MODE", bold TAG),
+  not equal("NE", bold TAG),
+  not equal("NIL", bold TAG),
+  not equal("NOT", bold TAG),
+  not equal("OD", bold TAG),
+  not equal("OF", bold TAG),
+  not equal("OP", bold TAG),
+  not equal("OR", bold TAG),
+  not equal("OUSE", bold TAG),
+  not equal("OUT", bold TAG),
+  not equal("PAR", bold TAG),
+  not equal("PR", bold TAG),
+  not equal("PRAGMAT", bold TAG),
+  not equal("PRIO", bold TAG),
+  not equal("PROC", bold TAG),
+  not equal("REAL", bold TAG),
+  not equal("REF", bold TAG),
+  not equal("SEMA", bold TAG),
+  not equal("SHL", bold TAG),
+  not equal("SHORT", bold TAG),
+  not equal("SHR", bold TAG),
+  not equal("SKIP", bold TAG),
+  not equal("STRING", bold TAG),
+  not equal("STRUCT", bold TAG),
+  not equal("THEN", bold TAG),
+  not equal("TO", bold TAG),
+  not equal("TRUE", bold TAG),
+  not equal("UNION", bold TAG),
+  not equal("UP", bold TAG),
+  not equal("UPB", bold TAG),
+  not equal("VOID", bold TAG),
+  not equal("WHILE", bold TAG).
+
+### SIZETY-STANDARD-symbols
+
+SIZE :: long ; short.
+SIZETY :: long * LONGSETY ; short * SHORTSETY ; EMPTY.
+LONGSETY :: long * LONGSETY ; EMPTY.
+SHORTSETY :: short * SHORTSETY ; EMPTY.
+long :: "long".
+short :: "short".
+EMPTY :: nil.
+
+sizety standard symbol (SIZE * SIZETY, STANDARD) :
+  size symbol (SIZE),
+    sizety standard symbol (SIZETY, STANDARD).
+
+sizety standard symbol (EMPTY, STANDARD) :
+  mode standard symbol (STANDARD).
+
+### TAD-symbols
+
+tad symbol (bold TAG) :
+  bold tag symbol (bold TAG).
+
+tad symbol (DYAD + BECOMESETY) :
+  operator marks (DYAD),
+    becomesety symbol (BECOMESETY).
+
+tad symbol (DYAD + cum + NOMAD + BECOMESETY) :
+  operator marks (DYAD),
+    operator marks (NOMAD),
+    becomesety symbol (BECOMESETY).
+
+becomesety symbol (cum becomes) :
+  becomes symbol.
+
+becomesety symbol (cum assigns to) :
+  assigns to symbol.
+
+becomesety symbol (empty) :
+  layout.
+
+### TAM-symbols
+
+tam symbol (bold TAG):
+  bold tag symbol (bold TAG).
+
+tam symbol (MONAD + BECOMESETY) :
+  operator marks (MONAD),
+    becomesety symbol (BECOMESETY).
+
+tam symbol (MONAD + cum + NOMAD + BECOMESETY) :
+  operator marks (MONAD),
+    operator marks (NOMAD),
+    becomesety symbol (BECOMESETY).
+

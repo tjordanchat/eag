@@ -1,0 +1,45 @@
+start (e>):
+   layout, expr (e>).
+
+expr ("dyop" * "+" * e * t>):
+   expr (e>), plus symbol, term (t>);
+expr ("dyop" * "-" * e * t>):
+   expr (e>), minus symbol, term (t>);
+expr (t>):
+   term (t>).
+
+term ("dyop" * "*" * t * f>):
+   term (t>), times symbol, factor (f>);
+term ("dyop" * "/" * t * f>):
+   term (t>), divides by symbol, factor (f>);
+term (f>):
+   factor (f>).
+
+factor ("monop" * "-" * f>):
+   minus symbol, factor (f>);
+factor ("monop" * "+" * f>):
+   plus symbol, factor (f>);
+factor (f>):
+   unsigned factor (f>).
+
+unsigned factor ("id" * id>):
+   identifier (id>);
+unsigned factor ("num" * n>):
+   number (n>);
+unsigned factor (e>):
+   left parenthesis, expr (e>), right parenthesis.
+
+identifier (l +ls>):
+   {a-z} (l>), {a-z0-9}*! (ls>), layout.
+
+number (n>):
+   {0-9}+! (n>), layout.
+
+plus symbol: "+", layout.
+minus symbol: "-", layout.
+times symbol: "*", layout.
+divides by symbol: "/", layout.
+left parenthesis: "(", layout.
+right parenthesis: ")", layout.
+
+layout: { \n\t}*!.

@@ -1,0 +1,19 @@
+start (div>).
+
+start (div>):
+   layout, header (id>), as (div+div>), trailer (id>).
+
+as (tt>):
+   {a}+! (tt>), layout.
+
+header (id>):
+   "BEGIN", layout, identifier (id>).
+
+trailer (id>):
+   "END", layout, identifier (id>).
+
+identifier (id>):
+   {a-z}+! (id>), layout.
+
+layout:
+   { \n\t}*!.

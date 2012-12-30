@@ -1,0 +1,17 @@
+BEGIN
+   APPLY g;
+   APPLY h;
+   APPLY b;
+   APPLY c;
+   DECL a;
+   APPLY a;
+   DECL h;
+   DECL g;
+   APPLY g;
+   DECL b;
+   APPLY g;
+   APPLY h;
+   APPLY b;
+   DECL c;
+   APPLY h
+END

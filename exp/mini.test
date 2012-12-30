@@ -1,0 +1,7 @@
+BEGIN
+   INT a;
+   BOOL b;
+   INT i;
+   i := 7;
+   SKIP
+END

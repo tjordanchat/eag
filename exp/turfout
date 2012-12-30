@@ -1,0 +1,575 @@
+0 'B': >rule_start
+1 'B': >get_start
+2 'B': -rule_beginsymbol, alt 0
+2 '\n': >rule_layout
+3 '\n': >get_layout
+4 '\n': -rule_layout, alt 0
+4 'a': tracing position of 
+    in module turf
+4 'a': lo = (sill = 0, predef_leaf<"\n   ">)
+4 'a': hi = (sill = 1, a_ignore)
+4 'a': >red_layout
+5 'a': >red_beginsymbol
+6 'a': -rule_start, alt 0
+6 'a': >emp_layout
+7 'a': -emp_layout, alt 0
+7 'a': tracing position of  in module turf
+7 'a': lo = (sill = 0, predef_leaf<"">)
+7 'a': hi = (sill = 1, a_ignore)
+7 'a': >rule_units
+8 'a': >get_units
+9 'a': -rule_identifier, alt 0
+9 ';': tracing position of abc in module turf
+9 ';': lo = (sill = 0, predef_leaf<"abc">)
+9 ';': hi = (sill = 1, a_ls)
+9 ';': tracing position of rule_identifier in module turf
+9 ';': lo = (sill = 0, a_ls<"abc">)
+9 ';': hi = (sill = 0, _)
+9 ';': >rule_layout
+10 ';': >emp_layout
+11 ';': -emp_layout, alt 0
+11 ';': tracing position of  in module turf
+11 ';': lo = (sill = 0, predef_leaf<"">)
+11 ';': hi = (sill = 1, a_ignore)
+11 ';': >red_identifier
+12 ';': -rule_unit, alt 0
+12 ';': tracing position of rule_identifier in module turf
+12 ';': lo = (sill = 0, a_ls<"abc">)
+12 ';': hi = (sill = 1, meta_filter)
+12 ';': tracing position of rule_unit in module turf
+12 ';': lo = (sill = 0, meta_ID<"ID"> * meta_filter<"abc">)
+12 ';': hi = (sill = 0, _)
+12 ';': >red_unit
+13 ';': -rule_units, alt 0
+13 ';': tracing position of rule_unit in module turf
+13 ';': lo = (sill = 0, meta_ID<"ID"> * meta_filter<"abc">)
+13 ';': hi = (sill = 1, meta_unit)
+13 ';': tracing position of rule_units in module turf
+13 ';': lo = (sill = 1, meta_unit<("ID" * "abc")> * a_units)
+13 ';': hi = (sill = 0, _)
+13 ';': >rule_semicolonsymbol
+14 ';': >get_semicolonsymbol
+15 ';': -rule_semicolonsymbol, alt 0
+15 '\n': >rule_layout
+16 '\n': >get_layout
+17 '\n': -rule_layout, alt 0
+17 '3': tracing position of 
+    in module turf
+17 '3': lo = (sill = 0, predef_leaf<"\n   ">)
+17 '3': hi = (sill = 1, a_ignore)
+17 '3': >red_layout
+18 '3': >red_semicolonsymbol
+19 '3': >rule_units
+20 '3': >get_units
+21 '3': -rule_digit, alt 3
+21 '4': >red_digit
+22 '4': -rule_digits, alt 1
+22 '4': tracing position of rule_digit in module turf
+22 '4': lo = (sill = 0, a_gen_4<3>)
+22 '4': hi = (sill = 1, a_d)
+22 '4': tracing position of rule_digits in module turf
+22 '4': lo = (sill = 0, a_d<3>)
+22 '4': hi = (sill = 0, _)
+22 '4': >red_digits
+23 '4': -rule_digits, alt 0
+23 '4': tracing position of rule_digits in module turf
+23 '4': lo = (sill = 0, a_d<3>)
+23 '4': hi = (sill = 1, a_ds)
+23 '4': >rule_digit
+24 '4': >get_digit
+25 '4': -rule_digit, alt 4
+25 ';': >red_digit
+26 ';': tracing position of rule_digit in module turf
+26 ';': lo = (sill = 0, a_gen_5<4>)
+26 ';': hi = (sill = 1, a_d)
+26 ';': tracing position of rule_digits in module turf
+26 ';': lo = (sill = 1, a_p + a_d<4>)
+26 ';': hi = (sill = 0, _)
+26 ';': tracing position of pred_mul in module stddefs
+26 ';': lo = (sill = 1, mul_af3)
+26 ';': hi = (sill = 1, a_p)
+26 ';': tracing position of pred_mul in module stddefs
+26 ';': lo = (sill = 1, mul_af2)
+26 ';': hi = (sill = 0, a_gen_0<10>)
+26 ';': tracing position of pred_mul in module stddefs
+26 ';': lo = (sill = 1, mul_af1)
+26 ';': hi = (sill = 0, a_ds<3>)
+26 ';': tracing position of pred_mul in module stddefs
+26 ';': lo = (sill = 0, mul_af3<30>)
+26 ';': hi = (sill = 1, a_p)
+26 ';': tracing position of rule_digits in module turf
+26 ';': lo = (sill = 0, a_p<30> + a_d<4>)
+26 ';': hi = (sill = 0, _)
+26 ';': >red_digits
+27 ';': -rule_number, alt 0
+27 ';': tracing position of rule_digits in module turf
+27 ';': lo = (sill = 0, a_p<30> + a_d<4>)
+27 ';': hi = (sill = 1, predef_int)
+27 ';': tracing position of rule_number in module turf
+27 ';': lo = (sill = 0, predef_int<34>)
+27 ';': hi = (sill = 0, _)
+27 ';': >rule_layout
+28 ';': >emp_layout
+29 ';': -emp_layout, alt 0
+29 ';': tracing position of  in module turf
+29 ';': lo = (sill = 0, predef_leaf<"">)
+29 ';': hi = (sill = 1, a_ignore)
+29 ';': >red_number
+30 ';': -rule_unit, alt 1
+30 ';': tracing position of rule_number in module turf
+30 ';': lo = (sill = 0, predef_int<34>)
+30 ';': hi = (sill = 1, predef_int)
+30 ';': tracing position of rule_unit in module turf
+30 ';': lo = (sill = 0, meta_NUM<"NUM"> * predef_int<34>)
+30 ';': hi = (sill = 0, _)
+30 ';': >red_unit
+31 ';': -rule_units, alt 0
+31 ';': tracing position of rule_unit in module turf
+31 ';': lo = (sill = 0, meta_NUM<"NUM"> * predef_int<34>)
+31 ';': hi = (sill = 1, meta_unit)
+31 ';': tracing position of rule_units in module turf
+31 ';': lo = (sill = 1, meta_unit<("NUM" * 34)> * a_units)
+31 ';': hi = (sill = 0, _)
+31 ';': >rule_semicolonsymbol
+32 ';': >get_semicolonsymbol
+33 ';': -rule_semicolonsymbol, alt 0
+33 '\n': >rule_layout
+34 '\n': >get_layout
+35 '\n': -rule_layout, alt 0
+35 'd': tracing position of 
+    in module turf
+35 'd': lo = (sill = 0, predef_leaf<"\n   ">)
+35 'd': hi = (sill = 1, a_ignore)
+35 'd': >red_layout
+36 'd': >red_semicolonsymbol
+37 'd': >rule_units
+38 'd': >get_units
+39 'd': -rule_identifier, alt 0
+39 '\n': tracing position of def in module turf
+39 '\n': lo = (sill = 0, predef_leaf<"def">)
+39 '\n': hi = (sill = 1, a_ls)
+39 '\n': tracing position of rule_identifier in module turf
+39 '\n': lo = (sill = 0, a_ls<"def">)
+39 '\n': hi = (sill = 0, _)
+39 '\n': >rule_layout
+40 '\n': >get_layout
+41 '\n': -rule_layout, alt 0
+41 'E': tracing position of 
+ in module turf
+41 'E': lo = (sill = 0, predef_leaf<"\n">)
+41 'E': hi = (sill = 1, a_ignore)
+41 'E': >red_layout
+42 'E': >red_identifier
+43 'E': -rule_unit, alt 0
+43 'E': tracing position of rule_identifier in module turf
+43 'E': lo = (sill = 0, a_ls<"def">)
+43 'E': hi = (sill = 1, meta_filter)
+43 'E': tracing position of rule_unit in module turf
+43 'E': lo = (sill = 0, meta_ID<"ID"> * meta_filter<"def">)
+43 'E': hi = (sill = 0, _)
+43 'E': >red_unit
+44 'E': -rule_units, alt 1
+44 'E': tracing position of rule_unit in module turf
+44 'E': lo = (sill = 0, meta_ID<"ID"> * meta_filter<"def">)
+44 'E': hi = (sill = 1, meta_unit)
+44 'E': tracing position of rule_units in module turf
+44 'E': lo = (sill = 0, meta_unit<("ID" * "def")>)
+44 'E': hi = (sill = 0, _)
+44 'E': >red_units
+45 'E': tracing position of rule_units in module turf
+45 'E': lo = (sill = 0, meta_unit<("ID" * "def")>)
+45 'E': hi = (sill = 1, a_units)
+45 'E': tracing position of rule_units in module turf
+45 'E': lo = (sill = 0, meta_unit<("NUM" * 34)> * a_units<("ID" * "def")>)
+45 'E': hi = (sill = 0, _)
+45 'E': >red_units
+46 'E': tracing position of rule_units in module turf
+46 'E': lo = (sill = 0, meta_unit<("NUM" * 34)> * a_units<("ID" * "def")>)
+46 'E': hi = (sill = 1, a_units)
+46 'E': tracing position of rule_units in module turf
+46 'E': lo = (sill = 0, meta_unit<("ID" * "abc")> * a_units<(("NUM" * 34) * ("ID" * "def"))>)
+46 'E': hi = (sill = 0, _)
+46 'E': >red_units
+47 'E': tracing position of rule_units in module turf
+47 'E': lo = (sill = 0, meta_unit<("ID" * "abc")> * a_units<(("NUM" * 34) * ("ID" * "def"))>)
+47 'E': hi = (sill = 1, a_out)
+47 'E': >rule_endsymbol
+48 'E': >get_endsymbol
+49 'E': -rule_endsymbol, alt 0
+49 '\n': >rule_layout
+50 '\n': >get_layout
+51 '\n': -rule_layout, alt 0
+51 '\37777777604': tracing position of 
+ in module turf
+51 '\37777777604': lo = (sill = 0, predef_leaf<"\n">)
+51 '\37777777604': hi = (sill = 1, a_ignore)
+51 '\37777777604': >red_layout
+52 '\37777777604': >red_endsymbol
+53 '\37777777604': >pred_xform
+54 '\37777777604': tracing position of pred_xform in module turf
+54 '\37777777604': lo = (sill = 1, pred_xform_paf1)
+54 '\37777777604': hi = (sill = 1, a_xout)
+54 '\37777777604': tracing position of pred_xform in module turf
+54 '\37777777604': lo = (sill = 1, pred_xform_paf0)
+54 '\37777777604': hi = (sill = 0, a_out<(("ID" * "abc") * (("NUM" * 34) * ("ID" * "def")))>)
+54 '\37777777604': -pred_xform, alt 0
+54 '\37777777604': tracing position of pred_xform in module turf
+54 '\37777777604': lo = (sill = 1, a_xout)
+54 '\37777777604': hi = (sill = 1, a_xout)
+54 '\37777777604': tracing position of pred_xform in module turf
+54 '\37777777604': lo = (sill = 1, a_out)
+54 '\37777777604': hi = (sill = 0, a_out<(("ID" * "abc") * (("NUM" * 34) * ("ID" * "def")))>)
+54 '\37777777604': >pred_xformunits
+55 '\37777777604': tracing position of pred_xformunits in module turf
+55 '\37777777604': lo = (sill = 1, pred_xformunits_paf1)
+55 '\37777777604': hi = (sill = 1, a_xout)
+55 '\37777777604': tracing position of pred_xformunits in module turf
+55 '\37777777604': lo = (sill = 1, pred_xformunits_paf0)
+55 '\37777777604': hi = (sill = 0, a_out<(("ID" * "abc") * (("NUM" * 34) * ("ID" * "def")))>)
+55 '\37777777604': -pred_xformunits, alt 0
+55 '\37777777604': tracing position of pred_xformunits in module turf
+55 '\37777777604': lo = (sill = 2, a_xunit + a_xunits)
+55 '\37777777604': hi = (sill = 1, a_xout)
+55 '\37777777604': tracing position of pred_xformunits in module turf
+55 '\37777777604': lo = (sill = 2, meta_unit * a_units)
+55 '\37777777604': hi = (sill = 0, a_out<(("ID" * "abc") * (("NUM" * 34) * ("ID" * "def")))>)
+55 '\37777777604': >pred_xformunit
+56 '\37777777604': tracing position of pred_xformunit in module turf
+56 '\37777777604': lo = (sill = 1, pred_xformunit_paf1)
+56 '\37777777604': hi = (sill = 1, a_xunit)
+56 '\37777777604': tracing position of pred_xformunit in module turf
+56 '\37777777604': lo = (sill = 1, pred_xformunit_paf0)
+56 '\37777777604': hi = (sill = 0, meta_unit<("ID" * "abc")>)
+56 '\37777777604': -pred_xformunit, alt 0
+56 '\37777777604': tracing position of pred_xformunit in module turf
+56 '\37777777604': lo = (sill = 1, predef_string + a_gen_11<";"> + meta_nlcr<"\n">)
+56 '\37777777604': hi = (sill = 1, a_xunit)
+56 '\37777777604': tracing position of pred_xformunit in module turf
+56 '\37777777604': lo = (sill = 1, meta_ID<"ID"> * predef_string)
+56 '\37777777604': hi = (sill = 0, meta_unit<("ID" * "abc")>)
+56 '\37777777604': tracing position of pred_xformunit in module turf
+56 '\37777777604': lo = (sill = 0, predef_string<"abc"> + a_gen_11<";"> + meta_nlcr<"\n">)
+56 '\37777777604': hi = (sill = 1, a_xunit)
+56 '\37777777604': tracing position of pred_xformunits in module turf
+56 '\37777777604': lo = (sill = 1, a_xunit<"abc;\n"> + a_xunits)
+56 '\37777777604': hi = (sill = 1, a_xout)
+56 '\37777777604': >pred_xformunits
+57 '\37777777604': tracing position of pred_xformunits in module turf
+57 '\37777777604': lo = (sill = 1, pred_xformunits_paf1)
+57 '\37777777604': hi = (sill = 1, a_xunits)
+57 '\37777777604': tracing position of pred_xformunits in module turf
+57 '\37777777604': lo = (sill = 1, pred_xformunits_paf0)
+57 '\37777777604': hi = (sill = 0, a_units<(("NUM" * 34) * ("ID" * "def"))>)
+57 '\37777777604': -pred_xformunits, alt 0
+57 '\37777777604': tracing position of pred_xformunits in module turf
+57 '\37777777604': lo = (sill = 2, a_xunit + a_xunits)
+57 '\37777777604': hi = (sill = 1, a_xunits)
+57 '\37777777604': tracing position of pred_xformunits in module turf
+57 '\37777777604': lo = (sill = 2, meta_unit * a_units)
+57 '\37777777604': hi = (sill = 0, a_units<(("NUM" * 34) * ("ID" * "def"))>)
+57 '\37777777604': >pred_xformunit
+58 '\37777777604': tracing position of pred_xformunit in module turf
+58 '\37777777604': lo = (sill = 1, pred_xformunit_paf1)
+58 '\37777777604': hi = (sill = 1, a_xunit)
+58 '\37777777604': tracing position of pred_xformunit in module turf
+58 '\37777777604': lo = (sill = 1, pred_xformunit_paf0)
+58 '\37777777604': hi = (sill = 0, meta_unit<("NUM" * 34)>)
+58 '\37777777604': -pred_xformunit, alt 0
+58 '\37777777604': tracing position of pred_xformunit in module turf
+58 '\37777777604': lo = (sill = 1, predef_string + a_gen_11<";"> + meta_nlcr<"\n">)
+58 '\37777777604': hi = (sill = 1, a_xunit)
+58 '\37777777604': tracing position of pred_xformunit in module turf
+58 '\37777777604': lo = (sill = 1, meta_ID<"ID"> * predef_string)
+58 '\37777777604': hi = (sill = 0, meta_unit<("NUM" * 34)>)
+58 '\37777777604': -pred_xformunit, alt 1
+58 '\37777777604': tracing position of pred_xformunit in module turf
+58 '\37777777604': lo = (sill = 1, predef_string + a_gen_12<";"> + meta_nlcr<"\n">)
+58 '\37777777604': hi = (sill = 1, a_xunit)
+58 '\37777777604': tracing position of pred_xformunit in module turf
+58 '\37777777604': lo = (sill = 1, meta_NUM<"NUM"> * predef_int)
+58 '\37777777604': hi = (sill = 0, meta_unit<("NUM" * 34)>)
+58 '\37777777604': tracing position of pred_inttostring in module stddefs
+58 '\37777777604': lo = (sill = 1, inttostring_af2)
+58 '\37777777604': hi = (sill = 1, predef_string)
+58 '\37777777604': tracing position of pred_inttostring in module stddefs
+58 '\37777777604': lo = (sill = 1, inttostring_af1)
+58 '\37777777604': hi = (sill = 0, predef_int<34>)
+58 '\37777777604': tracing position of pred_inttostring in module stddefs
+58 '\37777777604': lo = (sill = 0, inttostring_af2<"34">)
+58 '\37777777604': hi = (sill = 1, predef_string)
+58 '\37777777604': tracing position of pred_xformunit in module turf
+58 '\37777777604': lo = (sill = 0, predef_string<"34"> + a_gen_12<";"> + meta_nlcr<"\n">)
+58 '\37777777604': hi = (sill = 1, a_xunit)
+58 '\37777777604': tracing position of pred_xformunits in module turf
+58 '\37777777604': lo = (sill = 1, a_xunit<"34;\n"> + a_xunits)
+58 '\37777777604': hi = (sill = 1, a_xunits)
+58 '\37777777604': >pred_xformunits
+59 '\37777777604': tracing position of pred_xformunits in module turf
+59 '\37777777604': lo = (sill = 1, pred_xformunits_paf1)
+59 '\37777777604': hi = (sill = 1, a_xunits)
+59 '\37777777604': tracing position of pred_xformunits in module turf
+59 '\37777777604': lo = (sill = 1, pred_xformunits_paf0)
+59 '\37777777604': hi = (sill = 0, a_units<("ID" * "def")>)
+59 '\37777777604': -pred_xformunits, alt 0
+59 '\37777777604': tracing position of pred_xformunits in module turf
+59 '\37777777604': lo = (sill = 2, a_xunit + a_xunits)
+59 '\37777777604': hi = (sill = 1, a_xunits)
+59 '\37777777604': tracing position of pred_xformunits in module turf
+59 '\37777777604': lo = (sill = 2, meta_unit * a_units)
+59 '\37777777604': hi = (sill = 0, a_units<("ID" * "def")>)
+59 '\37777777604': -pred_xformunits, alt 1
+59 '\37777777604': tracing position of pred_xformunits in module turf
+59 '\37777777604': lo = (sill = 1, a_xunit)
+59 '\37777777604': hi = (sill = 1, a_xunits)
+59 '\37777777604': tracing position of pred_xformunits in module turf
+59 '\37777777604': lo = (sill = 1, meta_unit)
+59 '\37777777604': hi = (sill = 0, a_units<("ID" * "def")>)
+59 '\37777777604': >pred_xformunit
+60 '\37777777604': tracing position of pred_xformunit in module turf
+60 '\37777777604': lo = (sill = 1, pred_xformunit_paf1)
+60 '\37777777604': hi = (sill = 1, a_xunit)
+60 '\37777777604': tracing position of pred_xformunit in module turf
+60 '\37777777604': lo = (sill = 1, pred_xformunit_paf0)
+60 '\37777777604': hi = (sill = 0, meta_unit<("ID" * "def")>)
+60 '\37777777604': -pred_xformunit, alt 0
+60 '\37777777604': tracing position of pred_xformunit in module turf
+60 '\37777777604': lo = (sill = 1, predef_string + a_gen_11<";"> + meta_nlcr<"\n">)
+60 '\37777777604': hi = (sill = 1, a_xunit)
+60 '\37777777604': tracing position of pred_xformunit in module turf
+60 '\37777777604': lo = (sill = 1, meta_ID<"ID"> * predef_string)
+60 '\37777777604': hi = (sill = 0, meta_unit<("ID" * "def")>)
+60 '\37777777604': tracing position of pred_xformunit in module turf
+60 '\37777777604': lo = (sill = 0, predef_string<"def"> + a_gen_11<";"> + meta_nlcr<"\n">)
+60 '\37777777604': hi = (sill = 1, a_xunit)
+60 '\37777777604': tracing position of pred_xformunits in module turf
+60 '\37777777604': lo = (sill = 0, a_xunit<"def;\n">)
+60 '\37777777604': hi = (sill = 1, a_xunits)
+60 '\37777777604': tracing position of pred_xformunits in module turf
+60 '\37777777604': lo = (sill = 0, a_xunit<"34;\n"> + a_xunits<"def;\n">)
+60 '\37777777604': hi = (sill = 1, a_xunits)
+60 '\37777777604': tracing position of pred_xformunits in module turf
+60 '\37777777604': lo = (sill = 0, a_xunit<"abc;\n"> + a_xunits<"34;\ndef;\n">)
+60 '\37777777604': hi = (sill = 1, a_xout)
+60 '\37777777604': tracing position of pred_xform in module turf
+60 '\37777777604': lo = (sill = 0, a_xout<"abc;\n34;\ndef;\n">)
+60 '\37777777604': hi = (sill = 1, a_xout)
+60 '\37777777604': tracing position of rule_start in module turf
+60 '\37777777604': lo = (sill = 1, a_burp + a_xout<"abc;\n34;\ndef;\n">)
+60 '\37777777604': hi = (sill = 0, _)
+60 '\37777777604': >red_start
+61 '\37777777604': tracing position of rule_start in module turf
+61 '\37777777604': lo = (sill = 1, a_burp + a_xout<"abc;\n34;\ndef;\n">)
+61 '\37777777604': hi = (sill = 1, a_xout)
+61 '\37777777604': tracing position of rule_start in module turf
+61 '\37777777604': lo = (sill = 1, a_burp)
+61 '\37777777604': hi = (sill = 0, a_gen_13<"This is a burp\n">)
+61 '\37777777604': tracing position of rule_start in module turf
+61 '\37777777604': lo = (sill = 0, a_burp<"This is a burp\n"> + a_xout<"abc;\n34;\ndef;\n">)
+61 '\37777777604': hi = (sill = 1, a_xout)
+61 '\37777777604': tracing position of rootnode in module turf
+61 '\37777777604': lo = (sill = 0, a_xout<"This is a burp\nabc;\n34;\ndef;\n">)
+61 '\37777777604': hi = (sill = 0, _)
+A parse was found
+60 '\37777777604': <red_start
+60 '\37777777604': -pred_xformunit, alt 1
+60 '\37777777604': tracing position of pred_xformunit in module turf
+60 '\37777777604': lo = (sill = 1, predef_string + a_gen_12<";"> + meta_nlcr<"\n">)
+60 '\37777777604': hi = (sill = 1, a_xunit)
+60 '\37777777604': tracing position of pred_xformunit in module turf
+60 '\37777777604': lo = (sill = 1, meta_NUM<"NUM"> * predef_int)
+60 '\37777777604': hi = (sill = 0, meta_unit<("ID" * "def")>)
+59 '\37777777604': <pred_xformunit
+58 '\37777777604': <pred_xformunits
+57 '\37777777604': <pred_xformunit
+57 '\37777777604': -pred_xformunits, alt 1
+57 '\37777777604': tracing position of pred_xformunits in module turf
+57 '\37777777604': lo = (sill = 1, a_xunit)
+57 '\37777777604': hi = (sill = 1, a_xunits)
+57 '\37777777604': tracing position of pred_xformunits in module turf
+57 '\37777777604': lo = (sill = 1, meta_unit)
+57 '\37777777604': hi = (sill = 0, a_units<(("NUM" * 34) * ("ID" * "def"))>)
+56 '\37777777604': <pred_xformunits
+56 '\37777777604': -pred_xformunit, alt 1
+56 '\37777777604': tracing position of pred_xformunit in module turf
+56 '\37777777604': lo = (sill = 1, predef_string + a_gen_12<";"> + meta_nlcr<"\n">)
+56 '\37777777604': hi = (sill = 1, a_xunit)
+56 '\37777777604': tracing position of pred_xformunit in module turf
+56 '\37777777604': lo = (sill = 1, meta_NUM<"NUM"> * predef_int)
+56 '\37777777604': hi = (sill = 0, meta_unit<("ID" * "abc")>)
+55 '\37777777604': <pred_xformunit
+55 '\37777777604': -pred_xformunits, alt 1
+55 '\37777777604': tracing position of pred_xformunits in module turf
+55 '\37777777604': lo = (sill = 1, a_xunit)
+55 '\37777777604': hi = (sill = 1, a_xout)
+55 '\37777777604': tracing position of pred_xformunits in module turf
+55 '\37777777604': lo = (sill = 1, meta_unit)
+55 '\37777777604': hi = (sill = 0, a_out<(("ID" * "abc") * (("NUM" * 34) * ("ID" * "def")))>)
+54 '\37777777604': <pred_xformunits
+53 '\37777777604': <pred_xform
+52 '\37777777604': <red_endsymbol
+51 '\37777777604': <red_layout
+50 '\n': <get_layout
+49 '\n': <rule_layout
+48 'E': <get_endsymbol
+47 'E': <rule_endsymbol
+46 'E': <red_units
+45 'E': <red_units
+44 'E': <red_units
+43 'E': <red_unit
+42 'E': <red_identifier
+41 'E': <red_layout
+40 '\n': <get_layout
+39 '\n': <rule_layout
+38 'd': <get_units
+37 'd': <rule_units
+36 'd': <red_semicolonsymbol
+35 'd': <red_layout
+34 '\n': <get_layout
+33 '\n': <rule_layout
+32 ';': <get_semicolonsymbol
+31 ';': <rule_semicolonsymbol
+30 ';': <red_unit
+29 ';': <red_number
+28 ';': <emp_layout
+27 ';': <rule_layout
+26 ';': <red_digits
+26 ';': -rule_digits, alt 1
+26 ';': tracing position of rule_digit in module turf
+26 ';': lo = (sill = 0, a_gen_5<4>)
+26 ';': hi = (sill = 1, a_d)
+26 ';': tracing position of rule_digits in module turf
+26 ';': lo = (sill = 0, a_d<4>)
+26 ';': hi = (sill = 0, _)
+26 ';': >red_digits
+27 ';': -rule_number, alt 0
+27 ';': tracing position of rule_digits in module turf
+27 ';': lo = (sill = 0, a_d<4>)
+27 ';': hi = (sill = 1, predef_int)
+27 ';': tracing position of rule_number in module turf
+27 ';': lo = (sill = 0, predef_int<4>)
+27 ';': hi = (sill = 0, _)
+27 ';': >rule_layout
+28 ';': >emp_layout
+29 ';': -emp_layout, alt 0
+29 ';': tracing position of  in module turf
+29 ';': lo = (sill = 0, predef_leaf<"">)
+29 ';': hi = (sill = 1, a_ignore)
+29 ';': >red_number
+30 ';': -rule_unit, alt 1
+30 ';': tracing position of rule_number in module turf
+30 ';': lo = (sill = 0, predef_int<4>)
+30 ';': hi = (sill = 1, predef_int)
+30 ';': tracing position of rule_unit in module turf
+30 ';': lo = (sill = 0, meta_NUM<"NUM"> * predef_int<4>)
+30 ';': hi = (sill = 0, _)
+30 ';': >red_unit
+31 ';': -rule_units, alt 0
+31 ';': tracing position of rule_unit in module turf
+31 ';': lo = (sill = 0, meta_NUM<"NUM"> * predef_int<4>)
+31 ';': hi = (sill = 1, meta_unit)
+31 ';': tracing position of rule_units in module turf
+31 ';': lo = (sill = 1, meta_unit<("NUM" * 4)> * a_units)
+31 ';': hi = (sill = 0, _)
+31 ';': >rule_semicolonsymbol
+32 ';': >get_semicolonsymbol
+33 ';': -rule_semicolonsymbol, alt 0
+33 '\n': >rule_layout
+34 '\n': >get_layout
+35 '\n': -rule_layout, alt 0
+35 'd': tracing position of 
+    in module turf
+35 'd': lo = (sill = 0, predef_leaf<"\n   ">)
+35 'd': hi = (sill = 1, a_ignore)
+35 'd': >red_layout
+36 'd': >red_semicolonsymbol
+37 'd': >rule_units
+38 'd': >get_units
+39 'd': -rule_identifier, alt 0
+39 '\n': tracing position of def in module turf
+39 '\n': lo = (sill = 0, predef_leaf<"def">)
+39 '\n': hi = (sill = 1, a_ls)
+39 '\n': tracing position of rule_identifier in module turf
+39 '\n': lo = (sill = 0, a_ls<"def">)
+39 '\n': hi = (sill = 0, _)
+39 '\n': >rule_layout
+40 '\n': >get_layout
+41 '\n': -rule_layout, alt 0
+41 'E': tracing position of 
+ in module turf
+41 'E': lo = (sill = 0, predef_leaf<"\n">)
+41 'E': hi = (sill = 1, a_ignore)
+41 'E': >red_layout
+42 'E': >red_identifier
+43 'E': -rule_unit, alt 0
+43 'E': tracing position of rule_identifier in module turf
+43 'E': lo = (sill = 0, a_ls<"def">)
+43 'E': hi = (sill = 1, meta_filter)
+43 'E': tracing position of rule_unit in module turf
+43 'E': lo = (sill = 0, meta_ID<"ID"> * meta_filter<"def">)
+43 'E': hi = (sill = 0, _)
+43 'E': >red_unit
+44 'E': -rule_units, alt 1
+44 'E': tracing position of rule_unit in module turf
+44 'E': lo = (sill = 0, meta_ID<"ID"> * meta_filter<"def">)
+44 'E': hi = (sill = 1, meta_unit)
+44 'E': tracing position of rule_units in module turf
+44 'E': lo = (sill = 0, meta_unit<("ID" * "def")>)
+44 'E': hi = (sill = 0, _)
+44 'E': >red_units
+45 'E': tracing position of rule_units in module turf
+45 'E': lo = (sill = 0, meta_unit<("ID" * "def")>)
+45 'E': hi = (sill = 1, a_units)
+45 'E': tracing position of rule_units in module turf
+45 'E': lo = (sill = 0, meta_unit<("NUM" * 4)> * a_units<("ID" * "def")>)
+45 'E': hi = (sill = 0, _)
+45 'E': >red_units
+45 'E': <red_units
+44 'E': <red_units
+43 'E': <red_unit
+42 'E': <red_identifier
+41 'E': <red_layout
+40 '\n': <get_layout
+39 '\n': <rule_layout
+38 'd': <get_units
+37 'd': <rule_units
+36 'd': <red_semicolonsymbol
+35 'd': <red_layout
+34 '\n': <get_layout
+33 '\n': <rule_layout
+32 ';': <get_semicolonsymbol
+31 ';': <rule_semicolonsymbol
+30 ';': <red_unit
+29 ';': <red_number
+28 ';': <emp_layout
+27 ';': <rule_layout
+26 ';': <red_digits
+25 ';': <red_digit
+24 '4': <get_digit
+23 '4': <rule_digit
+22 '4': <red_digits
+21 '4': <red_digit
+20 '3': <get_units
+19 '3': <rule_units
+18 '3': <red_semicolonsymbol
+17 '3': <red_layout
+16 '\n': <get_layout
+15 '\n': <rule_layout
+14 ';': <get_semicolonsymbol
+13 ';': <rule_semicolonsymbol
+12 ';': <red_unit
+11 ';': <red_identifier
+10 ';': <emp_layout
+9 ';': <rule_layout
+8 'a': <get_units
+7 'a': <rule_units
+6 'a': <emp_layout
+5 'a': <red_beginsymbol
+4 'a': <red_layout
+3 '\n': <get_layout
+2 '\n': <rule_layout
+1 'B': <get_start
+0 'B': <rule_start
+This is a burp
+abc;
+34;
+def;

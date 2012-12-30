@@ -1,0 +1,269 @@
+Beste Kees, Paul en Erik,
+
+Hierbij een syntax beschrijving van eag in eag. Ik hoor wel wanneer
+de bespreking is.
+						Groetjes, Marc S.
+
+-------------------------------------------------------------------
+\section {Rules}
+
+   eag:
+      layout, rules.
+
+   rules:
+      rules, rule;
+      .
+
+   rule:
+      start rule.
+      syntax rule;
+      meta rule;
+
+\section {Start and syntax rules}
+
+   start rule:
+      call, point symbol.
+
+   syntax rule:
+      group (id), point symbol.
+
+   group (id):
+      group element (id), point symbol, group (id);
+      group element (id), semicolon symbol, group (id);
+      group element (id).
+
+   group element (id):
+      nonterminal (id), colon symbol, alternatives.
+
+   alternatives:
+      alternatives, semicolon symbol, alternative;
+      alternative.
+
+   alternative:
+      members;
+      .
+
+De syntax voor group is ooit gekomen doordat we zowel de syntax van
+Programmar als die van Pregmatic wilden blijven accepteren. Een gevolg
+van deze syntax is dat je pas laat in het parseerproces kunt beslissen
+of een point de huidige group afsluit.
+
+\section {Members}
+
+   members:
+      members, comma symbol, member;
+      member.
+
+   member:
+      call;
+      terminal;
+      semi terminal;
+      commit.
+
+   call:
+      nonterminal (id).
+
+   terminal:
+      quoted string.
+
+   semi terminal:
+      set, display option.
+
+   commit:
+      commit symbol.
+
+\section {Nonterminals}
+
+   nonterminal (id):
+      nonterminal elements (id), not equal (id, "").
+
+   nonterminal elements (id1+id2):
+      identifier (id1), nonterminal elements (id2).
+   nonterminal elements (id):
+      display, nonterminal elements (id);
+   nonterminal elements (""):.
+
+Zoals jullie zien mogen stukken display kris kras door de identifier staan.
+Heel aardig om een nonterminal als '(i) plus (j) is (i+j)' op te schrijven,
+maar volgens mij heeft niemand dit ooit gebruikt tijdens het schrijven
+van eags. Wat mij betreft vervangen we dit door
+
+   nonterminal (id):
+      identifier (id), display option.
+
+\section {Displays}
+
+   display option:
+      display;
+      .
+
+   display:
+      open symbol, directed affix expressions, close symbol.
+
+   directed affix expressions:
+      directed affix expressions, comma symbol, directed affix expression;
+      directed affix expression.
+
+   directed affix expression:
+      flow symbol, affix expression;
+      affix expression, flow symbol;
+      affix expression.
+
+\section {Meta rules}
+
+   meta rule:
+      affix nonterminal, double colon symbol, affix alternatives, point symbol.
+
+   affix alternatives:
+      affix alternatives, semicolon symbol, affix alternative;
+      affix alternative.
+
+   affix alternative:
+      affix expression;
+      .
+
+\section {Affix expressions}
+
+   affix expression:
+      affix term;
+      composition;
+      concatenation;
+      union.
+
+   composition:
+      affix term, star symbol, rest composition.
+
+   rest composition:
+      affix term, star symbol, rest composition;
+      affix term.
+
+   concatenation:
+      affix term, plus symbol, rest concatenation.
+
+   rest concatenation:
+      affix term, plus symbol, rest concatenation;
+      affix term.
+
+   union:
+      affix term, pipe symbol, rest union.
+
+   rest union:
+      affix term, pipe symbol, rest union;
+      affix term.
+
+Unions van identifiers in meta regels introduceren elementen uit eindige
+tralies mits deze niet al meta gedefinieerd zijn. Daarnaast zal identificatie
+elementen die in syntax regels voorkomen liften tot de bijbehorende singleton
+sets. Onderaan voeg ik een voorbeeldje toe hoe dat er dan uit komt te zien.
+
+\section {Affix terms}
+
+   affix term:
+      affix variable;
+      quoted string;
+      number;
+      set.
+
+   affix variable:
+      identifier (name).
+
+   set:
+      up symbol option, bracket string, set options.
+
+   set options:
+      plus symbol, strict symbol option;
+      star symbol, strict symbol option;
+      .
+
+   up symbol option:
+      up symbol;
+      .
+
+   strict symbol option:
+      strict symbol;
+      .
+
+Affix variabelen in syntax regels kunnen een integer suffix hebben, om
+zo verschillende instanties van een meta regel te kunnen onderscheiden.
+Dit wordt overigens pas tijdens de identificatie pass gecheckt om zo
+de syntax en lexicale analyse te vergemakkelijken. In metaregels zijn
+suffixen niet toegestaan.
+
+\section {Lexical elements}
+
+   double colon symbol: "::", layout.
+   commit symbol:       "->", layout.
+   strict symbol:    "!", layout.
+   open symbol:      "(", layout.
+   close symbol:     ")", layout.
+   star symbol:      "*", layout.
+   plus symbol:      "+", layout.
+   comma symbol:     ",", layout.
+   point symbol:     ".", layout.
+   colon symbol:     ":", layout.
+   semicolon symbol: ";", layout.
+   flow symbol:      ">", layout.
+   up symbol:        "^", layout.
+
+   identifier (l + ls):
+      letter (l), letgits (ls), layout.
+
+   letgits (ls + lgs):
+      { \t}*! (ignore), {a-zA-Z0-9}+! (ls), letgits (lgs);
+   letgits (""):.
+
+   number:
+      {0-9}+!.
+
+   quoted string:
+      "\"", chars ("\""), "\"", layout.
+
+   bracket string:
+      "{", chars ("}"), "}", layout.
+
+   chars (trailer): ^{\"\}\\}+!, chars (trailer);
+   chars (trailer): specsym, chars (trailer);
+   chars ("\""): "}", chars (trailer);
+   chars ("}"): "\"", chars (trailer);
+   chars (trailer):.  
+
+   specsym: "\\n".
+   specsym: "\\t".
+   specsym: "\\E".
+   specsym: "\\-".
+   specsym: "\\}".
+   specsym: "\\\"".
+   specsym: "\\\\".
+
+   layout: { \t\n}+!, layout.
+   layout: "#", ^{\n}*!, "\n", layout.
+   .
+
+-----------------------------------------------------------------------
+Een voorbeeldje van een eag met eindige tralies is de volgende:
+
+PERS :: first | second | third.
+
+NUMBER :: singular | dual | plural.
+
+simple sentence (NUMBER, PERS):
+   layout, pers pron (NUMBER, PERS), to be (NUMBER, PERS), adjective.
+
+pers pron (singular, first): "I", layout.
+pers pron (plural, first): "we", layout.
+pers pron (NUMBER, second): "you", layout.
+pers pron (singular, third):
+   "he", layout;
+   "she", layout;
+   "it", layout.
+pers pron (plural | dual, third): "they", layout.
+
+to be (singular, first): "am", layout.
+to be (singular, second): "are", layout.
+to be (singular, third): "is", layout.
+to be (plural | dual, PERS): "are", layout.
+
+adjective: "great", layout.
+adjective: "small", layout.
+
+layout: { \t\n} *!.

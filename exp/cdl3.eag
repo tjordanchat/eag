@@ -1,0 +1,268 @@
+GRAMMAR cdl3.
+
+cdl3 module: 
+  module header,
+    export,
+      import,
+        declarations.
+
+module header:
+  "MODULE", layout,
+     name,
+        global declarations,
+	   ".", layout.
+
+global declarations:
+  "=",layout,
+    type alternative;
+global declarations:
+  .
+
+export: 
+  "DEFINES",layout,
+    export list,
+      ".",layout.
+
+export list: 
+  rule header,
+    ",",layout,
+      export list;
+export list:
+  rule header;
+export list:
+  boldname, 
+   ",",layout,
+     export list;
+export list:
+  boldname.
+
+import: 
+  "USES",layout,
+    name list,
+      ".",layout;
+import:
+  .
+
+declarations:
+  rule declaration,
+    declarations;
+declarations:
+  rule declaration;
+declarations:
+  type declaration,
+    declarations;
+declarations:
+  type declaration.
+
+type declaration:
+  boldname list,
+    "::",layout,
+      type alternatives,
+        ".",layout.
+
+type alternatives: 
+  type alternative,
+    ";",layout,
+      type alternatives;
+type alternatives:
+  type alternative.
+
+type alternative:
+  name,
+   type alternative;
+type alternative:
+  name;
+type alternative:
+  boldname,
+    type alternative;
+type alternative:
+  boldname.
+
+rule declaration: 
+  rule header,
+    ":",layout,
+      alternatives,
+        ".",layout.
+
+rule header: 
+  rule type,
+    rule name,
+      "(",layout,
+        formal parameters,
+          ")",layout;
+rule header:
+  rule type,
+    rule name.
+
+rule type:
+   "PRELUDE",layout;
+rule type:
+   "FUNCTION",layout;
+rule type:
+   "ACTION",layout;
+rule type:
+   "TEST",layout;
+rule type:
+   "PRED",layout.
+
+rule name:
+  name,
+    rule name;
+rule name:
+  name.
+
+formal parameters:
+  formal parameter list,
+    "/",layout,
+      formal parameter list; 
+formal parameters:
+  formal parameter list;
+formal parameters:
+  "/",layout,
+    formal parameter list.
+
+formal parameter list:
+  formal parameter,
+    ",",layout,
+      formal parameter list;
+formal parameter list:
+  formal parameter.
+
+formal parameter:
+  ">",layout,
+    type instance,
+      ">",layout;
+formal parameter:
+  ">",layout,
+    type instance;
+formal parameter:
+  type instance,
+    ">",layout.
+
+alternatives:
+  alternative,
+    ";",layout,
+      alternatives;
+alternatives:
+  alternative.
+   
+alternative:
+  member,
+    ",",layout,
+      member list;
+alternative:
+  member,
+    "/",layout,
+      alternative;
+alternative:
+  member;
+alternative:
+  "/",layout,
+    alternative; 
+alternative:
+  "(",layout,
+    alternatives,
+      ")",layout.
+
+member list:
+  member,
+    ",",layout,
+      member list;
+member list:
+  member,
+    "/",layout,
+      alternative;
+member list:
+  "(",layout,
+    alternatives,
+      ")",layout.
+
+member:
+  "[",layout,
+    expression,
+      guardtype,
+        expression,
+          "]",layout;
+member:
+  rule name,
+    "(",layout,
+       parameters,
+         ")",layout;
+member:
+  rule name;
+member:
+  "+",layout.
+
+expression:
+  element,
+    expression;
+expression:
+  element.
+
+element:
+  name;
+element:
+  type instance;
+element:
+  number;
+element: 
+  text.
+
+guardtype:
+  "=",layout;
+guardtype:
+  "->",layout.
+
+parameters:
+  parameter list,
+    "/",layout,
+      parameter list;
+parameters:
+  parameter list;
+parameters:
+  "/",layout,
+    parameter list.
+
+parameter list:
+  expression,
+    ",",layout,
+      parameter list;
+parameter list:
+  expression.
+
+name list:
+  name,
+    ",",layout,
+      name list;
+name list:
+  name.
+
+name:
+  {a-z} (h), {a-z0-9}*! (r), layout.
+
+boldname list:
+  boldname,
+    ",",layout,
+      boldname list;
+boldname list:
+  boldname.
+
+boldname:
+  {A-Z}+! (n), layout.
+
+type instance:
+  {A-Z}+! (n), {0-9}*! (d), layout.
+
+number:
+ {1-9} (d), {0-9}*! (r), layout.
+
+text:
+  "\"", characters, "\"", layout.
+
+characters: "\\", {"\\nrb} (l), characters;
+characters: {a-zA-Z0-9}+! (c), characters;
+characters: {`~!@#$%^&*()_\-+=|[{\}];:',.<>/? }+! (c), characters;
+characters: .
+
+layout: { \n\t}*!.
+

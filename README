@@ -1,0 +1,35 @@
+This is the (intermediate) version 2.5 of EAG. If you encounter any problems
+while compiling or testing EAG, do hesitate to email me (marcs@cs.kun.nl)
+and I will try and correct the problems.
+
+To install the Extended Affix Grammar environment, you will need the following
+GNU tools:
+
+  - gcc
+  - make (the GNU make, check with --version)
+  - the X11 window system
+    (needed only if you want to generate syntax directed editors;
+     if you do not need it add --without-x when configuring)
+
+All of these tools are available from a large number of ftp-sites.
+Since the source code has been GNU-ified recently, installation
+proceeds acoording to the usual GNU paradigma:
+
+  - configure --prefix=<wherever you want to install EAG; default:/usr/local>
+  - make
+  - make install
+
+The software has been tested on the following platforms:
+
+  Platform		OS		Comments
+  - Sun SPARCstation-20	Solaris 2.7
+  - SGI			IRIX 6.5
+  - i686		Linux 2.2.19	Debian
+  - i686		FreeBSD2.6
+  - Alpha		NetBSD1.6	libtool pecularities
+					(use --disable-shared or link by hand)
+
+In the subdirectory 'examples', several representative examples may be found.
+An other subdirectory called 'exp' provides more experimental ones.
+
+Bug reports may be sent to: marcs@cs.kun.nl (Marc Seutter)

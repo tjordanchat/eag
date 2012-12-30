@@ -1,0 +1,186 @@
+\chapter{A description of the EAG formalism in itself}
+\begin{verbatim}
+   eag:
+      layout, rules.
+
+   rules:
+      rules, rule;
+      .
+
+   rule:
+      start rule;
+      syntax rule;
+      affix production rule.
+
+   start rule:
+      call, point symbol.
+
+   syntax rule:
+      syntax rule group (id), point symbol.
+
+   syntax rule group (id):
+      syntax rule group (id), semicolon symbol,
+         syntax rule element (id);
+      syntax rule group (id), point symbol,
+         syntax rule element (id);
+      syntax rule element (id).
+
+
+   syntax rule element (id):
+      nonterminal (id), colon symbol, alternatives.
+
+   alternatives:
+      alternatives, semicolon symbol, alternative;
+      alternative.
+
+   alternative:
+      members;
+      .
+
+   members:
+      members, comma symbol, member;
+      member.
+
+   member:
+      call;
+      quoted string;
+      semiterminal;
+      commit symbol.
+
+   call:
+      nonterminal (id).
+
+   semiterminal:
+      set, display;
+      set.
+
+   nonterminal (id):
+      nonterminal elements (id), not equal (id, empty).
+
+   nonterminal elements (id1 + id2):
+      nonterminal elements (id1), identifier (id2); 
+   nonterminal elements (id):
+      nonterminal elements (id), display;
+   nonterminal elements (empty):.
+
+   display:
+      open symbol, directed affix expressions, close symbol.
+
+
+   directed affix expressions:
+      directed affix expressions, comma symbol,
+         directed affix expression;
+      directed affix expression.
+
+   directed affix expression:
+      flow symbol, affix expression;
+      affix expression, flow symbol;
+      affix expression.
+
+   affix production rule:
+      affix nonterminal, double colon symbol,
+         affix alternatives, point symbol.
+
+   affix alternatives:
+      affix alternatives, semicolon symbol, affix alternative;
+      affix alternative.
+
+   affix alternative:
+      affix expression;
+      .
+    
+   affix expression:
+      affix term, rest affix expression.
+
+   rest affix expression:
+      plus symbol, affix term, rest concatenation;
+      star symbol, affix term, rest composition;
+      union symbol, affix term, rest union;
+      .
+
+   rest concatenation:
+      plus symbol, affix term, rest concatenation;
+      .
+
+   rest composition:
+      star symbol, affix term, rest composition;
+      .
+
+
+
+   rest union:
+      union symbol, affix term, rest union;
+      .
+
+   affix term:
+      affix nonterminal;
+      quoted string;
+      number;
+      set.
+
+   affix nonterminal:
+      affix nonterminal, identifier (name>);
+      identifier (name).
+
+   set:
+      up symbol option, bracket string, set options.
+
+   set options:
+      plus symbol, strict symbol;
+   set options:
+      star symbol, strict symbol;
+   set options:
+      plus symbol;
+   set options:
+      star symbol;
+   set options:
+      .
+
+   up symbol option:
+      up symbol;
+      .
+
+   commit symbol:       "->", layout.
+   strict symbol:       "!", layout.
+   open symbol:         "(", layout.
+   close symbol:        ")", layout.
+   star symbol:         "*", layout.
+   plus symbol:         "+", layout.
+   comma symbol:        ",", layout.
+   point symbol:        ".", layout.
+   double colon symbol: "::", layout.
+   colon symbol:        ":", layout.
+   semicolon symbol:    ";", layout.
+   flow symbol:         ">", layout.
+   union symbol:        "|", layout.
+   up symbol:           "^", layout.
+
+   identifier (l + ls):
+      {a-zA-Z} (l), {a-zA-Z0-9}*! (ls), layout.
+
+   number:
+      {0-9}+!, layout.
+
+   quoted string:
+      quote, qchars, quote, layout.
+
+   bracket string:
+      "{", schars, "\}", layout.
+
+   qchars: ^{\"\\}+!, qchars;
+   qchars: specsym, qchars;
+   qchars:.
+
+   schars: ^{\}\\}+!, schars;
+   schars: specsym, schars;
+   schars:.
+
+   specsym (>trailer): "\\-";
+   specsym (>trailer): "\\n";
+   specsym (>trailer): "\\t";
+   specsym (>trailer): "\\\\";
+   specsym (>trailer): "\\\}";
+   specsym (>trailer): "\\\"";
+
+   layout: { \t\n}*!.
+\end{verbatim}

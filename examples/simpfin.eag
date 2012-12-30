@@ -1,0 +1,26 @@
+PERS :: first | second | third.
+
+NUMBER :: singular | plural.
+
+simple sentence (NUMBER, PERS):
+   layout, pers pron (NUMBER, PERS),
+      to be (NUMBER, PERS), adjective.
+
+pers pron (singular, first): "I", layout.
+pers pron (plural, first): "we", layout.
+pers pron (NUMBER, second): "you", layout.
+pers pron (singular, third):
+   "he", layout;
+   "she", layout;
+   "it", layout.
+pers pron (plural, third): "they", layout.
+
+to be (singular, first): "am", layout.
+to be (NUMBER, second): "are", layout.
+to be (singular, third): "is", layout.
+to be (plural, first | third): "are", layout.
+
+adjective: "great", layout.
+adjective: "small", layout.
+
+layout: { \t\n} *!.

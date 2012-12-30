@@ -1,0 +1,113 @@
+range :: decls * units.
+
+decls :: decl * decls;
+	 nil.
+
+units :: unit * units;
+	 nil.
+
+decl :: vardecl * mode * string.
+
+mode :: applied mode * string.
+
+unit :: assign * formula * unit;
+	formula;
+	skip * nil.
+
+formula :: dyop * string * formula * formula;
+	   monop * string * formula;
+	   primary.
+
+primary :: denoter * string * int;
+	   applied * string.
+
+vardecl :: "var".
+applied mode :: "applmode".
+assign :: "assign".
+skip :: "skip".
+dyop :: "dyop".
+monop :: "monop".
+denoter :: "denoter".
+applied :: "applied".
+INT :: "integral".
+BOOL :: "boolean".
+
+my mini (tree>):
+   closed clause (tree>), end of sentence.
+
+closed clause (decls * units>):
+   begin token, series (decls>, units>), end token.
+
+series (decls>, unit * units>):
+   unit (unit>), more series (decls>, units>);
+series (decl * decls>, units>):
+   declaration (decl>), more series (decls>, units>).
+
+more series (decls>, units>):
+   go on token, series (decls>, units>);
+more series (nil>, nil>):
+   .
+
+declaration (decl>):
+   variable declaration (decl>).
+
+variable declaration (vardecl * mode * id>):
+   actual declarer (mode>), tag token (id>).
+
+actual declarer (mode>):
+    applied mode indication (mode>).
+
+applied mode indication (applied mode * moid>):
+    moid token (moid>).
+
+unit (unit>):
+   assignation (unit>);
+   formula (unit>);
+   skip (unit>).
+
+assignation (assign * lhs * rhs>):
+   formula (lhs>), becomes token, unit (rhs>).
+
+skip (skip * nil>):
+   skip token.
+
+formula (primary>):
+   primary (primary>).
+
+primary (denoter * dmode * value>):
+   denoter (dmode>, value>);
+primary (applied * id>):
+   applied identifier (id>).
+
+applied identifier (id>):
+   tag token (id>).
+
+moid token (INT>): "INT", layout.
+moid token (BOOL>): "BOOL", layout.
+
+denoter (dmode>, value>):
+   denotation (dmode>, value>), layout.
+
+denotation (INT>, value>):
+   fixed point numeral (value>);
+denotation (BOOL>, 1>):
+   "TRUE";
+denotation (FALSE>, 0>):
+   "FALSE".
+
+begin token:	"BEGIN", layout.
+end token:	"END", layout.
+skip token:	"SKIP", layout.
+go on token:	";", layout.
+becomes token:	":=", layout.
+
+tag token (l + ls):
+   letter (l), letgits (ls), layout.
+
+letter (l): {a-z} (l).
+letgits (ls): {a-z0-9}*! (ls).
+
+fixed point numeral (r):
+   {0-9}+! (d), string to int (d, r).
+
+layout:	{ \n\t}*!.

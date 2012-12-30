@@ -1,0 +1,531 @@
+\chapter {Affix grammars}
+\section {Introduction and syntax}
+Thus far we could only generate simple recognizers, which could
+only indicate whether a piece of text belonged to the given (context free)
+grammar or not. In this chapter we will augment syntax rules
+in \EAG by giving them parameters, called {\em affixes}. In an \EAG
+affixes represent {\em values} that are dynamically evaluated and propagated
+during the parsing process. These values may be used for instance
+to produce output for successfull parses. Affix propagation 
+may also steer the parsing process. In this way context sensitive
+restrictions may be specified in an \EAGns.
+
+These parameters are added to syntax rule definitions and calls
+by so called {\em displays}. A display contains one or more
+{\em affix positions}, separated by commas and surrounded by
+parentheses. Displays may occur anywhere in the left
+hand side of a syntax rule or in calls. For example:
+\begin{verbatim}
+   (>i) concatenated with (>j) is (i+j>)
+\end{verbatim}
+The \EAG compiler will collect all positions belonging to a
+nonterminal. Only the order in which affix positions occur
+is significant. Thus the two following lines have the same semantics:
+\begin{verbatim}
+   boolean (bool) denotation ("1")
+   booleandenotation (bool,"1")
+\end{verbatim}
+
+We define the {\em arity} of a syntax rule as the number of affix
+positions it has. A display may also occur after a semiterminal.
+There are three context conditions:
+\begin {itemize}
+\item
+All syntax rule elements of a syntax rule must have the same arity.
+\item
+A call of a syntax rule must have the same number of positions as
+the arity of its definition. This also applies to the start rule.
+\item
+A semiterminal can only have an arity of zero or one.
+\end {itemize}
+
+An affix position specifies an {\em affix expression} and an optional
+{\em affix flow}. A position is {\em inherited} if the flow symbol (\verb+>+)
+precedes the affix expression. A position is {\em derived} if
+the flow symbol follows the affix expression. In previous
+versions of \EAG compilers, the specification of affix flow
+was obligatory and indicated the dataflow of the affix values.
+In the current \EAG compiler this specification
+may be omitted, since affix values are propagated at runtime
+by a data driven propagation mechanism. There is one exception to
+this rule namely in the specification of predicates, which we will
+discuss later. Although flow specification may be omitted 
+while writing an \EAGns, it may make the grammar more readable.
+
+An affix expression consists of one or more {\em affix terms},
+separated either by the concatenation symbol (\verb.+.), the
+composition symbol (\verb+*+) or the union symbol (\verb+|+).
+An affix term may be an {\em affix variable}, an affix constant
+(a terminal, a number or an element of a finite lattice) or a set.
+Some examples of affix expressions are:
+\begin{verbatim}
+   "-" + flength
+   "dyop" * op * a * b
+   a single affix variable
+   20 + length
+   male | female
+\end{verbatim}
+\section {Simple transducers}
+During a parse of a generated parser, affixes may obtain values
+(and lose them while backtracking). Affix values are of four
+possible types:
+\begin {itemize}
+\item string
+\item int
+\item composed (tuple)
+\item finite lattice
+\end {itemize}
+Affix values originate from affix terminals (constant values),
+semiterminals, pre\-dicates and meta rules. Affix values are propagated
+by a data driven propagation and restriction mechanism. Predicates,
+meta rules and finite lattices will be discussed later.
+
+In our first example affix values are only derived from affix
+constants and semiterminals. When a string is recognized by
+a semiterminal with a display, the string recognized is
+assigned to the affix expression in this display.
+If this expression is a single affix variable, this amounts to
+assigning the string just read to this variable and unassigning
+it as the parser backtracks over the semiterminal.
+
+Affix values of the string domain may be concatenated into
+a new affix value by the concatenation operator \verb.+..
+When a parse is found, the values of the non inherited affixes of the
+start rule are printed (on stdout). 
+Our first example is a simple transducer that illustrates
+the concatenation of string values ({\tt dupl.eag}):
+\begin{verbatim}
+   duplicate (id + " + " + id + " = " + id + id +"\n">):
+      identifier (id>).
+
+   identifier (l + ls>):
+      {a-z} (l>), {a-z0-9}*! (ls>), { \t\n}*!.
+\end{verbatim}
+If we compile the above grammar and execute the generated parser
+with input {\tt krom} the following output is produced:
+\begin{verbatim}
+   krom + krom = kromkrom
+\end{verbatim}
+
+When the concatenation operator is applied to integer affix values,
+they are added together. Consider for instance the following example
+which outputs the number of identifiers in the input:
+({\tt countids.eag}):
+\begin{verbatim}
+   count (out).
+
+   count (1 + ct>):
+      identifier (id), count (ct>);
+   count (0>):.
+
+   identifier (l + ls>):
+      {a-z} (l>), {a-z0-9}*! (ls>), { \t\n}*!.
+\end{verbatim}
+
+The {\em head grammar} of an \EAG is formed by removing all displays.
+We will call an \EAG a {\em transducer} if it recognizes the same language
+as its head grammar.
+\section {Affix propagation}
+While parsing, a syntax tree is built, which is decorated with
+affix values. For every syntax tree node, the corresponding
+affix positions are built plus links between affix
+nodes along which their values will be propagated. At runtime,
+affix flow is data driven, that is: whenever an affix gets a value,
+affix propagation will try and propagate this value to positions
+that depend on this affix. This process continues
+until nothing more can be propagated. Parsing then resumes.
+
+Affix positions occurring in the left hand side of a syntax rule
+are built before a parse is tried according to that syntax rule.
+Affix positions occurring in the right hand side of a syntax rule
+are built when the surrounding member is parsed. Affix propagation
+is therefore likely to occur at this point.
+
+One may see an affix position as a gateway between values
+propagating from the left hand side of a syntax rule and
+the values that must be propagated from the call of that
+syntax rule occurring in some right hand side. For this
+reason, affix positions belonging to a syntax tree node
+are split in an upper and a lower side. In the upper side
+a representation is stored of the affix expression occuring
+in the call of this syntax rule. In the lower side a representation
+of the corresponding left hand side position is stored.
+The combination of the upper and lower side of a position
+is also called an {\em affix position slice}. For both sides
+a numeric variable, called the {\em sill}, is maintained
+that gives the number of affixes in that side of the slice
+that do not have a value yet. Whenever the sill of a side drops
+to zero, the corresponding affix expression is calculated
+and propagated to the other side of the slice.
+
+Affix propagation may be traced just like the parsing process.
+For instance if we compile our first example as follows:
+\begin{verbatim}
+   eag-compile -T -td dupl
+   eagcc dupl_topdown
+\end{verbatim}
+and give it input {\tt ko}, we obtain a trace of the parse and
+affix propagation. A part of it is listed here:
+\begin{verbatim}
+   2 '\e': tracing position 0 of rule_duplicate in module dupl
+   2 '\e': lo = (sill = 0, a_id<"ko"> + a_gen_0<" + "> + a_id<"ko">
+                         + a_gen_1<" = "> + a_id<"ko"> + a_id<"ko">
+                         + a_gen_2<"\n">)
+   2 '\e': hi = (sill = 1, a_startrule_0)
+   2 '\e': tracing position 0 of rootnode in module dupl
+   2 '\e': lo = (sill = 0, a_startrule_0<"ko + ko = koko\n">)
+   2 '\e': hi = (sill = 0, _)
+   A parse was found
+   ko + ko = koko
+   1 'k': <rule_identifier
+   0 'k': <rule_duplicate
+\end{verbatim}
+Affix propagation is traced per position that is being propagated.
+It always consists of three lines. The first indicates the position
+that is being propagated. The second indicates the sill and affix expression
+on the lower side of the slice. As we can see, if an affix
+has a value, this value is printed after the affix between brackets.
+The third line gives the same for the upper side of the slice.
+\section {Splitting of affix values}
+When an affix value is propagated to a position that is specified as
+the concatenation of several affixes, this value is split
+nondeterministically over these affixes. Every possible split will
+be tried (which can easily lead to many parses).
+Consider for instance the following grammar ({\tt minus2.eag}):
+\begin{verbatim}
+   start (div>).
+
+   start (div>):
+      layout, as (div+"aa">).
+
+   as (tt>):
+      {a}+! (tt>), layout.
+
+   layout:
+      { \n\t}*!.
+\end{verbatim}
+As we can see, this grammar will recognize a string of {\tt a}'s in the
+input and propagate this string via the affix {\tt tt}, which is then
+split into two. Since the second affix is a terminal only that split
+succeeds that propagates {\tt aa} to that terminal. In effect, this
+grammar outputs two {\tt a}'s less than its input string. If this
+affix terminal had been an affix nonterminal, any possible split would
+be tried, resulting in $n+1$ possible parses if the input string had
+contained $n$ {\tt a}'s.
+\section {Consistent substitution}
+The notion of consistent substitution is derived from the same
+notion in two level Van Wijngaarden grammars. By consistent
+substitution is meant that each of the occurences of an affix
+nonterminal in an alternative represents the same affix value.
+Consistent substitution allows the specification of context
+sensitive restrictions on the grammar.
+
+Consider for instance the following grammar ({\tt evenas.eag}):
+\begin{verbatim}
+   start (div>).
+
+   start (div>):
+      layout, header (id>), as (div+div>), trailer (id>).
+
+   as (tt>):
+      {a}+! (tt>), layout.
+
+   header (id>):
+      "BEGIN", layout, identifier (id>).
+
+   trailer (id>):
+      "END", layout, identifier (id>).
+
+   identifier (id>):
+      {a-z}+! (id>), layout.
+
+   layout:
+      { \n\t}*!.
+\end{verbatim}
+This grammar imposes two context conditions. The first is
+that the identifier following the {\tt BEGIN} is the same
+as the one following the {\tt END}. The second condition
+is caused by the split of the affix value into two equal
+parts.
+
+Another nice example is the following analyzer of unary
+fractions\linebreak ({\tt frac.eag}). It illustrates arbitrary flow
+and consistent substitution in \EAGns:
+\begin{verbatim}
+   numeral (value+nlcr):
+      layout, rational (value), layout.
+
+   rational (whole value + "+" + fractional value):
+      number (whole value, whole length, ""), ".",
+         number (fractional value, fractional length,
+                 "-" + fractional length).
+   rational (value):
+      number (value, length, "").
+
+   number (digit value + "+" + number value, "1" + length, suffix):
+      digit (digit value, length + suffix),
+         number (number value, length, suffix).
+   number (digit value, "1", suffix):
+      digit (digit value, suffix).
+
+   digit ("11^(" + exponent + ")",  exponent): "1".
+   digit ("0",                      exponent): "0".
+
+   layout: { \t\n}*!.
+\end{verbatim}
+\section {Composition}
+The composition operator \verb+*+ allows the grammar writer
+to build composite affix values which may be used for instance
+to build complex datastructures while parsing. Composition is not
+associative nor commutative. A possible usage of composed affix
+values is building an explicit parse tree while parsing. It may
+then be analyzed later by predicates (see next section). This
+enables the \EAG writer to specify multi pass translators in \EAGns.
+
+By their definition it is only possible to specify 2-tuples,
+3-tuples and so on. To facilitate building linked lists or
+trees in \EAGns, a (builtin) affix is provided, called {\tt nil},
+whose value is a tuple with zero fields.
+
+If a non inherited affix of the start rule is of type tuple, a
+text representation of the corresponding affix value is printed
+on a succesful parse.
+
+An example is the following \EAG that recognizes an expression,
+while building a syntax tree for it ({\tt expr2.eag}).
+\begin{verbatim}
+   start (e>):
+      layout, expr (e>).
+
+   expr ("dyop" * "+" * e * t>):
+      expr (e>), plus symbol, term (t>);
+   expr ("dyop" * "-" * e * t>):
+      expr (e>), minus symbol, term (t>);
+   expr (t>):
+      term (t>).
+
+   term ("dyop" * "*" * t * f>):
+      term (t>), times symbol, factor (f>);
+   term ("dyop" * "/" * t * f>):
+      term (t>), divides by symbol, factor (f>);
+   term (f>):
+      factor (f>).
+
+   factor ("monop" * "-" * f>):
+      minus symbol, factor (f>);
+   factor ("monop" * "+" * f>):
+      plus symbol, factor (f>);
+   factor (f>):
+      unsigned factor (f>).
+
+   unsigned factor ("id" * id>):
+      identifier (id>);
+   unsigned factor ("num" * n>):
+      number (n>);
+   unsigned factor (e>):
+      left parenthesis, expr (e>), right parenthesis.
+
+   identifier (l +ls>):
+      {a-z} (l>), {a-z0-9}*! (ls>), layout.
+
+   number (n>):
+      {0-9}+! (n>), layout.
+
+   plus symbol: "+", layout.
+   minus symbol: "-", layout.
+   times symbol: "*", layout.
+   divides by symbol: "/", layout.
+   left parenthesis: "(", layout.
+   right parenthesis: ")", layout.
+
+   layout: { \n\t}*!.
+\end{verbatim}
+\section {Predicates}
+A {\em predicate} is a syntax rule that will only produce empty
+if a certain context condition holds. If this is not the case, it
+will not produce anything. Predicates are builtin or defined
+in terms of other predicates. The evaluation of a predicate
+may either succeed, that is recognize nothing, or it may fail
+depending on the values of its affixes. By evaluating predicates
+while parsing, {\em affix directed parsing} is obtained.
+
+Two particularly useful builtin predicates are {\tt equal},
+which only succeeds if its two affix positions equal and and
+{\tt not equal}, which only succeeds on inequality.
+
+Predicates are typically used to impose context conditions
+on a certain context free grammar. One may think for instance
+of the grammar for a programming language. Predicates may be
+used to enforce that for every application of an identifier
+an appropriate declaration is present or that every identifier
+is only declared once. An example of such an \EAG
+is the following grammar. It also illustrates the specification
+of linked lists in \EAG ({\tt decl.eag}):
+\begin{verbatim}
+   simple:
+      simple header,
+         declarations (decls>),
+         applications (>decls),
+         simple trailer.
+
+   simple header:
+      "BEGIN", layout.
+
+   simple trailer:
+      "END", layout.
+
+   declarations (decls>):
+      "DECLARE", layout, identifier list (decls>).
+
+   identifier list (decls>):
+      identifier (id>), more identifiers (>id * nil, decls>).
+
+   more identifiers (>old decls, new decls>):
+      ",", layout,
+         identifier (id>), not in list (>id, >old decls),
+         more identifiers (>id * old decls, new decls>);
+   more identifiers (>decls, decls>):.
+
+   applications (>decls):
+      "APPLY", layout, applied id list (>decls).
+
+   applied id list (>decls):
+      identifier (id>), in list (>id, >decls),
+         more applied ids (>decls).
+
+   more applied ids (>decls):
+      ",", layout,
+         identifier (id>), in list (>id, >decls),
+         more applied ids (>decls);
+   more applied ids (>decls):.
+
+   not in list (>ls, >nil):.
+   not in list (>ls, >string * list):
+      not equal (>ls, >string), not in list (>ls, >list).
+
+   in list (>ls, >ls * tuple):.
+   in list (>ls, >string * tuple):
+      not equal (>ls, >string), in list (>ls, >tuple).
+
+   identifier (ls>):
+      {a-z}+! (ls>), layout.
+
+   layout: { \n\t}*!.
+\end{verbatim}
+\section {Delayed affix evaluation}
+Since predicates do not recognize any input they depend for
+their execution solely on the values of their affixes. It is
+clear that right hand sides of predicates may only be evaluated
+if the values of certain affixes are known. Consider for instance
+the predicate {\tt in list} in the previous example. The right hand
+sides of this predicate can only be evaluated if both of the affix
+positions have got a value. We will call affix positions whose values
+must be known for the evaluation of a predicate {\em critical affix
+positions}. We mark an affix position as critical by marking this
+position in the left hand side of a predicate as an inherited one.
+As mentioned earlier this is the only location in an \EAGns, where
+specification of flow is necessary.
+
+A predicate's right hand side is only evaluated if the sills of
+the upper sides of all of its critical affix positions has
+dropped to zero. Since this can occur much later in the parsing
+process, the upper sides of critical affix positions are marked
+as {\em delayed}, when this predicate is executed for the first
+time. If, during affix propagation, the sills of the upper sides
+of the critical positions become zero, these positions are
+unmarked and evaluation of the right hand sides of the predicate
+commences. Right hand sides of predicates are always evaluated
+topdown. The termination of this evaluation must be ensured via
+the affix values of critical affix positions.
+
+If a predicate does not have any critical affix position it is
+called a {\em semipredicate}. Semipredicates need not be delayed
+and are always immediately evaluated. Semipredicates are either
+builtin for special purposes or used by the grammar writer to
+initialize some datastructures. Three builtin semipredicates are
+very often used namely {\tt end of sentence},
+\verb+column (int>)+ and \verb+row (int>)+.
+
+The semipredicate \verb+end of sentence+ succeeds only if the
+input pointer has reached the end of file. It is typically
+used in an \EAG in which the input is parsed while building a
+datastructure, which is transformed later into output when all of the
+input has been recognized using predicates. It is clear that this
+latter transformation is only wanted when all of the input has been
+parsed. However it may sometimes occur that a prefix of the input
+conforms to the grammar, which would enable to start transformation
+of the already built datastructures prematurely (and backtracking
+again when the final check on end of file is met).
+It is then beneficial for the runtime behaviour of the
+resulting parsers to specify that end of file must be
+reached before such a transformation starts. The next example
+will show an application of this.
+
+The two semipredicates {\tt column} and {\tt row} will return
+the column and line number respectively of the current position
+in the input.
+
+The delayed affix evaluation mechanism may for instance be used
+to specify grammars for programming languages in which an
+identifier may be used before it is declared. Consider for instance
+the following grammar for such a programming language, which
+transforms its input into a program in a \Cns-like language
+({\tt lazy.eag}):
+\begin{verbatim}
+   start (out>).
+
+   start ("program\n\t{\n"+cdecls+capplies+"\t}\n">):
+      layout, begin symbol,
+         units (>decls, >nil, >nil, decls>, applies>),
+         end symbol, endofsentence,
+         code decls (>decls, cdecls),
+         code applies (>applies, capplies).
+
+   units (>alldecls, >olddecls, >oldapplies, newdecls>, newapplies>):
+      unit (>alldecls, >olddecls, >oldapplies, idecls>, iapplies>),
+         semicolon,
+         units (>alldecls, >idecls, >iapplies, newdecls>, newapplies>).
+   units (>alldecls, >olddecls, >oldapplies, newdecls>, newapplies>):
+      unit (>alldecls, >olddecls, >oldapplies, newdecls>, newapplies>).
+\end{verbatim}
+\newpage
+\begin{verbatim}
+   unit (>alldecls, >olddecls, >applies, newdecls>, applies>):
+      declaration (>olddecls, newdecls>).
+   unit (>alldecls, >decls, >oldapplies, decls>, newapplies>):
+      application (>alldecls, >oldapplies, newapplies>).
+
+   declaration (>decls, decls * ls>):
+      decl symbol, identifier (ls>), not in list (>ls, >decls).
+
+   application (>alldecls, >applies, applies * ls>):
+      apply symbol, identifier (ls>), in list (>ls, >alldecls).
+
+   not in list (>ls, >nil):.
+   not in list (>ls, >list * string):
+      not equal (>ls, >string), not in list (>ls, >list).
+
+   in list (>ls, >tuple * ls):.
+   in list (>ls, >tuple * string):
+      not equal (>ls, >string), in list (>ls, >tuple).
+
+   code decls (>nil, empty>):.
+   code decls (>list * ls, cdecls+"\t  decl "+ls+";\n">):
+      code decls (>list, cdecls>).
+
+   code applies (>nil, empty>):.
+   code applies (>list * ls, capplies+"\t  apply "+ls+";\n">):
+      code applies (>list, capplies>).
+
+   begin symbol: "BEGIN", layout.
+   end symbol: "END", layout.
+   semicolon: ";", layout.
+   decl symbol: "DECL", layout.
+   apply symbol: "APPLY", layout.
+
+   identifier (ls>):
+      {a-z}+! (ls>), layout.
+
+   layout:
+      { \n\t}*! (ignore>).
+\end{verbatim}

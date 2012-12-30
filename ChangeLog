@@ -1,0 +1,61 @@
+Version 1.0 -- 16 September 1993
+Version 1.1 -- 7 January 1994
+-  Fixed bug in the coding of metarules
+-  Improved debugging of continuation stack inconsistencies
+-  Added -V flag
+-  Fixed bug in the coding of the startrule
+-  Fixed some spelling errors in the user documentation
+Version 1.2 -- 1 March 1994
+-  Fixed horrible bug in memory management during meta rule analysis
+-  Added left recursion detection in meta rules
+-  Added the predicate 'not in reserved word list' to the standard library
+-  Increased support for user defined libraries
+Version 1.3 -- 26 March 1994
+-  Added the cut operator '->' to cut off alternatives in topdown parsers
+-  Added the predicate 'string to int' to the standard library
+Version 1.4 -- 30 April 1994
+-  Improved runtime error messages by coding lookahead failures
+-  Added a certain controlled degree of polymorfism
+-  Added the predicate 'dump affix' to the standard library
+Version 1.5 -- 5 April 1998
+-  Complete rewrite of the generator and libraries into ANSI C.
+-  The generator has been rewritten to generate ANSI C code.
+-  Fixed two bugs in the leftcorner parser generator.
+-  Deleted the obsolete lookahead syntax (? member) from EAG
+-  Added the predicate 'power' to the standard library
+Version 1.6 -- June 1998
+-  Removed some arbitrary limitations in the eag parser
+-  Added removal of unreachable rules and meta rules
+-  Combined leftrecursion detection with leftcorner relation calculation
+-  Improved the generated leftcorner parsers by encoding the lc relation.
+   (Leftcorner parsers went from O(e^(n^2)) to O(e^n) and are now a little bit
+   faster than topdown parsers)
+
+Version 2.0 -- February 2000
+-  Complete rewrite of the runtime libraries
+-  Complete rewrite of the generator
+-  Added finite lattices as affix domain
+   (syntax addition, useful for parsing natural languages)
+-  Removed need for synonym meta rule definitions (semantic change)
+-  Added constant evaluation
+Version 2.1 -- August 2000
+-  Added some form of seperate compilation
+-  Fixed bugs in the skeleton generator
+-  Fixed bug in typechecker
+Version 2.2 -- January 2001
+-  Fixed horrible bug in lexer
+-  Added lexicon generation and parsing
+   (syntax addition, useful for parsing natural languages)
+-  Fixed C interface to generated parsers
+-  Added autoconf/automake structures to prepare EAG for distribution
+Version 2.3 -- February 2002
+-  Update of all libraries to ease autoconfed installation
+Version 2.4 -- December 2002
+-  Source code now under CVS control at twoquid.cs.kun.nl:/home/cvs
+-  Made the compilation of syntax directed editor support conditional
+Version 2.5 -- December 2004
+-  Preparing for Win2K port
+Version 2.6 -- June 2008
+-  Layout update
+-  Addition of real affix values
+-  Prepating for WIN32 port with VC7.1

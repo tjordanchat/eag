@@ -1,0 +1,48 @@
+MODE :: ref to * MODE ; PLAIN ; STOWED. 
+PLAIN :: bool ; integral.
+#STOWED :: ROWS * MODE.
+
+# Het volgende geeft een segmentation fault van eag-compile:
+STOWED :: ROWS * of * MODE.
+
+ROWS :: row ; ROWS * row.
+
+ref to :: "ref to".
+bool :: "bool" * nil.
+integral :: "integral" * nil.
+row :: "row" * nil.
+of :: "of".
+
+start(MODE): 
+  (MODE) decl,
+    layout.
+
+(integral) decl:
+  (INTEGRAL) token.
+(bool) decl:
+  (BOOL) token.
+(ref to * MODE) decl:
+  (REF TO) token, (MODE) decl.
+(row * of * MODE) decl:
+  (ROW) token, (MODE) decl.
+
+NOTION :: REF TO ; INTEGRAL ; BOOL ; ROW.
+REF TO :: "REF TO".
+INTEGRAL :: "INTEGRAL".
+BOOL :: "BOOL".
+ROW :: "ROW".
+
+(NOTION) token :
+  layout, (NOTION) symbol.
+
+(REF TO) symbol:
+  "ref".
+(INTEGRAL) symbol:
+  "int".
+(BOOL) symbol:
+  "bool".
+(ROW) symbol:
+  "row".
+
+layout:
+ { \t\n}*!.

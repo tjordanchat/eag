@@ -1,0 +1,9 @@
+BEGIN
+   DECLARE
+      <|identifierlist|>,
+      <|type|> <|identifier|>,
+      <|type|> <|identifier|>,
+      INT <|identifier|>;
+<|series|>;
+WHILE <|expression|> DO <|series|> OD
+END

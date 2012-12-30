@@ -1,0 +1,23 @@
+BEGIN
+   DECLARE
+      <|identifierlist|>,
+      <|type|><|identifier|>,
+      <|type|><|identifier|>,
+      <|type|><|identifier|>;
+   <|series|>;
+   WHILE<|expression|>
+   DO
+      <|series|>; <|statement|>; <|statement|>; <|statement|>
+   OD;
+   IF<|expression|> = <|expression|>
+   THEN
+      <|series|>; <|statement|>
+   ELSE
+      <|series|>; <|statement|>
+   FI;
+   <|identifier|> := <|expression|>;
+   <|statement|>;
+   <|statement|>;
+   <|statement|>;
+   <|statement|>
+END

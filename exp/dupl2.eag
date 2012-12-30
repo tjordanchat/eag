@@ -1,0 +1,10 @@
+duplicate (staat).
+
+duplicate (id + " + " + id + " = " + id + id + nlcr>):
+   identifier (id>);
+duplicate (empty>):.
+
+identifier (l + ls>):
+   {abcdefghijklmnopqrstuvwxyz} (l>),
+      {abcdefghijklmnopqrstuvwxyz0123456789}*! (ls>),
+	  { \t\n}*!.

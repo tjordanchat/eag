@@ -1,0 +1,293 @@
+From comp.compilers Wed May 12 12:31:41 1993
+Newsgroups: comp.compilers
+Path: sci.kun.nl!sun4nl!mcsun!uunet!world!iecc!compilers-sender
+From: lex@prl.philips.nl (Lex Augusteijn)
+Subject: Recursive Ascent Parsing (Re: Parsing techniques)
+Message-ID: <93-05-045@comp.compilers>
+Originator: lex@prl.philips.nl
+Keywords: parse, bibliography
+Sender: compilers-sender@iecc.cambridge.ma.us
+Organization: Philips Research Laboratories, Eindhoven, The Netherlands
+Date: Mon, 10 May 1993 07:03:39 GMT
+Approved: compilers@iecc.cambridge.ma.us
+Lines: 278
+
+Recursive Ascent Parsing
+------------------------
+
+Several people asked me post some theory behind recursive ascent parsing.
+For those of you who want to read more, the following literature is or
+becomes available:
+
+@article{Kruseman-Ascent,
+	author = {F.E.J. {Kruseman Aretz}},
+	title = {{On a Recursive Ascent Parser}},
+	journal = ipl,
+	year = {1988},
+	volume = {29},
+	pages = {201--206}}
+
+Imperative recursive ascent parser, derived via automaton theory.  This is
+a good introduction for those that are famliar with automaton theory,
+
+@article{Leermakers-Augusteijn-Kruseman,
+	author = {Ren\'e Leermakers and Lex Augusteijn and Frans E.J.
+	{Kruseman Aretz}},
+	title = {{A functional LR-parser}},
+	journal = tcs,
+	year = {1992},
+	volume = {104},
+	pages = {313--323}}
+
+Derivation and formal proof of recursive ascent parsers from specification.
+
+@article{Leermakers-Earley-Marcus,
+	author = {Ren\'e Leermakers},
+	title = {{Recursive ascent parsing: from Earley to Marcus}},
+	journal = tcs,
+	year = {1992},
+	volume = {104},
+	pages = {299--312}}
+
+Recursive ascent Earley and Marcus parsers (Marcus is a form of LR parsing
+with non-terminal instead of terminal look-ahead).
+
+@book{Leermakers-Parsing,
+	author = {Ren\'e Leermakers},
+	title = {{The Functional Treatment of Parsing}},
+	publisher = {Kluwer Academic Publishers},
+	month = {July},
+	year = {1993},
+        note = {to appear}}
+
+Extensive treatment of recursive ascent parsers, memoized parsers,
+attribution of these. Uses bunches (kind of sets for representing
+non-deterministic functions).  Contact leermake@prl.philips.nl for more
+details.
+
+@book{Augusteijn-thesis,
+  	author = {Lex Augusteijn},
+  	title = {Functional Programming, Program Transformations and
+  	         Compiler Construction},
+  	address = {Eindhoven},
+	month = {September},
+  	year = {1993},
+  	note = {to appear}}
+
+Derivation of recursive ascent parsers from recursive descent parsers by
+Bird-Meertens algebraic program transformations.  Memoization,
+continuation-based parsing, attribution, functional scanners.
+
+------------------------
+
+We now come to a formal derivation of recursive ascent parsing a la
+[Leermakers-Augusteijn-Kruseman].  The notation may be a bit unusual to
+you, but in the end we come up with a simple result in an imperative
+language, so be patient.
+
+Let G=(V_T,V_N,P,S) be a CFG as usual.
+V = V_T U V_N be the set of all symbols.
+Let I = V x V* x V* be the set of items (dotted rules).
+Let Q = Set(I) be the set of states, thus a state is a set of items.
+Typical elements of these sets are:
+
+V_T	x,y, ...
+V_T*	i,j, ...
+V_N	A,B, ...
+V	X,Y, ...
+V*	a,b, ...
+P	A -> a
+I	X -> a.b
+Q	q
+
+We use '<-' for the 'element of' operator.
+'A ->* a' means 'A' derives 'a' in zero or more steps.
+We use 'e' to denote the empty sequence and 'ab' to denote the
+concatenation of 'a' and 'b'.
+
+We will be using the traditional functional notation for function
+application, i.e. 'f a b' means 'f' applied to the arguments 'a' and 'b'.
+
+We are going to implement a function 'parse', with the following
+specification:
+
+parse : Q x V_T* -> Set(I x V_T*)
+
+parse q i = { (A->a.b, k) | A->a.b <- q, i = jk, b ->* j }
+
+In words, parse returns pairs of (item,remainder of input string) such
+that the suffix of the item (b) derives the corresponding prefix of the
+input string.
+
+We will apply this function only to set of items A->a.b, in which a != e,
+i.e. to sets of kernel items.
+
+In order to implement this function, we need yet another notion, that of the
+closure of a state, defined as the smallest set satisfying:
+
+q* = q U { B -> .c | A->a.Bb <- q*, B -> c }
+       U { x -> .x | A->a.xb <- q* }
+
+And the function 'goto':
+
+goto : Q x V -> Q
+
+goto q X = { A->aX.b | A->a.Xb <- q* }
+
+Next, we need an extra function named 'climb', obeying the specification:
+
+climb : Q x V x V_T* -> Set(I x V_T*)
+
+climb q X i = { (A->a.b, k) | A->a.b <- q, b ->* Xc, i = jk, c->* j }
+
+In words, climb returns those items A->a.b of q, provided that part of an
+item-suffix 'b' has been derived by 'X', and a suffix of the remainder of the
+input string can be derived by 'c'.
+
+Now we can rewrite our specification of 'parse' into an implementation:
+
+parse q i
+  = (spec)
+{ (A->a.b, k) | A->a.b <- q, i = jk, b ->* j }
+  = (definition of ->*, distinguish 3 cases for b)
+{ (A->a.b, k) | A->a.b <- q, b = e,            i = k } U
+{ (A->a.b, k) | A->a.b <- q, b ->* xc,         i = xjk, c ->* j } U
+{ (A->a.b, k) | A->a.b <- q, b ->* Bc, B -> e, i = jk,  c ->* j }
+  = (definition of climb)
+{ (A->a.,  i) | A->a. <- q } U
+{ (A->a.b, k) | i = xj, (A->a.b, k) <- climb q x j } U
+{ (A->a.b, k) | B -> e, (A->a.b, k) <- climb q B i }
+
+Thus, we have rewritten parse such that it uses climb.
+Subsequently we rewrite the specification of climb:
+
+climb q X i
+  = (spec)
+{ (A->a.b, k) | A->a.b <- q, b ->* Xc, i = jk, c->* j }
+  = (definition of b ->* Xc, it takes either zero or more steps)
+{ (A->a.b, k) | A->a.b <- q, b = Xc, i = jk, c->* j } U
+{ (A->a.b, l) | A->a.b <- q, b ->* Cd, i = jkl, C->Xc, c->*j, d->*k }
+  = (definition of parse (goto q X) i)
+{ (A->a.Xb, k) | (A->aX.b, k) <- parse (goto q X) i, A->a.Xb <- q } U
+{ (A->a.b, l)  | (C->X.c,  j) <- parse (goto q X) i, j = kl,
+                 A->a.b <- q, b ->* Cd, d->*k }
+  = (definition of climb and q contains only kernel items)
+{ (A->a.Xb, k) | (A->aX.b, k) <- parse (goto q X) i, a != e, A->a.Xb <- q } U
+{ (A->a.b,  l) | (C->X.c,  j) <- parse (goto q X) i,
+                 (A->a.b,  l) <- climb q C j }
+
+Summarizing, we have now the recursive equations for both parse and climb:
+
+parse q i
+= { (A->a.,  i) | A->a. <- q } U
+  { (A->a.b, k) | i = xj, (A->a.b, k) <- climb q x j } U
+  { (A->a.b, k) | B -> e, (A->a.b, k) <- climb q B i }
+
+climb q X i
+= { (A->a.Xb, k) | (A->aX.b, k) <- parse (goto q X) i, a != e, A->a.Xb <- q } U
+  { (A->a.b,  l) | (C->X.c,  j) <- parse (goto q X) i,
+                   (A->a.b,  l) <- climb q C j }
+
+Given a functional languages, supporting list comprehensions, this is an
+implementation for a non-deterministic LR(0) recursive ascent parser.
+
+The implementation can be made more efficient by observing that the second and
+third form of 'parse' can only be productive when x->.x <- q* resp.
+B->. <- q*.
+
+When we replace the set-union by choice operations, we can turn this
+non-deterministic parser into a deterministic one:
+
+parse q i
+= IF A->a. <- q THEN RETURN (A->a., i);
+  ELSIF i=xj & x->.x <- q* THEN RETURN (climb q x j);
+  ELSIF B->. <- q* THEN RETURN (climb q B i);
+  ELSE ERROR
+  FI
+
+climb q X i
+= LET (A->aX.b, k) = parse (goto q X) i
+  IN IF a!=e THEN RETURN (A->a.Xb, k);
+     ELSE RETURN (climb q A k);
+     FI
+
+Turning i into a global variable, and removing it as argument and result and
+removing tail recursion gives:
+
+parse q
+= IF A->a. <- q THEN RETURN (A->a.);
+  ELSIF i=xj & x->.x <- q* THEN X := x; i := j;
+  ELSIF B->. <- q* THEN X := B;
+  ELSE ERROR;
+  FI ;
+  WHILE TRUE
+  DO A->aX.b := parse (goto q X);
+     IF a!=e THEN RETURN (A->a.Xb);
+     ELSE X := A;
+     FI;
+  FI;
+
+We can add look-ahead to further disambiguate the choice in the if-statement.
+Since the sets { A->a. | A->a. <- q}, { x | x->.x <- q* } and
+{ B | B->. <- q* } can be computed statically and since we can statically
+compute the (goto q X) for each value of X,
+we can specially 'parse q' into parse_q for each state q:
+
+parse_q
+= /* Assume i = xj */
+  CASE x
+  OF w : RETURN (A->a.);	/* for each A->a. <- q, w <- foll q (A->a.) */
+     y : X := y; i := j;	/* for each y->.y <- q* */
+     z : X := B;		/* for each B->. <- q*, z <- foll q (B->.) */
+  OTHERWISE ERROR;
+  ESAC;
+  WHILE TRUE
+  DO CASE X
+     OF B : A->aX.b := parse_(goto q B);	/* for each B->.c <- q* */
+     ESAC;
+     IF a!=e THEN RETURN (A->a.Xb) ELSE X := A FI;
+  FI
+
+Observing that of the result A->a.b only A and |a| are used, and turning
+these into global variables X and l, we finally get the result of
+[Kruseman].
+
+parse_q
+= /* Assume i = xj */
+  CASE x
+  OF w : X := A; l := |a|; RETURN;	/* A->a. <- q, w <- foll q (A->a.) */
+     y : X := y; i := j;	/* for each y->.y <- q* */
+     z : X := B;		/* for each B->. <- q*, z <- foll q (B->.) */
+  OTHERWISE ERROR
+  ESAC;
+  WHILE TRUE
+  DO CASE X
+     OF B : parse_(goto q B)	/* for each B->.c <- q* */
+     ESAC;
+     l := l-1;
+     IF l>0 THEN RETURN FI;
+  FI;
+
+By suitably numbering the states and grammar symbols, the CASE statements
+and function naming can be implemented.
+
+
+This last implementation can be compared to the stack automaton based
+one, by observing that 'X := y; i := j;' is a shift action,
+'X := A; l := |a|; RETURN;' is a reduce action for a kernel item and
+'X := B;' is a reduce action for an initial item.
+The counter 'l' counts the number of steps to return in recursion level,
+which replaces the stack pop operations.
+The push and goto operations are replaced by a recursive call.
+
+-----------------------------------
+
+Lex Augusteijn
+Philips Research Labs
+Eindhoven
+The Netherlands
+lex@prl.philips.nl
+-- 
+Send compilers articles to compilers@iecc.cambridge.ma.us or
+{ima | spdcc | world}!iecc!compilers.  Meta-mail to compilers-request.
+

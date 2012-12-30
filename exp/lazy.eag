@@ -1,0 +1,55 @@
+start (out>).
+
+start ("program\n\t{\n"+cdecls+capplies+"\t}\n">):
+   layout, begin symbol,
+      units (>decls, >nil, >nil, decls>, applies>),
+      end symbol, endofsentence,
+      code decls (>decls, cdecls),
+      code applies (>applies, capplies).
+
+units (>alldecls, >olddecls, >oldapplies, newdecls>, newapplies>):
+   unit (>alldecls, >olddecls, >oldapplies, idecls>, iapplies>),
+      semicolon,
+      units (>alldecls, >idecls, >iapplies, newdecls>, newapplies>);
+units (>alldecls, >olddecls, >oldapplies, newdecls>, newapplies>):
+   unit (>alldecls, >olddecls, >oldapplies, newdecls>, newapplies>).
+
+unit (>alldecls, >olddecls, >applies, newdecls>, applies>):
+   declaration (>olddecls, newdecls>);
+unit (>alldecls, >decls, >oldapplies, decls>, newapplies>):
+   application (>alldecls, >oldapplies, newapplies>).
+
+declaration (>decls, decls * ls>):
+   decl symbol, identifier (ls>), not in list (>ls, >decls).
+
+application (>alldecls, >applies, applies * ls>):
+   apply symbol, identifier (ls>), in list (>ls, >alldecls).
+
+not in list (>ls, >nil):;
+not in list (>ls, >list * string):
+   not equal (>ls, >string), not in list (>ls, >list).
+
+in list (>ls, >tuple * ls):;
+in list (>ls, >tuple * string):
+   not equal (>ls, >string), in list (>ls, >tuple).
+
+code decls (>nil, empty>):;
+code decls (>list * ls, cdecls+"\t  decl "+ls+";\n">):
+   code decls (>list, cdecls>).
+
+code applies (>nil, empty>):;
+code applies (>list * ls, capplies+"\t  apply "+ls+";\n">):
+   code applies (>list, capplies>).
+
+begin symbol: "BEGIN", layout.
+end symbol: "END", layout.
+semicolon: ";", layout.
+decl symbol: "DECL", layout.
+apply symbol: "APPLY", layout.
+
+identifier (ls>):
+   {abcdefghijklmnopqrstuvwxyz}+! (ls>), layout.
+
+layout:
+   { \n\t}*! (ignore>).
+
