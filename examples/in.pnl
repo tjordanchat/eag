@@ -4,22 +4,28 @@ ROLES: {
 }
 
 FIELDS: { 
-	f1 : "Dollar Amount", "$0099.99";
-	f2 : "Date", "MM/DD/YYYY";
+	f1 : "Dollar Amount: %($000,000,009.99)";
+	f2 : "Date %(MM/DD/YYYY)";
 	f3 : l1;
+	f4 : l2;
 }
 
 LISTS: {
-	l1 :  "a", "b", "c";
+	l1 :  "accept", "reject", "abstain";
+	l2 :  "Gathering Information:", "Reject";
 }
 
 WORKFLOW: {
-	w0 > w1;
-	w1 : {
-		A(a) ? accept(f1="ac"):reject(f1="r"):abstain(f1="ab");
-		A(d,e) ? P(f1>4):f(f1<=4); 
-		E(e,b,c) ? p(f1>4):f(f1<=4); 
+	S0 ? S1(p):S2(f);
+	S0 : {
+		a ? pass(f3="ac"):fail(f3="r"):abstain(f3="ab");
+		A(d,e) ? e(f1>4):c(f1<=4); 
+		E(e,b,c) ? d(f1>4):e(f1<=4); 
 		E(d,e) ? p:f; 
+	}
+	S1 : {
+		new?rejected(f4="r"):gathering_info(f4="g");	
+		f1,f2 ? new;
 	}
 }
 
