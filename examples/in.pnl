@@ -11,6 +11,7 @@ FIELDS: {
 	f3 : l1;
 	f4 : l2;
 	f5 : ext1();
+	f6 : 12;
 }
 
 LISTS: {
@@ -19,19 +20,20 @@ LISTS: {
 }
 
 WORKFLOW: {
+	S2 ? exit(f5);
 	S0 ? S1(S0.p):S2(S0.f);
 	S1 ? SF(S1.done):SR(S1.notyet);
 	S0 : {
-		a ? pass(f3=/^ac/):fail(f3=/^r/):abstain(f3=/^ab/); # same as A(a)
-		A(d,e) ? e(f1>4):c(f1<=4); 
-		E(e,b,c) ? d(f1>4):e(f1<=4); 
-		E(d,e) ? p:f; 
+		a ? pass(f3="ac"):fail(f3="r"):abstain(f3="ab"); # same as A(a)
+		A(d,e) ? e(f1>4):c(f1<4); 
+		E(e,b,c) ? d(f1>4):e(f1<4); 
+		E(d,e) ? p:f(f6=2); 
 	}
 	S1 : {
-		new?rejected(f4=/^r/):gathering_info(f4=/^g/);	
+		new?rejected(f4="r"):gathering_info(f4="g");	
 		f1,f2 ? new; # same as A(f1,f2)
-		new ? done(f5):notyet(!f5);
+		A(new) ? done(f5):notyet(!f5);
+		a,b ? (f1++,f2=6,f5=f2/f4) : next;
 	}
-	S2?(f5);
 }
 

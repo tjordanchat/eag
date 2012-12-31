@@ -1,43 +1,64 @@
 
-pnl: block
+pnl: block,pnl;.
+
+block: roles_block; fields_block; lists_block; workflow_block.
 
 roles_block: rbl, ob, role_stmts, cb.
 fields_block: fbl, ob, field_stmts, cb.
 lists_block: lbl, ob, list_stmts, cb.
 workflow_block: wbl, ob, workflow_stmts, cb.
 
-field_stmts: field_stmt, field_stmts;.
-
 role_stmts: role_stmt, role_stmts;.
+field_stmts: field_stmt, field_stmts;.
+list_stmts: list_stmt, list_stmts;.
+workflow_stmts: workflow_stmt, workflow_stmts;.
+
+role_stmt: labeled_role_order,se.
+role_stmt: role_order,se.
+role_stmt: role_auth,se.
+
+labeled_role_order: lab,role_order.
+role_order: var, o, role_order.
+role_order: var, o, var. 
+
+role_auth: lab, role_flist.
+role_flist: role_sf, role_flist;.
+role_sf: s,varf.
 
 field_stmt: lab, field_type, se.
 field_type: str; var; fun.
 
-role_stmt: labeled_role_order.
-role_stmt: role_order.
-role_stmt: role_auth.
+list_stmt: lab, str, list_str, se.
+list_str: ",",l, str,list_str;.
 
-role_auth: lab, role_flist, se.
-role_flist: s,varf,role_flist;s,varf.
 
-varf: var;var,pgroup.
+workflow_stmt: workflow_subp; workflow_switch, se.
+
+workflow_subp: lab, "{",l, workflow_stmts, "}".
+switch: join, "?",l, 
+	
+join: qual; plane.
+
+wf_block: lab, "{",l, workflow_stmts, "}",l.
+
+
+varf: var;varm,pgroup.
 
 pgroup: "(",l,tvalue,")",l.
 
-tvalue: rel;sing;"!",l,sing;.
+tvalue: rel;sing;"!",sing;.
 
-sing: "(",l,rel,")",l; var; str.
+sing: "(",l,rel,")",l; var; str, num.
 
 rel: sing, r, sing.
 
-labeled_role_order: lab,role_order.
-role_order: var, o, role_order.
-role_order: var, o, var,se. 
 
 l: { \n\t}*!.
 r: {><=},l.
 un:"!",l;.
 c:":",l.
+fun:varm,"(",{ \t}*,")".
+num:{0-9}+!,l.
 rbl: "ROLES",l,c.
 fbl: "FIELDS",l,c.
 lbl: "LISTS",l,c.
@@ -47,6 +68,7 @@ str_chars: str_char,str_chars;.
 str_char:^{\\\"\n}+!;"\\\"";"\\\\".
 lab:var,c,l.
 var: {A-Za-z}{A-Za-z0-9}*!,l.
+varm: {A-Za-z}{A-Za-z0-9}*!.
 se: ";",l.
 o:">",l.
 ob:"{",l.
