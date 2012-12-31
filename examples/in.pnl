@@ -1,6 +1,8 @@
 ROLES: { 
+	r4 > r3;
+	S0: r1 > r2 > r3; # order within S0 context.
 	r1: +f1 +f2;
-	r2: +f3 -f5; 
+	r2: +f3 -f5(f2.1>"12/31/1999"); 
 }
 
 FIELDS: { 
@@ -20,13 +22,13 @@ WORKFLOW: {
 	S0 ? S1(S0.p):S2(S0.f);
 	S1 ? SF(S1.done);
 	S0 : {
-		a ? pass(f3="ac"):fail(f3="r"):abstain(f3="ab"); # same as A(a)
+		a ? pass(f3=/^ac/):fail(f3=/^r/):abstain(f3=/^ab/); # same as A(a)
 		A(d,e) ? e(f1>4):c(f1<=4); 
 		E(e,b,c) ? d(f1>4):e(f1<=4); 
 		E(d,e) ? p:f; 
 	}
 	S1 : {
-		new?rejected(f4="r"):gathering_info(f4="g");	
+		new?rejected(f4=/^r/):gathering_info(f4=/^g/);	
 		f1,f2 ? new; # same as A(f1,f2)
 		new ? done(f5):notyet(!f5);
 	}
