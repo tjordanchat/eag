@@ -1,17 +1,34 @@
 
 pnl: block
 
-role_block: "ROLES", l, ":", l, "{", l, role_stmts.
+roles_block: rbl, ob, role_stmts, cb.
+fields_block: fbl, ob, fliel_stmts, cb.
+lists_block: lbl, ob, list_stmts, cb.
+workflow_block: wbl, ob, workflow_stmts, cb.
+
+role_stmts: role_stmt, role_stmts.
+role_stmts: .
 
 role_stmt: labeled_role_order.
 role_stmt: role_order.
 role_stmt: role_auth.
 
-labeled_role_order: var,l,":",l,role_order.
-role_order: var, l, ">", l, role_order.
-role_order: var, l, ">", l, var, l, se. 
+role_auth: lab,
 
-var: {A-Za-z0-9}+!.
+labeled_role_order: lab,role_order.
+role_order: var, o, role_order.
+role_order: var, o, var,se. 
+
 l: { \n\t}*!.
-se: ";".
+rbl: "ROLES",l,c.
+fbl: "FIELDS",l,c.
+lbl: "LISTS",l,c.
+wbl: "WORKFLOW",l,c.
+lab:var,c,l.
+var: {A-Za-z0-9}+!,l.
+se: ";",l.
+c:":",l.
+o:">",l.
+ob:"{",l.
+cb:"}",l.
 
