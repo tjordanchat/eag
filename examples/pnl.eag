@@ -1,0 +1,17 @@
+
+pnl: block
+
+role_block: "ROLES", l, ":", l, "{", l, role_stmts.
+
+role_stmt: labeled_role_order.
+role_stmt: role_order.
+role_stmt: role_auth.
+
+labeled_role_order: var,l,":",l,role_order.
+role_order: var, l, ">", l, role_order.
+role_order: var, l, ">", l, var, l, se. 
+
+var: {A-Za-z0-9}+!.
+l: { \n\t}*!.
+se: ";".
+
