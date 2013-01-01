@@ -1,41 +1,46 @@
-ROLES: { 
-	-f4;
-	r1 > r2 > r3; 
-	r1: +f1 +f2;
-	r2: +f3 -f5(f2>"12/31/1999"); 
-	PM: +f4;
-}
+#(f1,f2,f3,[f4,f5],f6)
 
-INPUTS: { 
-	f1 : "Dollar Amount: %($000,000,009.99)";
-	f2 : "Date %(MM/DD/YYYY)";
-	f3 : l1;
-	f4 : l2;
-	f5 : ext1();
-	f6 : 12;
-	create_issue;
-	create_project;
-	issue_id : 0;
-	f_pname : "Project Name: %(s)"; 
-}
+	-add_users;
+	PM = !f4+ProjName+create_project;
+	r1 = +f1+f2!ProjName;
+	r2 = +f3!f5; 
+	admin = +add_uses;
+	f1 = "Dollar Amount: %($000,000,009.99)";
+	f2 = "Date %(MM/DD/YYYY)";
+	f3 = l1;
+	f4 = l2;
+	f5 = ext1();
+	f6 = 12;
+	f7 = /^a/;
+	issue_type = l3;
+	create_issue = "Create Issue";
+	create_project = "Create Project";
+	issue_id = 0;
+	pname = "Project Name: %(s)"; 
+	Fixed = "Fixed";
+	l1 =  ["accept", "reject", "abstain"];
+	l2 =  ["Gathering Information:", "Reject"];
+	l3 =  ["Bug", "Feature", "Enhancement"];
+	l_pname = [];
+	add_users = "Add User";
 
-LISTS: {
-	l1 :  "accept", "reject", "abstain";
-	l2 :  "Gathering Information:", "Reject";
-	l_pname;
-}
-
-WORKFLOW: {
-  create_project ? f_pname;
-  f_pname ? (l_pname+=f_pname) ? f_pname.add_issue;
-  f_pname.p ? (l_pname-=f_pname); 
-	add_issues ? (issue_id++);
-	a,b ? pass(f3="ac"):fail(f3="r"):abstain(f3="ab"); # same as A(a)
-	A(d,e) ? e(f1>4):c(f1<4); 
-	E(e,b,c) ? d(f1>4):e(f1<4); 
-	E(d,e) ? p:f(f6=2); 
-	new_proj ? l3+=fprojname ? rej(f4="r") : gi(f4="g") : cl;	
-	a,b ? (f1++,f2=6,f5=f2/f4) : next;
-	a?b?c?d;
-}
+  create_project ? handle_project(pname,pdesc,ppri,pmgr);
+  handle_project ? pname.add_issues;
+  add_issues ? pmgr=+add_users, 
+	add_issue ? handle_issue(issue_type, issue_desc, issue_sev, issue_id.handle_issue);
+	issue_owner , E(Fixed,CantFix) ?  ;
+	f4.1 ? r1.f1-- ; 
+	f4.1 ? r1.f1++ ; 
+	f4.1 ? r1.f1 ; 
+	f4.2 ? ;
+	pname~/^TOP_/ ? a, b, c;
+	a,b ? pass(f3.1), fail(f3.2), abstain(f3.3);
+	A(d,e) ? e(f1>4), c(f1<=4); 
+	E(e,b,c) ? d(f1>4), e(f1<=4); 
+	E(d,e) ? p(@1h,@12pm), f(f6==2); 
+	a, b ? f1++, f2=6, f5=f2/f4 , next;
+	a ? b, c, d;
+  @12/25/2012 12:15 pm ? a, b;
+  @Fri 12:15 pm ? a, b;
+  @2nd Sun 10:15 am ? a, b;
 
