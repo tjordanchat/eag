@@ -6,7 +6,7 @@ ROLES: {
 	PM: +f4;
 }
 
-FIELDS: { 
+INPUTS: { 
 	f1 : "Dollar Amount: %($000,000,009.99)";
 	f2 : "Date %(MM/DD/YYYY)";
 	f3 : l1;
