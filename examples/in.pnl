@@ -5,6 +5,7 @@
 	
 	orid = admin > boss > PM > dev > asst;
 	exec = VP > boss > PM;
+	admin = boss = PM = dev = asst = VP = [@];
 	-add_users -create_project !project_id;
   project_adder = +add_users, +pname, +pdesc, +ppri, +pmgr, +create_project;
 	admin = +me@mycomp.com;
