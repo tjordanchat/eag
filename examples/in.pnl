@@ -1,12 +1,16 @@
 #(f1,f2,f3,[f4,f5],f6)
 
-	-add_users;
+	-add_users -create_project !project_id;
+  project_adder = +add_users, +pname, +pdesc, +ppri, +pmgr, +create_project;
+	admin = +me@mycomp.com;
+	admin = +add_uses+add_project_mgr+pmgr;
+	add_users = "Add User";
+	project_id = 0;
 	PM = !f4+ProjName+create_project;
 	r1 = +f1+f2!ProjName;
 	r2 = +f3!f5; 
-	admin = +add_uses;
-	f1 = "Dollar Amount: %($000,000,009.99)";
-	f2 = "Date %(MM/DD/YYYY)";
+	f1 = "Dollar Amount: %$000,000,009.99";
+	month, day, year = "Date %02d/%02d/%04d";
 	f3 = l1;
 	f4 = l2;
 	f5 = ext1();
@@ -16,19 +20,31 @@
 	create_issue = "Create Issue";
 	create_project = "Create Project";
 	issue_id = 0;
-	pname = "Project Name: %(s)"; 
+	pname = "Project Name: %(l_pname)"; 
+	add_project_mgr  = "Add Project Manager";
+	pmgr = "Project Manager: %-20s"; 
 	Fixed = "Fixed";
 	l1 =  ["accept", "reject", "abstain"];
 	l2 =  ["Gathering Information:", "Reject"];
 	l3 =  ["Bug", "Feature", "Enhancement"];
 	l_pname = [];
-	add_users = "Add User";
-
-  create_project ? handle_project(pname,pdesc,ppri,pmgr);
-  handle_project ? pname.add_issues;
-  add_issues ? pmgr=+add_users, 
-	add_issue ? handle_issue(issue_type, issue_desc, issue_sev, issue_id.handle_issue);
+	timer1 = &5m12s;
+	ticks = &4a;
+	secondtuesecmonth = &2M2tue;
+	xmas = &Dec25;
+  
+	button1_pushed ? +call_elev, wait_off, something_else;
+	wait_off, pmgr=+wait_off_button, wait_off_button ? -call_elev;
+  pmgr = +add_users +pname +pdesc +ppri;
+  something_else, call_elev ? issue.create_issue, something_else;
+  pname, pdesc, ppri, pmgr ? pmgr = +create_project , l_pname = +pname ;
+  pname, pdesc, ppri, pmgr, create_project ? handle_project;
+  handle_project ? start_project(project_id++);
+  start_project ? project_id(pmgr=+add_users+add_issue) ;
+  add_users ? user_name=+add_issues;
+	add_issue ? handle_issue(issue_type, issue_desc, issue_sev);
 	issue_owner , E(Fixed,CantFix) ?  ;
+	xmas ? ... ;
 	f4.1 ? r1.f1-- ; 
 	f4.1 ? r1.f1++ ; 
 	f4.1 ? r1.f1 ; 
@@ -37,10 +53,13 @@
 	a,b ? pass(f3.1), fail(f3.2), abstain(f3.3);
 	A(d,e) ? e(f1>4), c(f1<=4); 
 	E(e,b,c) ? d(f1>4), e(f1<=4); 
-	E(d,e) ? p(@1h,@12pm), f(f6==2); 
+	E(d,e) ? p(@12am), f(f6==2); 
 	a, b ? f1++, f2=6, f5=f2/f4 , next;
 	a ? b, c, d;
-  @12/25/2012 12:15 pm ? a, b;
-  @Fri 12:15 pm ? a, b;
-  @2nd Sun 10:15 am ? a, b;
 
+
+  project_id++ , pmgr =+ add_users+add_issue , a, b ? pass(f3.1), fail(f3.2), abstain(f3.3);
+
+	a, b, c, d, e ? k;
+
+	
