@@ -29,11 +29,12 @@
 	issue_id = 0;
 	pname = "Project Name: %(l_pname)"; 
 	add_project_mgr  = "Add Project Manager";
-	pmgr = "Project Manager: %(l_pmgrs)"; 
+	project_mgr = pmgr = "Project Manager: %(l_pmgrs)"; 
 	Fixed = "Fixed";
 	l1 =  ["accept", "reject", "abstain"];
 	l2 =  ["Gathering Information:", "Reject"];
 	l3 =  ["Bug", "Feature", "Enhancement"];
+	VOTERS = +PM +CM +DM;
 	
 	l_pname = [*];
 	l_users = [@];
@@ -56,6 +57,8 @@
 	b ? i_summary, i_sev, i_owner, i_id = issue,  ? i_owner = +issue.fix; 
 
 	b,*5,&5m?bell;
+
+	time_to_vore ? *VOTERS.vote ;
 
 	cproj="Create Project";
 	PM=+cproj
