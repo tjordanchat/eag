@@ -74,7 +74,7 @@
 
 	*project.*issues.last_activity > &5d ? i_owner++? notify;
 
-	l_owners = [@];
+	l_owners = *~[@];
 	l_owners = *project.*issues.i_owner 
 
 	push_call_button ? +call_button ?  pgm=+choose_floor_buttons ? something_else, wait_off_button;
