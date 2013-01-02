@@ -1,4 +1,7 @@
-#(f1,f2,f3,[f4,f5],f6)
+#!/bin/pnl
+#[
+	(f1,f2,f3),(f4,f5),f6
+#]
 
 	-add_users -create_project !project_id;
   project_adder = +add_users, +pname, +pdesc, +ppri, +pmgr, +create_project;
@@ -32,21 +35,29 @@
 	ticks = &4a;
 	secondtuesecmonth = &2M2tue;
 	xmas = &Dec25;
-  
-	button1_pushed ? +call_elev, wait_off, something_else;
-	wait_off, pmgr=+wait_off_button, wait_off_button ? -call_elev;
+	issue=;
+  issue_summary=%s;
+  button1_pushed = "Button 1";
   pmgr = +add_users +pname +pdesc +ppri;
+  holiday_days = [ &Dec25, &Jul4, &Feb2 ];
+  
+	button1_pushed , +call_elev, pmgr=+wait_off_button ? something_else;
+	wait_off_button, -call_elev ? ;
+
   something_else, call_elev ? issue.create_issue, something_else;
+  issue_summary, issue_desc, issue_owner, create_issue ? 
+	
+	&12am?start_inventory;
   pname, pdesc, ppri, pmgr ? pmgr = +create_project , l_pname = +pname ;
   pname, pdesc, ppri, pmgr, create_project ? handle_project;
-  handle_project ? start_project(project_id++);
+  handle_project, project_id++ ? start_project;
   start_project ? project_id(pmgr=+add_users+add_issue) ;
   add_users ? user_name=+add_issues;
 	add_issue ? handle_issue(issue_type, issue_desc, issue_sev);
 	issue_owner , E(Fixed,CantFix) ?  ;
 	xmas ? ... ;
 	f4.1 ? r1.f1-- ; 
-	f4.1 ? r1.f1++ ; 
+	f4.fn ? r1.f1++ ; 
 	f4.1 ? r1.f1 ; 
 	f4.2 ? ;
 	pname~/^TOP_/ ? a, b, c;
@@ -56,10 +67,7 @@
 	E(d,e) ? p(@12am), f(f6==2); 
 	a, b ? f1++, f2=6, f5=f2/f4 , next;
 	a ? b, c, d;
-
-
   project_id++ , pmgr =+ add_users+add_issue , a, b ? pass(f3.1), fail(f3.2), abstain(f3.3);
-
 	a, b, c, d, e ? k;
 
 	
