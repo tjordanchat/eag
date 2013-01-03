@@ -4,8 +4,8 @@
 #]
 	
 	orid = admin > boss > PM > dev > asst;
-	exec = VP > boss > PM;
-	peon = PM > boss > VP;
+	exec = VP > boss.2d > PM.7d;
+	peon = PM > boss.14d > VP;
 	admin = boss = PM = dev = asst = VP = [@];
 	-add_users -create_project !project_id +orig;
   project_adder = +add_users, +pname, +pdesc, +ppri, +pmgr, +create_project;
@@ -35,6 +35,7 @@
 	l2 =  ["Gathering Information:", "Reject"];
 	l3 =  ["Bug", "Feature", "Enhancement"];
 	VOTERS = +PM +CM +DM;
+	R1 = a | b;
 	
 	l_pname = [*];
 	l_users = [@];
@@ -55,10 +56,11 @@
 	&now ? a;
 	a , *1d ? issue.b, a;
 	b ? i_summary, i_sev, i_owner, i_id = issue,  ? i_owner = +issue.fix; 
+	R1 ? a ? b ? c;
 
 	b,*5,&5m?bell;
 
-	time_to_vore ? *VOTERS.vote ;
+	time_to_vote ? *VOTERS.vote ;
 
 	cproj="Create Project";
 	PM=+cproj
@@ -67,6 +69,8 @@
 
 	*project.p_name ~ /_X_/ ? *issues.owner ~ /jbob/ ? loop1;
 
+	*timer1 ? after_timer1_fires;
+
 	i_owner, i_desc
 
 	*project.*issues.i_owner ~ /^jtj/ ? i_owner = mike@work.com;
@@ -74,7 +78,7 @@
 
 	*project.*issues.last_activity > &5d ? i_owner++? notify;
 
-	l_owners = *~[@];
+	l_owners = [*~@];
 	l_owners = *project.*issues.i_owner 
 
 	push_call_button ? +call_button ?  pgm=+choose_floor_buttons ? something_else, wait_off_button;
