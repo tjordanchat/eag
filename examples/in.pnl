@@ -1,66 +1,79 @@
 #!/bin/pnl
-#[
-	(f1,f2,f3),(f4,f5),f6
-#]
-	
-	orid = admin > boss > PM > dev > asst;
-	exec = VP > boss.2d > PM.7d;
-	peon = PM > boss.14d > VP;
-	admin = boss = PM = dev = asst = VP = [@];
-	-add_users -create_project !project_id +orig;
-  project_adder = +add_users, +pname, +pdesc, +ppri, +pmgr, +create_project;
-	admin = +me@mycomp.com;
-	admin = +add_uses+add_project_mgr+pmgr;
+
+#
+# LAYOUT
+#
+	a1 = +[(f1 f2 f3)(f4 f5)f6] +[f1,f2];
+
+#
+# ROLES
+#
+	admin = +me@mycomp.com +bob@gmail.com;
+	*admin?ext;
+	most = ++f1 -+add_users +-create_project +-project_id -+orig;
+  project_adder = ++add_users +-pname +-pdesc -+ppri +-pmgr ++create_project +admin;
+	admin = ++add_uses ++add_project_mgr;
+	r1 = ++f1+-f2--pname;
+	r2 = +-f3++f5; 
+	PM = --f4++pname+-create_project;
+	PM =+bob@home.com;
+	PM =+pete@school.com;
+  pmgr = ++add_users ++pname ++pdesc ++ppri;
+	choose_floor_buttons = ++floor1_but ++floor2_but ++floor3_but;
+
+#
+# FIELDS - DISPLAYABLE
+#
+	date1 = "Date %t";
+	f1 = "Dollar Amount: %d";
+	cn = "Customer Name: %20h";
+	pname = "Project Name: %(l_pname)"; 
+	pmgr = "Project Manager: %(l_pmgrs)"; 
+	Fixed = "Fixed";
 	add_users = "Add User";
-	project_id = 0;
-	PM = !f4+ProjName+create_project;
-	r1 = +f1+f2!ProjName;
-	r2 = +f3!f5; 
-	f1 = "Dollar Amount: %$000,000,009.99";
-	month, day, year = "Date %02d/%02d/%04d";
-	f3 = l1;
-	f4 = l2;
-	f5 = ext1();
-	f6 = 12;
-	f7 = /^a/;
-	issue_type = l3;
 	create_issue = "Create Issue";
 	create_project = "Create Project";
-	issue_id = 0;
-	pname = "Project Name: %(l_pname)"; 
 	add_project_mgr  = "Add Project Manager";
-	project_mgr = pmgr = "Project Manager: %(l_pmgrs)"; 
-	Fixed = "Fixed";
+  button1_pushed = "Button 1";
 	l1 =  ["accept", "reject", "abstain"];
 	l2 =  ["Gathering Information:", "Reject"];
 	l3 =  ["Bug", "Feature", "Enhancement"];
-	VOTERS = +PM +CM +DM;
-	R1 = a | b;
+
+
+#
+# FIELDS - NON DISPLAYABLE
+#
+	project_id = 0;
+	issue_id = 0;
+	holiday_days = [ @Dec25, @Jul4, @Feb2 ];
+
+#
+# EXTERNAL FUNCTIONS
+#
+
+	f5 = ext1();
+
+#
+# TIME
+#
+	timer1 = @5m12s;
+	ticks = @4a;
+	secondtuesecmonth = @2M2tue;
+	xmas = @Dec25;
 	
-	l_pname = [*];
-	l_users = [@];
-	timer1 = &5m12s;
-	ticks = &4a;
-	secondtuesecmonth = &2M2tue;
-	xmas = &Dec25;
-	issue=*;
-	issues=[*];
-	i_id=*;
-  issue_summary=%s;
-  button1_pushed = "Button 1";
-  pmgr = +add_users +pname +pdesc +ppri;
-  l_dates = holiday_days = [ &Dec25, &Jul4, &Feb2 ];
-	choose_floor_buttons=+floor1_but+floor2_but+floor3_but;
-	!i_desc!i_owner;
+#
+# PROCESS
+#
 
-	&now ? a;
-	a , *1d ? issue.b, a;
-	b ? i_summary, i_sev, i_owner, i_id = issue,  ? i_owner = +issue.fix; 
+	@now ? +a1, a;
+	a  ? issue.b, a;
 	R1 ? a ? b ? c;
+	b,*5,@5m?bell;
+	*projects*issues(issue_type.2&issue_owner~myguys&10000<dept_id<20000)?
 
-	b,*5,&5m?bell;
-
-	time_to_vote ? *VOTERS.vote ;
+	@=++hello_world;
+	hello_world="Hello world";
+	&now?hello_world;
 
 	cproj="Create Project";
 	PM=+cproj
@@ -71,32 +84,26 @@
 
 	*timer1 ? after_timer1_fires;
 
-	i_owner, i_desc
+	func1 ? *project.*issues.i_owner ~ /^%(var_from_name3)$/ ? i_owner = var_to_name4;
+	*project.*issues.i_owner ~ /^jtj/ ? i_owner = PM;
 
-	*project.*issues.i_owner ~ /^jtj/ ? i_owner = mike@work.com;
-
+	comment = "Add Comment: %50s";
 
 	*project.*issues.last_activity > &5d ? i_owner++? notify;
+	*project.*issue.*?last_activity = &now;
 
-	l_owners = [*~@];
+
+
+	*project.last_activity ? pa++ ;
+	*project.issue.last_activity ? ;
+
 	l_owners = *project.*issues.i_owner 
 
-	push_call_button ? +call_button ?  pgm=+choose_floor_buttons ? something_else, wait_off_button;
-	wait_off_button, &1m ? floor_was_chosen, floor_was_not_chosen;
-
-	check_if_floor_was_chosen, choose_floor ? -call_elev ;
-
-  something_else, call_elev ? issue.create_issue ? issue.assign;
-	create_issue ? issue_summary, issue_desc, issue_owner; 
-	
-	issue add_issue , 
-	&now ? boot;
 	&12am ? start_inventory;
-	holiday_days ? 
   pname, pdesc, ppri, pmgr ? pmgr = +create_project , l_pname = +pname ;
   pname, pdesc, ppri, pmgr, create_project ? handle_project;
   handle_project, project_id++ ? start_project;
-  start_project ? project_id(pmgr=+add_users+add_issue) ;
+  start_project ? project_id, pmgr = ++add_users -+add_issue ;
   add_users ? user_name=+add_issues;
 	add_issue ? handle_issue(issue_type, issue_desc, issue_sev);
 	issue_owner , E(Fixed,CantFix) ?  ;
@@ -107,12 +114,15 @@
 	f4.2 ? ;
 	pname~/^TOP_/ ? a, b, c;
 	a,b ? pass(f3.1), fail(f3.2), abstain(f3.3);
+
+	a,E(b1,b2),c?d,e? w, x;
+
 	A(d,e) ? e(f1>4), c(f1<=4); 
 	E(e,b,c) ? d(f1>4), e(f1<=4); 
-	E(d,e) ? p(@12am), f(f6==2); 
+	E(d,e) ? p(&12am), f(f6==2); 
 	a, b ? f1++, f2=6, f5=f2/f4 , next;
 	a ? b, c, d;
-  project_id++ , pmgr =+ add_users+add_issue , a, b ? pass(f3.1), fail(f3.2), abstain(f3.3);
+  project_id++ , b ? pass(f3.1), fail(f3.2), abstain(f3.3);
 	a, b, c, d, e ? k;
 
 	
