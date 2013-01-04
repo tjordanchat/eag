@@ -71,18 +71,18 @@
 	a  ? issue.b, a;
 	R1 ? a ? b ? c;
 	b,*5,@5m?bell;
-	*projects*issues(issue_type.2&issue_owner~myguys&10000<dept_id<20000)?
+	*projects*issues(issue_type.2&issue_owner~myguys&10000<dept_id<20000&%(var22)>5)?;
 	PM=+cproj
 	*project.p_name ~ /_X_/ ? *issues.owner ~ /jbob/ ? loop1;
 	func1 ? *project.*issues.i_owner ~ /^%(var_from_name3)$/ ? i_owner = var_to_name4;
 	*project.*issues.i_owner ~ /^jtj/ ? i_owner = PM;
 	*project.*issues.last_activity > @5d ? i_owner++? notify;
-	*project.*issue.*?last_activity = &now;
+	*project.*issue.*?last_activity = @now;
 	a,b ? pass(f3.1), fail(f3.2), abstain(f3.3);
 	a,E(b1,b2),c?d,e? w, x;
 	A(d,e) ? e(f1>4), c(f1<=4); 
 	E(e,b,c) ? d(f1>4), e(f1<=4); 
-	E(d,e) ? p(&12am), f(f6==2); 
+	E(d,e) ? p(@12am), f(f6==2); 
 	a, b ? f1++, f2=6, f5=f2/f4 , next;
 	a ? b, c, d;
 
