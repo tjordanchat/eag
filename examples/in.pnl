@@ -3,12 +3,12 @@
 #
 # LAYOUT
 #
-	a1 = +[(f1 f2 f3)(f4 f5)f6] +[f1,f2];
+	a1 = $[(f1 f2 f3)(f4 f5)f6] $(f1,f2);
 
 #
-# ROLES
+# ROLES - people and controls.
 #
-	admin = +me@mycomp.com +bob@gmail.com;
+	admin = +me@mycomp.com +bob@gmail.com ++users;
 	most = ++f1 -+add_users +-create_project +-project_id -+orig;
   project_adder = ++add_users +-pname +-pdesc -+ppri +-pmgr ++create_project +admin;
 	admin = ++add_uses ++add_project_mgr;
@@ -19,35 +19,41 @@
 	PM =+pete@school.com;
   pmgr = ++add_users ++pname ++pdesc ++ppri;
 	choose_floor_buttons = ++floor1_but ++floor2_but ++floor3_but;
+	john@home.com = ++customer_reason;
 
 #
 # FIELDS - DISPLAYABLE
 #
-	date1 = "Date %t";
-	f1 = "Dollar Amount: %d";
-	cn = "Customer Name: %20h";
-	pname = "Project Name: %(l_pname)"; 
-	pmgr = "Project Manager: %(l_pmgrs)"; 
-	Fixed = "Fixed";
-	add_users = "Add User";
-	create_issue = "Create Issue";
-	create_project = "Create Project";
-	add_project_mgr  = "Add Project Manager";
-  button1_pushed = "Button 1";
-	l1 =  ["accept", "reject", "abstain"];
-	l2 =  ["Gathering Information:", "Reject"];
-	l3 =  ["Bug", "Feature", "Enhancement"];
-	hello_world="Hello world";
-	cproj="Create Project";
-	comment = "Add Comment: %50s";
+	date1=%t "Date";
+	f1=%d "Dollar Amount";
+	c=%h "Customer Name";
+	pname=%s "Project Name"; 
+	pmgr = %[]  "Project Manager"; 
+	pmgr = +c;
+	Fixed = %b   "Fixed";
+	add_users = %b   "Add User";
+	create_issue = %b   "Create Issue";
+	create_project = %b   "Create Project";
+	add_project_mgr = %b   "Add Project Manager";
+  button1_pushed = %b   "Button 1";
+	l_name = %[]  "List of Projects" 
+	hello_world = "Hello world";
+	cproj=%b "Create Project";
+	comment = %30s   "Add Comment";
+	comments="Previous Comments" %[];
 
+	
+	tstrslt = l1 "Test Results"; 
+	l1 = "accept" "reject" "abstain";
+	l2 =  "Gathering Information" "Reject";
+	l3 =  "Bug" "Feature" "Enhancement";
 
 #
 # FIELDS - NON DISPLAYABLE
 #
 	project_id = 0;
 	issue_id = 0;
-	holiday_days = [ @Dec25, @Jul4, @Feb2 ];
+	holiday_days =  @Dec25 @Jul4 @Feb2 ;
 
 #
 # EXTERNAL FUNCTIONS
@@ -70,7 +76,7 @@
 	@now ? +a1, a;
 	a  ? issue.b, a;
 	R1 ? a ? b ? c;
-	b,*5,@5m?bell;
+	b,@5m?bell;
 	*projects*issues(issue_type.2&issue_owner~myguys&10000<dept_id<20000&%(var22)>5)?;
 	PM=+cproj
 	*project.p_name ~ /_X_/ ? *issues.owner ~ /jbob/ ? loop1;
@@ -84,6 +90,6 @@
 	E(e,b,c) ? d(f1>4), e(f1<=4); 
 	E(d,e) ? p(@12am), f(f6==2); 
 	a, b ? f1++, f2=6, f5=f2/f4 , next;
-	a ? b, c, d;
+	a ? b, c? d;
 
 	
