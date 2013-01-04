@@ -9,7 +9,6 @@
 # ROLES
 #
 	admin = +me@mycomp.com +bob@gmail.com;
-	*admin?ext;
 	most = ++f1 -+add_users +-create_project +-project_id -+orig;
   project_adder = ++add_users +-pname +-pdesc -+ppri +-pmgr ++create_project +admin;
 	admin = ++add_uses ++add_project_mgr;
@@ -38,6 +37,9 @@
 	l1 =  ["accept", "reject", "abstain"];
 	l2 =  ["Gathering Information:", "Reject"];
 	l3 =  ["Bug", "Feature", "Enhancement"];
+	hello_world="Hello world";
+	cproj="Create Project";
+	comment = "Add Comment: %50s";
 
 
 #
@@ -70,59 +72,18 @@
 	R1 ? a ? b ? c;
 	b,*5,@5m?bell;
 	*projects*issues(issue_type.2&issue_owner~myguys&10000<dept_id<20000)?
-
-	@=++hello_world;
-	hello_world="Hello world";
-	&now?hello_world;
-
-	cproj="Create Project";
 	PM=+cproj
-	cproj?PM=+p_fields
-	p_fields?  o
-
 	*project.p_name ~ /_X_/ ? *issues.owner ~ /jbob/ ? loop1;
-
-	*timer1 ? after_timer1_fires;
-
 	func1 ? *project.*issues.i_owner ~ /^%(var_from_name3)$/ ? i_owner = var_to_name4;
 	*project.*issues.i_owner ~ /^jtj/ ? i_owner = PM;
-
-	comment = "Add Comment: %50s";
-
-	*project.*issues.last_activity > &5d ? i_owner++? notify;
+	*project.*issues.last_activity > @5d ? i_owner++? notify;
 	*project.*issue.*?last_activity = &now;
-
-
-
-	*project.last_activity ? pa++ ;
-	*project.issue.last_activity ? ;
-
-	l_owners = *project.*issues.i_owner 
-
-	&12am ? start_inventory;
-  pname, pdesc, ppri, pmgr ? pmgr = +create_project , l_pname = +pname ;
-  pname, pdesc, ppri, pmgr, create_project ? handle_project;
-  handle_project, project_id++ ? start_project;
-  start_project ? project_id, pmgr = ++add_users -+add_issue ;
-  add_users ? user_name=+add_issues;
-	add_issue ? handle_issue(issue_type, issue_desc, issue_sev);
-	issue_owner , E(Fixed,CantFix) ?  ;
-	xmas ? ... ;
-	f4.1 ? r1.f1-- ; 
-	f4.fn ? r1.f1++ ; 
-	f4.1 ? r1.f1 ; 
-	f4.2 ? ;
-	pname~/^TOP_/ ? a, b, c;
 	a,b ? pass(f3.1), fail(f3.2), abstain(f3.3);
-
 	a,E(b1,b2),c?d,e? w, x;
-
 	A(d,e) ? e(f1>4), c(f1<=4); 
 	E(e,b,c) ? d(f1>4), e(f1<=4); 
 	E(d,e) ? p(&12am), f(f6==2); 
 	a, b ? f1++, f2=6, f5=f2/f4 , next;
 	a ? b, c, d;
-  project_id++ , b ? pass(f3.1), fail(f3.2), abstain(f3.3);
-	a, b, c, d, e ? k;
 
 	
