@@ -35,12 +35,12 @@
 #
 # is '[]' bracks for E() and '{} for A().
 #
-# ie. [ a, b, c ] ? 
-
-	*( a, b, c ) ? 
-
-
-  '[(f1 f2 f3)(f4 f5)f6]' '(f1 f2)'.
+# ie. [ a, b, c ] ? d(c1), e(c2), f(c3).
+# forEach (ie '[]') blocks are needed because sometime a 
+# process does not return.
+#
+# c1 c2 & c3 have to evaluate to a truth value. They can not be something that has to be
+# wait for like a human interaction for a field or a duration of time to pass.
 #
 
  
