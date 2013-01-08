@@ -42,6 +42,10 @@
 # c1 c2 & c3 have to evaluate to a truth value. They can not be something that has to be
 # wait for like a human interaction for a field or a duration of time to pass.
 #
+# forEach blocks can occure beyond the beginning.
+# ie. [ a, b, c ] ? [ d. e ] ? f.
+#
+
 
  
 
