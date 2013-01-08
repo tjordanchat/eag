@@ -20,37 +20,49 @@
 	layout_B '(f4 [f5 f6])' '[f1 f5 f6]'.
 
 
-	@now ? project_leader "Create Project Leader" %b. 
+	@now ? cprojldr %b "Create Project Leader" ? project_leader "Project Leader" %h +++cproj . 
 
 #
 # Project
 #
 
-	cproj %b "Create Project" ? .
+	cproj %b "Create Project" ? %s "Project name" project ? project.handle_project.
+
+	handle_project ? +add_users, +add_releases, +add_issues.
+
+	add_users %b "Add user" ? "User name" %h new_name ? users +user_name
+	
+#
+# is '[]' bracks for E() and '{} for A().
+#
+# ie. [ a, b, c ] ? 
+
+	*( a, b, c ) ? 
 
 
+  '[(f1 f2 f3)(f4 f5)f6]' '(f1 f2)'.
 #
 
+ 
 
 
+  project_adder ++-add_users +--pname +--pdesc -+-ppri +--pmgr ++-create_project.
+  project_adder = +admin.
 
-  project_adder ++add_users +-pname +-pdesc -+ppri +-pmgr ++create_project +admin.
-
-  project?+admin 
-	project (project_owner ++issue).
+	project ? project_owner ++-issue.
 	oldest_feature = *project.*issue(type~feature).age>$.
 	projects.issues(issue_type.2&issue_owner~myguys&10000<dept_id<20000&%(var22)>5)?.
 	PM +cproj.
 	project.p_name ~ /_X_/ ? issues.owner ~ /jbob/ ? loop1.
-	func1 ? *project.*issues.i_owner ~ /^%(var_from_name3)$/ ? i_owner  var_to_name4.
+	func1 ? *project.*issues.i_owner ~ /^%(var_from_name3)$/ ? i_owner  var_to_name3.
 	*project.*issues.i_owner ~ /^jtj/ ? i_owner  PM.
-	*project.*issues.last_activity > @5d ? i_owner++? notify.
+	*project.*issues.last_activity > @5d ? i_owner++-? notify.
 	*project.*issue.*?last_activity  @now.
 	project_id  0.
 	pname %s "Project Name". 
 	pmgr   [] "Project Manager". 
-	PM --f4 ++pname +-create_project.
-	admin ++add_uses ++add_project_mgr.
+	PM ---f4 ++-pname +--create_project.
+	admin ++-add_uses ++-add_project_mgr.
 	create_project   %b   "Create Project".
 	add_project_mgr   %b   "Add Project Manager".
 	l_name   []  "List of Projects" 
@@ -58,11 +70,11 @@
 
 
 
-	r1 ++f1+-f2--pname.
-	r2 +-f3++f5. 
-  pmgr  ++add_users ++pname ++pdesc ++ppri.
-	choose_floor_buttons  ++floor1_but ++floor2_but ++floor3_but.
-	johnc john@home.com ++customer_reason "John Cusack".
+	r1 ++-f1+--f2---pname.
+	r2 +--f3++-f5. 
+  pmgr  ++-add_users ++-pname ++-pdesc ++-ppri.
+	choose_floor_buttons  ++-floor1_but ++-floor2_but ++-floor3_but.
+	johnc john@home.com ++-customer_reason "John Cusack".
 	date1 %t "Date".
 	f1 %d "Dollar Amount".
 	c %h "Customer Name".
@@ -91,6 +103,10 @@
 	ancestor=parent,parent.ancestor.
 
 	(	cond?exec(),cond?exec()?next(),cond?exec() ) ? then_next().
+
+	[ a, b, c ] ? d(c1), e(c2), f(c3).
+
+
 
 	release.issue.patch ? test_patch.
 
