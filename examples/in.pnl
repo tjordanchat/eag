@@ -28,10 +28,19 @@
 
 	cproj %b "Create Project" ? %s "Project name" project ? project.handle_project.
 
-	handle_project ? +add_users, +add_releases, +add_issues.
+			handle_project ? +add_users, +add_releases, +add_issues, +pair_release_issue.
 
-	add_users %b "Add user" ? "User name" %h new_name ? users +user_name
+			add_users %b "Add user" ? "User name" %h new_name ? %b "Submit user" ? users=+user_name.
+
+			add_releases %b "Add Releases" ? "Release name" %h release_name ? %b "Submit release" ?  releases=+release_name.
+
+			add_issues %b "Add issue" ? issue_summary, 	issue_description, issue_severity, issue_originator ? %b "Submit issue".
+
+			pair_release_issue %b ? release_name, issue_id ? release_name.
+
 	
+
+
 #
 # is '[]' bracks for E() and '{} for A().
 #
@@ -39,7 +48,7 @@
 # forEach (ie '[]') blocks are needed because sometime a 
 # process does not return.
 #
-# c1 c2 & c3 have to evaluate to a truth value. They can not be something that has to be
+# c1 c2 & c3 have to evaluate to a truth value immediately. They can not be something that has to be
 # wait for like a human interaction for a field or a duration of time to pass.
 #
 # forEach blocks can occure beyond the beginning.
