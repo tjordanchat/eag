@@ -9,26 +9,31 @@
 
 	layout_B '(f4 [f5 f6]) [f1 f5 f6]'.
 
-	cpl %b "Create Project Leader" ? plname "Project Leader" %h ? PM=+plname.
+	cpl %b "Create Project Leader" ? plname "Project Leader" %h ? PM +plname.
 
-	PM ++
+	PM ++users ++user ++releases ++issues ++issue ++pair_release_issue..
 
-	cproj %b "Create Project" ? %s "Project name" project ? +users, +releases, +issues, +pair_release_issue ? next.
+	cproj %b "Create Project" ? project %s "Project name" ? +users, +releases, +issues, +pair_release_issue ? next.
 
-			users %b "Add user" ? users.user.
+			users %b "New user" ? users.user.
 			user "User name" %h ? pusers=+user.
 
-			releases %b "Add Release" ? releases.release.
-			release "Release name" %s ? +release.handle_release.
+			releases %b "New Release" ? releases.release.
+			release "Release name" %s ? +handle_release.
 			
-					handle_release ? r_name, r_due ? +issue.r_issue.
+			handle_release ? r_name , r_due , +pair_release_issue .
 
-							r_issue ? 
+			issues %b "New Issue" > issues.issue.
+			issue %a "Issue Id" ? +handle_issue.
+			
+			handle_issue ? issue_summary,	issue_description, issue_severity, issue_originator ? 
 
-			issues %b "Add issue" ? issue_summary, 	issue_description, issue_severity, issue_originator ? 
+			pair_release_issue %b ? release_name, issue_id ? %b "Submit" ++PM ? release_name.issues=+issue_id.
 
-			pair_release_issue %b ? release_name, issue_id ? %b "Submit" +++PM ? release_name.issues=+issue_id.
-
+	function1(arg1,arg2,arg3,arg4,arg5) {
+			releases $arg1 $arg2 ? function1.thing.
+			thing $arg3 $arg4 ? $arg5.
+	}
 	
 	a,b?c=2.
 	@now?r.a?s.b.
