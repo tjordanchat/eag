@@ -13,17 +13,19 @@
 
 	PM ++
 
-	cproj %b "Create Project" ? %s "Project name" project ? +project.users, +project.releases, +project.issues, +project.pair_release_issue ? next.
+	cproj %b "Create Project" ? %s "Project name" project ? +users, +releases, +issues, +pair_release_issue ? next.
 
-			users %b "Add user" ? "User name" %h new_name ? %b "Submit user" ? users=+user_name.
+			users %b "Add user" ? users.user.
+			user "User name" %h ? pusers=+user.
 
-			releases %b "Add Release" ? "Release name" %s release ? %b "Submit release" ? release.handle_release.
+			releases %b "Add Release" ? releases.release.
+			release "Release name" %s ? +release.handle_release.
 			
 					handle_release ? r_name, r_due ? +issue.r_issue.
 
 							r_issue ? 
 
-			add_issues %b "Add issue" ? issue_summary, 	issue_description, issue_severity, issue_originator ? %b "Submit issue".
+			issues %b "Add issue" ? issue_summary, 	issue_description, issue_severity, issue_originator ? 
 
 			pair_release_issue %b ? release_name, issue_id ? %b "Submit" +++PM ? release_name.issues=+issue_id.
 
