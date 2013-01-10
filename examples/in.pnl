@@ -1,23 +1,23 @@
 #!/bin/cpnl
 
-	+++'me@company.com'.
+	++cpl 'me@company.com'.
 
-	guest '*@company.com' +++add_issue.
+	guest '*@company.com' ++add_issue.
 	guest.
 
 	'[(f1 f2 f3)(f4 f5)f6] (f1 f2)'.
 
 	layout_B '(f4 [f5 f6]) [f1 f5 f6]'.
 
-	@now ? cprojldr %b "Create Project Leader" ? project_leader "Project Leader" %h . 
+	cpl %b "Create Project Leader" ? plname "Project Leader" %h ? PM=+plname.
 
-	cproj %b "Create Project" ? %s "Project name" project ? project.handle_project.
+	PM ++
 
-			handle_project ? +add_users, +add_releases, +add_issues, +pair_release_issue.
+	cproj %b "Create Project" ? %s "Project name" project ? +project.users, +project.releases, +project.issues, +project.pair_release_issue ? next.
 
-			add_users %b "Add user" ? "User name" %h new_name ? %b "Submit user" ? users=+user_name.
+			users %b "Add user" ? "User name" %h new_name ? %b "Submit user" ? users=+user_name.
 
-			add_releases ? %b "Add Release" ? "Release name" %s release ? %b "Submit release" ? release.handle_release.
+			releases %b "Add Release" ? "Release name" %s release ? %b "Submit release" ? release.handle_release.
 			
 					handle_release ? r_name, r_due ? +issue.r_issue.
 
