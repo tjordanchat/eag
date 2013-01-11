@@ -184,7 +184,8 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = libebs libeag libXedt libedt libalib gen literature doc exp examples
+#SUBDIRS = libebs libeag libXedt libedt libalib gen literature doc exp examples
+SUBDIRS = libebs libeag libedt libalib gen literature doc exp examples
 EXTRA_DIST = Planned Todo Warranty depcomp
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive

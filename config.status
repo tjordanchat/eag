@@ -658,7 +658,7 @@ do
     "examples/Makefile") CONFIG_FILES="$CONFIG_FILES examples/Makefile" ;;
     "literature/Makefile") CONFIG_FILES="$CONFIG_FILES literature/Makefile" ;;
     "gen/Makefile") CONFIG_FILES="$CONFIG_FILES gen/Makefile" ;;
-    "libXedt/Makefile") CONFIG_FILES="$CONFIG_FILES libXedt/Makefile" ;;
+#    "libXedt/Makefile") CONFIG_FILES="$CONFIG_FILES libXedt/Makefile" ;;
     "libalib/Makefile") CONFIG_FILES="$CONFIG_FILES libalib/Makefile" ;;
     "libeag/Makefile") CONFIG_FILES="$CONFIG_FILES libeag/Makefile" ;;
     "libebs/Makefile") CONFIG_FILES="$CONFIG_FILES libebs/Makefile" ;;
