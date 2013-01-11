@@ -1,9 +1,8 @@
-#!/bin/cpnl
+#!/bin/pnl
 
 	++cpl 'me@company.com'.
 
 	guest '*@company.com' ++add_issue.
-	guest.
 
 	'[(f1 f2 f3)(f4 f5)f6] (f1 f2)'.
 
@@ -12,7 +11,7 @@
 	PM ++users ++user ++releases ++issues ++issue ++pair_release_issue.
 	PM ++issue_summary ++issue_description ++issue_severity ++issue_originator. 
 
-	cpl %b "Create Project Leader" ? plname "Project Leader" %h ? PM +plname.
+	cpl %b "Create Project Leader" ? plname "Project Leader" %h ? PM=+plname.
 
 	cproj %b "Create Project" ? project %s "Project name" ? +users, +releases, +issues, +pair_release_issue ? next.
 
