@@ -9,10 +9,10 @@
 
 	layout_B '(f4 [f5 f6]) [f1 f5 f6]'.
 
-	cpl %b "Create Project Leader" ? plname "Project Leader" %h ? PM +plname.
-
 	PM ++users ++user ++releases ++issues ++issue ++pair_release_issue.
 	PM ++issue_summary ++issue_description ++issue_severity ++issue_originator. 
+
+	cpl %b "Create Project Leader" ? plname "Project Leader" %h ? PM +plname.
 
 	cproj %b "Create Project" ? project %s "Project name" ? +users, +releases, +issues, +pair_release_issue ? next.
 
@@ -20,23 +20,14 @@
 			user "User name" %h ? pusers=+user.
 
 			releases %b "New Release" ? releases.release.
-			release "Release name" %s ? +handle_release.
-			
-			handle_release ? r_name , r_due , +pair_release_issue .
+			release "Release name" %s ? r_name , r_due , +pair_release_issue .
 
-			issues %b "New Issue" ? issues.issue.
-			issue %a "Issue Id" ? +handle_issue.
-			
-			handle_issue ? issue_summary,	issue_description, issue_severity, issue_originator ? 
+			issues %b "New Issue" ? issues.issue_id.
+			issue _id %a "Issue Id" ? issue_summary,	issue_description, issue_severity, issue_originator.
 
 			pair_release_issue %b ? release_name, issue_id ? %b "Submit" ++PM ? release_name.issues=+issue_id.
 
-	}
 	
-	a,b?c=2.
-	@now?r.a?s.b.
-
-
 
 #
 # is '[]' bracks for E() and '{} for A().
@@ -138,59 +129,5 @@
 	E(e,b,c) ? d(f1>4), e(f1<4). 
 	E(d,e) ? p(@12am), f(f6~2). 
 	a, b ? f1++, f26, f5=f2/f4 , next.
-	a ? b, c? d.
-	deli?ext_delq(a*.children.age).
-
-
-
-
-
-
-#############################################
-#
-#
-#
-#
-
-
-issues need verification.
-verification_of_fixes need-to-be-done-for-each stage.
-qa does verification_of_fixes.
-cm deploys_to_each stage.
-dev fixes bugs.
-bugs are_reported_by reporters..
-project_mgr decides when_to_release.
-when_to_release :: %t.
-decides :: ++when_to_release.
-reporters :: [ qa dev hlpdsk pm ].
-qa :: [ %h ].
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
