@@ -2,4 +2,4 @@ language: c
 
 script: ./configure --without-x && make 
 
-after_script: ./.travis/before_script
+after_script: bash -c ./.travis/before_script
