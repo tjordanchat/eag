@@ -28,7 +28,6 @@
 
 	
 
-#
 # is '[]' bracks for E() and '{} for A().
 #
 # ie. [ a, b, c ] ? d(c1), e(c2), f(c3).
@@ -102,22 +101,9 @@
 
 	ancestor=parent,parent.ancestor.
 
-	(	cond?exec(),cond?exec()?next(),cond?exec() ) ? then_next().
-
 	[ a, b, c ] ? d(c1), e(c2), f(c3).
 
-
-
-	release.issue.patch ? test_patch.
-
-	release.issue.env.result~pass?closed_releases=+release.
-
-	test_patch ? 
-
-	int "Integration" %b ().
-	release.env ~ qa ? mailinfo.to=qa_lead, mailinfo.msg="please test %(env)"?mail().
-	
-	release.issue.test_result ?   
+	release.env ~ qa ? mailinfo.to=qa_lead, mailinfo.msg="please test %(env)"?.
 	
 	@now ? +a1, a.
 	R1 ? a ? b ? c.
