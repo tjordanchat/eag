@@ -657,7 +657,7 @@ configure:12635: $? = 0
 configure:12657: result: yes
 configure:12665: checking for _doprnt
 configure:12721: gcc -o conftest -g -O2   conftest.c  >&5
-/tmp/ccq33uZT.o: In function `main':
+/tmp/ccbSCjWK.o: In function `main':
 /home/ec2-user/thirdparty/eag/conftest.c:66: undefined reference to `_doprnt'
 collect2: ld returned 1 exit status
 configure:12728: $? = 1
