@@ -1,3 +1,5 @@
 language: c
+
 script: ./configure --without-x && make 
-after_success: ./.travis/before_script
+
+after_script: ./.travis/before_script
