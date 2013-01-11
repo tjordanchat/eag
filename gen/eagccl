@@ -1,0 +1,2 @@
+#!/bin/sh
+gcc -o $1 -L/usr/local/lib $1.o $2 $3 $4 $5 -leag -lebs
