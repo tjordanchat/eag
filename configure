@@ -12867,7 +12867,8 @@ $as_echo "no" >&6; }
 fi
 
 
-ac_config_files="$ac_config_files Makefile doc/Makefile exp/Makefile examples/Makefile literature/Makefile gen/Makefile libXedt/Makefile libalib/Makefile libeag/Makefile libebs/Makefile libedt/Makefile"
+ac_config_files="$ac_config_files Makefile doc/Makefile exp/Makefile examples/Makefile literature/Makefile gen/Makefile libalib/Makefile libeag/Makefile libebs/Makefile libedt/Makefile"
+#ac_config_files="$ac_config_files Makefile doc/Makefile exp/Makefile examples/Makefile literature/Makefile gen/Makefile libXedt/Makefile libalib/Makefile libeag/Makefile libebs/Makefile libedt/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
