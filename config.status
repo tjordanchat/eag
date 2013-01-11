@@ -322,7 +322,8 @@ on `(hostname || uname -n) 2>/dev/null | sed 1q`
 "
 
 # Files that config.status was made for.
-config_files=" Makefile doc/Makefile exp/Makefile examples/Makefile literature/Makefile gen/Makefile libXedt/Makefile libalib/Makefile libeag/Makefile libebs/Makefile libedt/Makefile"
+config_files=" Makefile doc/Makefile exp/Makefile examples/Makefile literature/Makefile gen/Makefile libalib/Makefile libeag/Makefile libebs/Makefile libedt/Makefile"
+#config_files=" Makefile doc/Makefile exp/Makefile examples/Makefile literature/Makefile gen/Makefile libXedt/Makefile libalib/Makefile libeag/Makefile libebs/Makefile libedt/Makefile"
 config_headers=" config.h"
 config_commands=" depfiles libtool"
 
