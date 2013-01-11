@@ -28,11 +28,11 @@ uname -v = #1 SMP Wed Oct 3 19:54:33 UTC 2012
 /bin/universe          = unknown
 
 PATH: ~/bin
+PATH: /bin/
+PATH: /sbin
 PATH: ~/local/bin
-PATH: /bin
 PATH: /usr/bin
 PATH: /usr/local/bin
-PATH: ~/local/bin
 PATH: /home/ec2-user/thirdparty/node-v0.8.15-linux-x64
 PATH: /home/ec2-user
 PATH: /home/ec2-user/thirdparty/node-v0.8.15-linux-x64/bin
@@ -48,9 +48,9 @@ configure:2134: result: /usr/bin/install -c
 configure:2145: checking whether build environment is sane
 configure:2188: result: yes
 configure:2213: checking for a thread-safe mkdir -p
-configure:2252: result: /bin/mkdir -p
+configure:2252: result: /bin//mkdir -p
 configure:2265: checking for gawk
-configure:2281: found /bin/gawk
+configure:2281: found /bin//gawk
 configure:2292: result: gawk
 configure:2303: checking whether make sets $(MAKE)
 configure:2325: result: yes
@@ -122,13 +122,13 @@ configure:3778: result: x86_64-unknown-linux-gnu
 configure:3800: checking host system type
 configure:3815: result: x86_64-unknown-linux-gnu
 configure:3862: checking for a sed that does not truncate output
-configure:3928: result: /bin/sed
+configure:3928: result: /bin//sed
 configure:3946: checking for grep that handles long lines and -e
-configure:4006: result: /bin/grep
+configure:4006: result: /bin//grep
 configure:4011: checking for egrep
-configure:4075: result: /bin/grep -E
+configure:4075: result: /bin//grep -E
 configure:4080: checking for fgrep
-configure:4144: result: /bin/grep -F
+configure:4144: result: /bin//grep -F
 configure:4179: checking for ld used by gcc
 configure:4246: result: /usr/bin/ld
 configure:4255: checking if the linker (/usr/bin/ld) is GNU ld
@@ -285,7 +285,7 @@ configure:9189: result: yes
 configure:9226: checking whether -lc should be explicitly linked in
 configure:9231: gcc -c -g -O2  conftest.c >&5
 configure:9234: $? = 0
-configure:9249: gcc -shared conftest.o  -v -Wl,-soname -Wl,conftest -o conftest 2\>\&1 \| /bin/grep  -lc  \>/dev/null 2\>\&1
+configure:9249: gcc -shared conftest.o  -v -Wl,-soname -Wl,conftest -o conftest 2\>\&1 \| /bin//grep  -lc  \>/dev/null 2\>\&1
 configure:9252: $? = 0
 configure:9264: result: no
 configure:9428: checking dynamic linker characteristics
@@ -657,7 +657,7 @@ configure:12635: $? = 0
 configure:12657: result: yes
 configure:12665: checking for _doprnt
 configure:12721: gcc -o conftest -g -O2   conftest.c  >&5
-/tmp/ccVtvw5I.o: In function `main':
+/tmp/ccGW9L15.o: In function `main':
 /home/ec2-user/thirdparty/eag/conftest.c:66: undefined reference to `_doprnt'
 collect2: ld returned 1 exit status
 configure:12728: $? = 1
@@ -739,7 +739,7 @@ configure:12806: $? = 0
 configure:12827: result: yes
 configure:12838: checking whether make sets $(MAKE)
 configure:12860: result: yes
-configure:12995: creating ./config.status
+configure:12996: creating ./config.status
 
 ## ---------------------- ##
 ## Running config.status. ##
@@ -762,12 +762,12 @@ config.status:1007: creating exp/Makefile
 config.status:1007: creating examples/Makefile
 config.status:1007: creating literature/Makefile
 config.status:1007: creating gen/Makefile
-config.status:1007: creating libXedt/Makefile
 config.status:1007: creating libalib/Makefile
 config.status:1007: creating libeag/Makefile
 config.status:1007: creating libebs/Makefile
 config.status:1007: creating libedt/Makefile
 config.status:1007: creating config.h
+config.status:1229: config.h is unchanged
 config.status:1281: executing depfiles commands
 config.status:1281: executing libtool commands
 
@@ -822,12 +822,12 @@ ac_cv_header_unistd_h=yes
 ac_cv_host=x86_64-unknown-linux-gnu
 ac_cv_lib_m_pow=yes
 ac_cv_objext=o
-ac_cv_path_EGREP='/bin/grep -E'
-ac_cv_path_FGREP='/bin/grep -F'
-ac_cv_path_GREP=/bin/grep
-ac_cv_path_SED=/bin/sed
+ac_cv_path_EGREP='/bin//grep -E'
+ac_cv_path_FGREP='/bin//grep -F'
+ac_cv_path_GREP=/bin//grep
+ac_cv_path_SED=/bin//sed
 ac_cv_path_install='/usr/bin/install -c'
-ac_cv_path_mkdir=/bin/mkdir
+ac_cv_path_mkdir=/bin//mkdir
 ac_cv_prog_AWK=gawk
 ac_cv_prog_CPP='gcc -E'
 ac_cv_prog_ac_ct_AR=ar
@@ -889,10 +889,10 @@ DUMPBIN=''
 ECHO_C=''
 ECHO_N='-n'
 ECHO_T=''
-EGREP='/bin/grep -E'
+EGREP='/bin//grep -E'
 EXEEXT=''
-FGREP='/bin/grep -F'
-GREP='/bin/grep'
+FGREP='/bin//grep -F'
+GREP='/bin//grep'
 INSTALL_DATA='${INSTALL} -m 644'
 INSTALL_PROGRAM='${INSTALL}'
 INSTALL_SCRIPT='${INSTALL}'
@@ -907,7 +907,7 @@ LIPO=''
 LN_S='ln -s'
 LTLIBOBJS=''
 MAKEINFO='${SHELL} /home/ec2-user/thirdparty/eag/missing --run makeinfo'
-MKDIR_P='/bin/mkdir -p'
+MKDIR_P='/bin//mkdir -p'
 NM='/usr/bin/nm -B'
 NMEDIT=''
 OBJDUMP='objdump'
@@ -922,7 +922,7 @@ PACKAGE_TARNAME=''
 PACKAGE_VERSION=''
 PATH_SEPARATOR=':'
 RANLIB='ranlib'
-SED='/bin/sed'
+SED='/bin//sed'
 SET_MAKE=''
 SHELL='/bin/sh'
 STRIP='strip'
@@ -966,7 +966,7 @@ localedir='${datarootdir}/locale'
 localstatedir='${prefix}/var'
 lt_ECHO='echo'
 mandir='${datarootdir}/man'
-mkdir_p='/bin/mkdir -p'
+mkdir_p='/bin//mkdir -p'
 oldincludedir='/usr/include'
 pdfdir='${docdir}'
 prefix='/usr/local'
@@ -1013,196 +1013,3 @@ target_alias=''
 #define HAVE_LIBM 1
 
 configure: exit 0
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by config.status, which was
-generated by GNU Autoconf 2.62.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status Makefile
-
-on ip-10-99-39-121
-
-config.status:1007: creating Makefile
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by config.status, which was
-generated by GNU Autoconf 2.62.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status libebs/Makefile depfiles
-
-on ip-10-99-39-121
-
-config.status:1007: creating libebs/Makefile
-config.status:1281: executing depfiles commands
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by config.status, which was
-generated by GNU Autoconf 2.62.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status libeag/Makefile depfiles
-
-on ip-10-99-39-121
-
-config.status:1007: creating libeag/Makefile
-config.status:1281: executing depfiles commands
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by config.status, which was
-generated by GNU Autoconf 2.62.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status libXedt/Makefile depfiles
-
-on ip-10-99-39-121
-
-config.status:1007: creating libXedt/Makefile
-config.status:1281: executing depfiles commands
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by config.status, which was
-generated by GNU Autoconf 2.62.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status libedt/Makefile depfiles
-
-on ip-10-99-39-121
-
-config.status:1007: creating libedt/Makefile
-config.status:1281: executing depfiles commands
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by config.status, which was
-generated by GNU Autoconf 2.62.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status libalib/Makefile depfiles
-
-on ip-10-99-39-121
-
-config.status:1007: creating libalib/Makefile
-config.status:1281: executing depfiles commands
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by config.status, which was
-generated by GNU Autoconf 2.62.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status gen/Makefile depfiles
-
-on ip-10-99-39-121
-
-config.status:1007: creating gen/Makefile
-config.status:1281: executing depfiles commands
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by config.status, which was
-generated by GNU Autoconf 2.62.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status literature/Makefile
-
-on ip-10-99-39-121
-
-config.status:1007: creating literature/Makefile
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by config.status, which was
-generated by GNU Autoconf 2.62.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status doc/Makefile
-
-on ip-10-99-39-121
-
-config.status:1007: creating doc/Makefile
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by config.status, which was
-generated by GNU Autoconf 2.62.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status exp/Makefile
-
-on ip-10-99-39-121
-
-config.status:1007: creating exp/Makefile
-
-## ---------------------- ##
-## Running config.status. ##
-## ---------------------- ##
-
-This file was extended by config.status, which was
-generated by GNU Autoconf 2.62.  Invocation command line was
-
-  CONFIG_FILES    = 
-  CONFIG_HEADERS  = 
-  CONFIG_LINKS    = 
-  CONFIG_COMMANDS = 
-  $ ./config.status examples/Makefile
-
-on ip-10-99-39-121
-
-config.status:1007: creating examples/Makefile
