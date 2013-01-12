@@ -1,5 +1,7 @@
 echo "after_script"
 Z=$PWD
+pwd
+uname -a
 cd examples
 eag-compile pnl
 
