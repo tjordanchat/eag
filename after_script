@@ -1,5 +1,7 @@
 echo "after_script"
-echo $HOME
-alias eag ./gen/.libs/eag-compile
 
+alias eagc="$HOME/eag/gen/.libs/eag-compile
+
+cd examples
+eagc pnl
 
