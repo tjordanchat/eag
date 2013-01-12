@@ -1,5 +1,6 @@
 echo "after_script"
 
+pwd
 alias eagc="$HOME/eag/gen/.libs/eag-compile"
 
 cd examples
