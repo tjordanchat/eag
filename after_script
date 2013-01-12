@@ -1,8 +1,5 @@
 echo "after_script"
-
-pwd
-alias eagc="$HOME/eag/gen/.libs/eag-compile"
-
+Z=$PWD
 cd examples
-eagc pnl
+$Z/gen/.libs/eag-compile pnl
 
