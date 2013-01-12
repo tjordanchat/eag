@@ -4,4 +4,5 @@ pwd
 uname -a
 cd examples
 eag-compile pnl
+ls /usr/local/lib
 
