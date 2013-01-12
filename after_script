@@ -1,5 +1,5 @@
 echo "after_script"
 Z=$PWD
 cd examples
-$Z/gen/.libs/eag-compile pnl
+eag-compile pnl
 
