@@ -1,1 +1,5 @@
 echo "after_script"
+echo $HOME
+alias eag ./gen/.libs/eag-compile
+
+
