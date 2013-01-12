@@ -1,6 +1,6 @@
 language: c
 
-script: ./configure --without-x && make 
+script: ./configure --without-x && make  && sudo make install
 
 after_script: bash -c ./after_script
 
