@@ -1,66 +1,66 @@
 
 pnl : stmt, pnl;.
 
-stmt: seq_of_moments;
-			one_moment.
+stmt: seq of moments;
+			one moment.
 			
-seq_of_moments: orig_moment, qu, sequels.
+seq of moments: orig moment, qu, sequels.
 
-one_moment: association_stmt; set_push_pull; field_rights; layout_stmt;
-						assignment_stmt; state_raise; ext_function.
+one moment: association stmt; set push pull; field rights; layout stmt;
+						assignment stmt; state raise; ext function.
 
-orig_moment: possibility, co, orig_moment; possibility.
+orig moment: possibility, co, orig moment; possibility.
 
 qu: "?",l.
 
 sequels: sequel, qu, sequels; sequel. 
 
-association_stmt: type, type, association_stmt;
-									type, type, type, association_stmt;
+association stmt: type, type, association stmt;
+									type, type, type, association stmt;
 									type, type;
 									type, type, type.
 
-set_push_pull: var, eq, list_of_push_pulls.
+set push pull: var, eq, list of push pulls.
 
-list_of_push_pulls: push_pull, list_of_push_pulls; push_pull.
+list of push pulls: push pull, list of push pulls; push pull.
 
-push_pull: {+-},{+-},state_or_val.
+push pull: {+-},{+-},state or val.
 
-state_or_var: var
+state or var: var
 
-field_rights: {[-+]}, {[+-]}, var.
+field rights: {[-+]}, {[+-]}, var.
 
-layout_stmt: "'", layout, '"', l.
+layout stmt: "'", layout, '"', l.
 
-assignment_stmt: var, eq, value.
+assignment stmt: var, eq, value.
 
-state_raise: "+", var.
+state raise: "+", var.
 
-ext_function: "'", l, function_call, "'", l.
+ext function: "'", l, function call, "'", l.
 
-possibility: forEach_possibility; needAll_possibility.
+possibility: forEach possibility; needAll possibility.
 
 co: ",", l.
 
 oment;moment, qu, stmt.
 
-moment: possible_moment; possibility;possibility,moment.
+moment: possible moment; possibility;possibility,moment.
 
-possibility:  op, seq_of_possibilities, cp;
-						  ob, seq_of_possibilities, cb;
+possibility:  op, seq of possibilities, cp;
+						  ob, seq of possibilities, cb;
 						  agent.
 
-assertion_stmt; 
-			association_stmt.
+assertion stmt; 
+			association stmt.
 
-assertion_stmt: assignment_stmt, se; 
+assertion stmt: assignment stmt, se; 
 								increment, se; 
 								decrement, se.
 
-assignment_stmt: push_stack; set_layout, 
-assignment_stmt: var, eq, value.
+assignment stmt: push stack; set layout, 
+assignment stmt: var, eq, value.
 
-flow_stmt: cond, results, se.
+flow stmt: cond, results, se.
 
 results: result, results;.
 
@@ -68,7 +68,7 @@ result: qm, resources;
 
 resources: resource; resource, c, resources.
 
-var: {a-zA-Z_}{a-zA-Z0-9_}*.
+var: {a-zA-Z }{a-zA-Z0-9 }*.
 
 eq: "=", l.
 
