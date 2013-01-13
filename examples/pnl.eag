@@ -6,13 +6,12 @@ stmt: seq of moments;
 			
 seq of moments: orig moment, qu, sequels.
 
-
 one moment: association stmt; set push pull; field rights; layout stmt;
 						assignment stmt; state raise; ext function.
 
 orig moment: possibility, co, orig moment; possibility.
 
-qu: "?",l.
+qu: "?", l.
 
 sequels: sequel, qu, sequels; sequel. 
 
@@ -42,8 +41,6 @@ ext function: "'", l, function call, "'", l.
 possibility: forEach possibility; needAll possibility.
 
 co: ",", l.
-
-oment;moment, qu, stmt.
 
 moment: possible moment; possibility;possibility,moment.
 
