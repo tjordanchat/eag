@@ -1,3 +1,4 @@
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 echo "after_script"
 Z=$PWD
 pwd
