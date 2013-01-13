@@ -1,9 +1,64 @@
 
 pnl : stmt, pnl;.
 
-stmt: assertion_stmt; flow_stmt.
+stmt: seq_of_moments;
+			one_moment.
+			
+seq_of_moments: orig_moment, qu, sequels.
 
-assertion_stmt: var, eq, resources, se.
+one_moment: association_stmt; set_push_pull; field_rights; layout_stmt;
+						assignment_stmt; state_raise; ext_function.
+
+orig_moment: possibility, co, orig_moment; possibility.
+
+qu: "?",l.
+
+sequels: sequel, qu, sequels; sequel. 
+
+association_stmt: type, type, association_stmt;
+									type, type, type, association_stmt;
+									type, type;
+									type, type, type.
+
+set_push_pull: var, eq, list_of_push_pulls.
+
+list_of_push_pulls: push_pull, list_of_push_pulls; push_pull.
+
+push_pull: {+-},{+-},state_or_val.
+
+state_or_var: var
+
+field_rights: {[-+]}, {[+-]}, var.
+
+layout_stmt: "'", layout, '"', l.
+
+assignment_stmt: var, eq, value.
+
+state_raise: "+", var.
+
+ext_function: "'", l, function_call, "'", l.
+
+possibility: forEach_possibility; needAll_possibility.
+
+co: ",", l.
+
+oment;moment, qu, stmt.
+
+moment: possible_moment; possibility;possibility,moment.
+
+possibility:  op, seq_of_possibilities, cp;
+						  ob, seq_of_possibilities, cb;
+						  agent.
+
+assertion_stmt; 
+			association_stmt.
+
+assertion_stmt: assignment_stmt, se; 
+								increment, se; 
+								decrement, se.
+
+assignment_stmt: push_stack; set_layout, 
+assignment_stmt: var, eq, value.
 
 flow_stmt: cond, results, se.
 
@@ -12,8 +67,6 @@ results: result, results;.
 result: qm, resources;
 
 resources: resource; resource, c, resources.
-
-
 
 var: {a-zA-Z_}{a-zA-Z0-9_}*.
 
