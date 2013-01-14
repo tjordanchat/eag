@@ -30,7 +30,7 @@ state or var: var.
 
 field rights: {\-+}, {\-+}, var.
 
-layout stmt: "'", layout spec, '"', l.
+layout stmt: "'", layout spec, "'", l.
 
 assignment stmt: var, eq, value.
 

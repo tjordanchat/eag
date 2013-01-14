@@ -1,10 +1,7 @@
 set -x
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
-echo "after_script"
-Z=$PWD
 pwd
 uname -a
 cd examples
 eag-compile pnl
-ls /usr/local/lib
 
