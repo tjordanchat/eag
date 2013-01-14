@@ -51,8 +51,7 @@ assertion stmt: assignment stmt, se;
 								increment, se; 
 								decrement, se.
 
-assignment stmt: push stack; set layout, 
-assignment stmt: var, eq, value.
+assignment stmt: push stack; set layout; var, eq, value.
 
 flow stmt: cond, results, se.
 
