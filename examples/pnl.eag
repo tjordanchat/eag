@@ -42,7 +42,7 @@ possibility: forEach possibility; needAll possibility.
 
 co: ",", l.
 
-moment: possible moment; possibility;possibility,moment.
+moment: possibility; possibility, moment.
 
 possibility:  op, seq of possibilities, cp;
 						  ob, seq of possibilities, cb;
