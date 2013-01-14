@@ -1,6 +1,6 @@
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 pwd
-bash -c env
+sudo bash -c env
 uname -a
 cd examples
 eag-compile pnl
