@@ -24,11 +24,11 @@ set push pull: var, eq, list of push pulls.
 
 list of push pulls: push pull, list of push pulls; push pull.
 
-push pull: {-+}, {-+}, state or val.
+push pull: {\-+}, {\-+}, state or val.
 
 state or var: var.
 
-field rights: {-+}, {-+}, var.
+field rights: {\-+}, {\-+}, var.
 
 layout stmt: "'", layout spec, '"', l.
 
