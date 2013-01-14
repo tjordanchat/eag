@@ -1,5 +1,4 @@
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
-env
 pwd
 uname -a
 cd examples
