@@ -6,7 +6,7 @@ stmt: seq of moments;
 			
 seq of moments: orig moment, qu, sequels.
 
-one moment: association stmt ; set push pull; field rights; layout stmt;
+one moment: association stmt ; stack assignment; field rights; layout stmt;
 						assignment stmt; state raise.
 
 orig moment: possibility, co, orig moment; possibility.
@@ -19,6 +19,10 @@ association stmt: ltype, ltype, association stmt;
 									ltype, ltype, ltype.
 
 ltype: str; field rights; input type; 
+
+stack assignment: stack, eq, border crossings.
+
+border crossings: border crossing, border crossings; border crossing.
 
 set push pull: var, eq, list of push pulls.
 
