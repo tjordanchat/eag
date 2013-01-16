@@ -25,6 +25,8 @@ stack assignment: stack, eq, border crossings.
 
 border crossings: border crossing, border crossings; border crossing.
 
+border crossing: {\-+},var.
+
 set push pull: var, eq, list of push pulls.
 
 list of push pulls: push pull, list of push pulls; push pull.
