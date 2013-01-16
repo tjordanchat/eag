@@ -10,8 +10,6 @@
 	srv1 'https://company.com/func1'.
 	a? srv1.handle.
 
-	f1*a.
-
 	@2m ? [ a, @2m ] ? b.
 
 	@2m ? a, ( @2m ? b).
@@ -49,22 +47,27 @@
 # forEach (ie '[]') blocks are needed because sometime a 
 # process does not return.
 #
-# c1 c2 & c3 have to evaluate to a truth value immediately. They can not be something that has to be
+# c1 c2 & c3 have to evaluate to a truth value immediately. 
+# They can not be something that has to be
 # wait for like a human interaction for a field or a duration of time to pass.
 #
 # forEach blocks can occure beyond the beginning.
 # ie. [ a, b, c ] ? [ d. e ] ? f.
 # 
-# a project needs to be able to create a list of roles and add a list of people to each 
-# role.
+# a project needs to be able to create a list of roles and add a 
+# list of people to each role.
+#
+# When making a physical copy of the system while it is running and while there
+# contexts for a given runtime.
+# The value of all contexts and tokens have to be archivable and reloaded.
 
 
-  project_adder ++-add_users +--pname +--pdesc -+-ppri +--pmgr ++-create_project.
+  project_adder ++add_users +-pname +-pdesc -+ppri +-pmgr ++create_project.
   project_adder = +admin.
 
 	project ? project_owner ++-issue.
-	oldest_feature = *project.*issue(type~feature).age>*.
-	projects.issues(issue_type.2&issue_owner~myguys&10000<dept_id<20000&%(var22)>5)?.
+	a ? *project.*issue(type~"feature"&age+service>* & mgr ~ 'true').next. 
+	projects.issues(issue_type.2&issue_owner~myguys&10000<dept_id<20000&var22>5)?.
 	PM= +cproj.
 	project.p_name ~ /_X_/ ? issues.owner ~ /jbob/ ? loop1.
 	func1 ? *project.*issues.i_owner ~ /^%(var_from_name3)$/ ? i_owner  var_to_name3.
@@ -81,10 +84,8 @@
 	l_name   []  "List of Projects" 
 
 
-
-
-	r1 ++-f1+--f2---pname.
-	r2 +--f3++-f5. 
+	r1 ++f1+-f2--pname.
+	r2 +-f3++f5. 
   pmgr  ++-add_users ++-pname ++-pdesc ++-ppri.
 	choose_floor_buttons  ++-floor1_but ++-floor2_but ++-floor3_but.
 	johnc john@home.com ++-customer_reason "John Cusack".
