@@ -13,10 +13,10 @@ orig moment: possibility, co, orig moment; possibility.
 
 sequels: sequel, qu, sequels; sequel. 
 
-association stmt: type, type, association stmt;
-									type, type, type, association stmt;
-									type, type;
-									type, type, type.
+association stmt: ltype, ltype, association stmt;
+									ltype, ltype, ltype, association stmt;
+									ltype, ltype;
+									ltype, ltype, ltype.
 
 set push pull: var, eq, list of push pulls.
 
