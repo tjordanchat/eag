@@ -35,8 +35,6 @@ forAll  possibility: op, orig moment, cp.
 
 moment: possibility; possibility, moment.
 
-forEach possibility: ob, seq of possibilities, cb.
-
 assertion stmt: assignment stmt, se; 
 								increment, se; 
 								decrement, se.
