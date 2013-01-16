@@ -122,7 +122,22 @@
 	
 	@now ? +a1, a.
 	R1 ? a ? b ? c.
-	b?@5m?bell().
+	pm_mail PM "A new issue of Severity 1 arrives #%(issue_id)".
+	b?@5m? PM.
+
+# A list of people is a role.
+# people have email addresses.
+# states and fields may contain tokens.
+# roles also contain a list of field rights.
+# a role may have a description string.
+# email has message, subject, and a role and a label.
+#
+
+ PM("You have been assigned %(issue_id)..."). # ie. Using a role like a function 
+
+# indicates an sending an email.
+#
+# <<
 	a,b ? pass(f3.1), fail(f3.2), abstain(f3.3).
 	a,E(b1,b2),c?d,e? w, x.
 	A(d,e) ? e(f1>4), c(f1<4). 
