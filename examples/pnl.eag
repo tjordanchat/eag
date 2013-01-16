@@ -6,12 +6,10 @@ stmt: seq of moments;
 			
 seq of moments: orig moment, qu, sequels.
 
-one moment: association stmt; set push pull; field rights; layout stmt;
-						assignment stmt; state raise; ext function.
+one moment: association stmt ; set push pull; field rights; layout stmt;
+						assignment stmt; state raise.
 
 orig moment: possibility, co, orig moment; possibility.
-
-qu: "?", l.
 
 sequels: sequel, qu, sequels; sequel. 
 
@@ -24,28 +22,20 @@ set push pull: var, eq, list of push pulls.
 
 list of push pulls: push pull, list of push pulls; push pull.
 
-push pull: {\-+}, {\-+}, state or val.
-
 state or var: var.
-
-field rights: {\-+}, {\-+}, var.
-
-layout stmt: "'", layout spec, "'", l.
 
 assignment stmt: var, eq, value.
 
-state raise: "+", var.
+ext function: sq, function call, sq.
 
-ext function: "'", l, function call, "'", l.
+possibility: forEach possibility; forAll possibility.
 
-possibility: forEach possibility; needAll possibility.
-
-co: ",", l.
+forEach possibility: ob, orig moment, cb.
+forAll  possibility: op, orig moment, cp.
 
 moment: possibility; possibility, moment.
 
 forEach possibility: ob, seq of possibilities, cb.
-
 
 assertion stmt: assignment stmt, se; 
 								increment, se; 
@@ -57,16 +47,38 @@ results: result, results;.
 
 resources: resource; resource, c, resources.
 
-var: {a-zA-Z },{a-zA-Z0-9 }*!.
-
-eq: "=", l.
-
 set: item, set;.
-
-se: ";", l.
 
 cond: decision, cond;.
 
 decision: truth; tvlaue, rel, tvalue.
+
+push pull: {\-+}, {\-+}, state or val.
+
+field rights: {\-+}, {\-+}, var.
+
+var: {a-zA-Z },{a-zA-Z0-9 }*!, l.
+
+state raise: "+", var.
+
+layout stmt: "'", layout spec, sq, l.
+
+co: ",", l.
+
+op: "(", l.
+
+cp: ")", l.
+
+ob: "[", l.
+
+cb: "]", l.
+
+eq: "=", l.
+
+qu: "?", l.
+
+se: ";", l.
+
+sq: "'", l.
 
 
