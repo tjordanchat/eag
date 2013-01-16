@@ -18,6 +18,8 @@ association stmt: ltype, ltype, association stmt;
 									ltype, ltype;
 									ltype, ltype, ltype.
 
+ltype: str; field rights; input type; 
+
 set push pull: var, eq, list of push pulls.
 
 list of push pulls: push pull, list of push pulls; push pull.
@@ -61,6 +63,14 @@ state raise: "+", var.
 
 layout stmt: "'", layout spec, sq, l.
 
+inpute type: "%", var, l.
+
+str: "\"", str body, "\"".
+
+str body: ^{\"}*!, str body;
+          "\\\"", str body;
+          "\\\\", str body;.
+
 co: ",", l.
 
 op: "(", l.
@@ -78,5 +88,4 @@ qu: "?", l.
 se: ";", l.
 
 sq: "'", l.
-
 
