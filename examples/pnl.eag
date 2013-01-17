@@ -18,10 +18,11 @@ association stmt: ltype, ltype, association stmt;
 									ltype, ltype;
 									ltype, ltype, ltype.
 
-ltype: str; field rights; input type; 
+ltype: str; field rights; input type. 
 
 stack assignment: stack, eq, border crossings.
 
+stack: var.
 
 border crossings: border crossing, border crossings; border crossing.
 
@@ -58,7 +59,21 @@ set: item, set;.
 
 cond: decision, cond;.
 
-decision: truth; tvlaue, rel, tvalue.
+decision: truth; tvlaue, rel, value.
+
+value: number; var; field; equation. 
+
+equation: eb, equation body, ee.
+
+equation body:  value; 
+								value, operator, equation body;
+								op, equation body, cp.
+
+operator: {\-+/*^}, l.
+
+increment: vargur, pp.
+
+decrement: vargus, mm.
 
 push pull: {\-+}, {\-+}, state or val.
 
@@ -66,17 +81,28 @@ field rights: {\-+}, {\-+}, var.
 
 var: {a-zA-Z },{a-zA-Z0-9 }*!, l.
 
+vargus: {a-zA-Z },{a-zA-Z0-9 }*!.
+
 state raise: "+", var.
 
-layout stmt: "'", layout spec, sq, l.
+layout stmt: "'", layout spec, sq.
 
-inpute type: "%", var, l.
+inpute type: "%", var.
 
 str: "\"", str body, "\"".
 
 str body: ^{\"}*!, str body;
           "\\\"", str body;
           "\\\\", str body;.
+
+number: {0-9}+!, l.
+
+l: { \t\n}*!;
+  "#",^{\n}*!,"\n", l.
+
+pp: "++", l.
+
+mm: "--", l.
 
 co: ",", l.
 
@@ -95,4 +121,8 @@ qu: "?", l.
 se: ";", l.
 
 sq: "'", l.
+
+eb: "'=", l.
+
+ee: "'", l.
 
