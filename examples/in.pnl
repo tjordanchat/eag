@@ -11,15 +11,19 @@
 
 	a ? srv1.handle.
 
-	@2m ? E[ a, @2m ] ? b. # Only the first one triggers conyinuence to b.
+	@2m ? [ a, @2m ] ? b. # Only the first one triggers continuence to b.
 
-  A[ a, @2m ] ? b.  # means when each arrives but will wait for all.
+  [ a, @2m ] ? b.  # means when each arrives but will wait for all.
 
 	@2m ? a, ( @2m ? b ).
 
 	'var1=(5*f5-sin(f6))'.
 
-	layout_B '(f4 [f5 f6] [f1 f5 f6])'.
+	'f1=5;f2=4;f3=7'.
+
+	a,b,c,d.
+
+	layout_B  '(f4 [f5 f6] [f1 f5 f6])'.
 
 	PM ++users ++user ++releases ++issues ++issue ++pair_release_issue.
 
@@ -31,7 +35,7 @@
 			+issues, +pair_release_issue ? next.
 
 	users %b "New user" ? users.user.
-	user "User name" %h ? pusers=+user.
+	user "User name" %h ? pusers +user.
 
 	releases %b "New Release" ? releases.release.
 	release "Release name" %s ? r_name , r_due , +pair_release_issue .
@@ -64,9 +68,8 @@
 # When making a physical copy of the system while it is running and while there
 # contexts for a given runtime.
 # The value of all contexts and tokens have to be archivable and reloaded.
-#
 
-	>field3. # nulling a field value.
+	>field22. # nulling a field value.
 
 # comparisons will use '<' so will be small to large. ie. 5<f3<10. 
 # '>' will be reserved for nulling.
@@ -75,31 +78,31 @@
 # an association, can not.
 
   project_adder ++add_users +-pname +-pdesc -+ppri +-pmgr ++create_project.
-  project_adder = +admin.
+  project_adder +admin.
 
 	project ? project_owner ++issue.
 	a ? *project.*issue(type~"feature"&'max(age+service)' & mgr ~ 'true').next. 
-	projects.issues(issue_type.2&issue_owner~myguys&10000<dept_id<20000&var22<5)?.
+	projects.issues(issue_type.2&issue_owner~myguys&10000<dept_id&var22<5)?v.
 	PM +cproj.
 	project.p_name ~ /_X_/ ? issues.owner ~ /jbob/ ? loop1.
 	func1 ? *project.*issues.i_owner ~ /^%(var_from_name3)$/ ? i_owner  var_to_name3.
-	*project.*issues.i_owner ~ /^jtj/ ? i_owner  PM.
+	*project.*issues.i_owner ~ /^jtj/ ? +i_owner  PM.
 	*project.*issues.last_activity > @5d ? i_owner? notify.
 	project_id  0.
 	pname %s "Project Name". 
-	pmgr   [] "Project Manager". 
+	pmgr  "Project Manager". 
 	PM --f4 ++pname +-create_project.
 	admin ++add_uses ++add_project_mgr.
 	create_project   %b   "Create Project".
 	add_project_mgr   %b   "Add Project Manager".
-	l_name   []  "List of Projects" 
+	l_name  "List of Projects". 
 
 
-	r1 ++f1+-f2--pname.
-	r2 +-f3++f5. 
+	r1 ++f1 +-f2 --pname.
+	r2 +-f3 ++f5. 
   pmgr  ++add_users ++pname ++pdesc ++ppri.
 	choose_floor_buttons  ++floor1_but ++floor2_but ++floor3_but.
-	johnc john@home.com ++customer_reason "John Cusack".
+	johnc 'john@home.com' ++customer_reason "John Cusack".
 	date1 %t "Date".
 	f1 %d "Dollar Amount".
 	c %h "Customer Name".
@@ -121,10 +124,6 @@
 	ticks  @4a.
 	secondtuesecmonth  @2M2tue.
 	xmas  @Dec25.
-	katie.daughter  suri.
-
-
-	ancestor=parent,parent.ancestor.
 
 	[ a, b, c ] ? d(c1), e(c2), f(c3).
 
@@ -147,12 +146,44 @@
 
 # indicates an sending an email.
 #
-# <<
 	a,b ? pass(f3.1), fail(f3.2), abstain(f3.3).
-	a,E(b1,b2),c?d,e? w, x.
-	A(d,e) ? e(f1<4), c(4<f1). 
-	E(e,b,c) ? d(4<f1), e(f1<4). 
-	E(d,e) ? ( @12am ? p ), f(f6~2). 
+	a,[b1,b2],c?d,e? w, x.
+	(d,e) ? e(f1<4), c(4<f1). 
+	(e,b,c) ? d(4<f1), e(f1<4). 
+	(d,e) ? ( @12am ? p ), f(f6~2). 
 	a, b ? 'f1++', f26, 'f5=(f2/f4)' , next.
+
+
+87bd8e4f-1a79-4b01-8032-5a3a296edaba: {
+		ticks @4a.
+		timer1  @5m12s.
+		holiday_days @Dec25 @Jul4 @Feb2.
+		Fixed=1   %b   "Fixed".
+		date1='01/15/2013' %t "Date".
+}
+
+######################################################
+#
+#		JSON
+
+"87bd8e4f-1a79-4b01-8032-5a3a296edaba": {
+	"fields" : {
+		"field1" : {
+			"name" : "field1", 
+			"type" : "%b".
+			"title" : "Commit",
+			"value" : null,
+			"updaters" : [ "tim@computer.org", "PM" ],
+			"readers" : [ "john@home.com", "guest" ]
+		},
+		"field2" : {
+			...
+		}
+	},
+	"nodes" : {
+		"node1" : [ "7835785387953", "78547548538975490875638957" ],
+		"node2" : [ "7835785387953", "78547548538975490875638957" ],
+	}
+}
 
 
