@@ -1,4 +1,3 @@
-
 language: c
 
 script: ./configure --without-x && make  && sudo make install
