@@ -1,5 +1,5 @@
    var 
-        port        = process.env.PORT || 4004,
+        port        = process.env.PORT || 8005,
         io              = require('socket.io'),
         express         = require('express'),
         UUID            = require('node-uuid'),
@@ -9,7 +9,7 @@
     app.listen( port );
     console.log('\t :: Express :: Listening on port ' + port );
     app.get( '/', function( req, res ){ 
-        res.sendfile( __dirname + '/simplest.html' );
+        res.sendfile( __dirname + '/client.html' );
     });
  
     app.get( '/*' , function( req, res, next ) {
