@@ -1,0 +1,3 @@
+xxd -p test.txt > test.hex
+xxd -p -r test.hex test2.txt
+diff test.txt test2.txt
