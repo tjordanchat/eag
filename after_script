@@ -1,5 +1,5 @@
 #!/bin/bash
-set +x
+set -x
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 export TZ=/usr/share/zoneinfo/America/New_York
 date
