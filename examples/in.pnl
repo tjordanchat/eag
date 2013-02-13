@@ -1,25 +1,25 @@
 #!/bin/pnl
 
-	++cpl 'me@company.com'.
+	++cpl me@company.com.
 
-	guest '*@company.com' ++add_issue.
+	guest #@company.org ++add_issue.
 
 	L1 '[(f1 f2 f3)(f4 f5)f6]' '(f1 f2)'.
 	L2 '[(f1 f2 f3) L1 (f1 f2)]'.
 
-	srv1 'https://company.com/func1'.
+	srv1 https://company.com/func1.
 
 	a ? srv1.handle.
 
-	@2m ? [ a, @2m ] ? b. # Only the first one triggers continuence to b.
+	@2m ?  a : @2m  ? b. # Only the first one triggers continuence to b.
 
-  [ a, @2m ] ? b.  # means when each arrives but will wait for all.
+  a : @2m  ? b.  # means when each arrives but will wait for all.
 
 	@2m ? a, ( @2m ? b ).
 
-	'var1=(5*f5-sin(f6))'.
+	var1=(5*f5-sin(f6)).
 
-	'f1=5;f2=4;f3=7'.
+	f1=5;f2=4;f3=7.
 
 	a,b,c,d.
 
@@ -48,35 +48,6 @@
 					release_name.issues=+issue_id.
 
 
-# is '[]' bracks for E() and '{} for A().
-# E() is forEach and A() is forAll in CP-Net jargon, ie. Coloured Petri-Net.
-#
-# ie. [ a, b, c ] ? d(c1), e(c2), f(c3).
-# forEach (ie '[]') blocks are needed because sometime a 
-# process does not return.
-#
-# c1 c2 & c3 have to evaluate to a truth value immediately. 
-# They can not be something that has to be
-# wait for like a human interaction for a field or a duration of time to pass.
-#
-# forEach blocks can occure beyond the beginning.
-# ie. [ a, b, c ] ? [ d. e ] ? f.
-# 
-# a project needs to be able to create a list of roles and add a 
-# list of people to each role.
-#
-# When making a physical copy of the system while it is running and while there
-# contexts for a given runtime.
-# The value of all contexts and tokens have to be archivable and reloaded.
-
-	>field22. # nulling a field value.
-
-# comparisons will use '<' so will be small to large. ie. 5<f3<10. 
-# '>' will be reserved for nulling.
-#
-# when setting fields, using an = sign can set triggers off
-# an association, can not.
-
   project_adder ++add_users +-pname +-pdesc -+ppri +-pmgr ++create_project.
   project_adder +admin.
 
@@ -102,7 +73,7 @@
 	r2 +-f3 ++f5. 
   pmgr  ++add_users ++pname ++pdesc ++ppri.
 	choose_floor_buttons  ++floor1_but ++floor2_but ++floor3_but.
-	johnc 'john@home.com' ++customer_reason "John Cusack".
+	johnc john@home.com ++customer_reason "John Cusack".
 	date1 %t "Date".
 	f1 %d "Dollar Amount".
 	c %h "Customer Name".
@@ -112,54 +83,44 @@
 	create_issue   %b   "Create Issue".
   button1_pushed   %b   "Button 1".
 	hello_world   "Hello world".
-	comment   %30s   "Add Comment" (comments=+comment?comment=).
-	comments "Previous Comments" [].
+	comment   %30s   "Add Comment" ? comments +comment ? >comment ? ww.
+	comments "Previous Comments".
 	tstrslt  l1 "Test Results". 
-	l1  [ "accept" "reject" "abstain" ] (env=qa?adv_issue).
-	l2  [ "Gathering Information" "Reject" ].
-	l3  [ "Bug" "Feature" "Enhancement" ].
+	l1  %[ "accept" "reject" "abstain" ] "Result".
+	l2  %[ "Gathering Information" "Reject" ].
+	l3  %[ "Bug" "Feature" "Enhancement" ].
 	issue_id  0.
-	holiday_days @Dec25 @Jul4 @Feb2.
+	holiday_days %[ @Dec25 @Jul4 @Feb2 ].
 	timer1  @5m12s.
 	ticks  @4a.
 	secondtuesecmonth  @2M2tue.
 	xmas  @Dec25.
 
-	[ a, b, c ] ? d(c1), e(c2), f(c3).
+	a, b : c  ?  d(c1), e(c2a) ? i : f(c3) ? w(c4).
 
-	release.env ~ qa ? mailinfo.to=qa_lead, mailinfo.msg="please test %(env)"?.
+	a, b, c ? ( d : e ? f ) ? g, h.
+
+	release.env ~ qa ? mailinfo.to qa_lead, mailinfo.msg "please test %(env)"?.
 	
 	@now ? +a1, a.
 	R1 ? a ? b ? c.
 	pm_mail PM "A new issue of Severity 1 arrives #%(issue_id)".
 	b?@5m? PM +owner.
 
-# A list of people is a role.
-# people have email addresses.
-# states and fields may contain tokens.
-# roles also contain a list of field rights.
-# a role may have a description string.
-# email has message, subject, and a role and a label.
-#
-
- PM("You have been assigned %(issue_id)..."). # ie. Using a role like a function 
-
-# indicates an sending an email.
-#
 	a,b ? pass(f3.1), fail(f3.2), abstain(f3.3).
-	a,[b1,b2],c?d,e? w, x.
+	a,(b1:b2, b3),c?d,e? w, x.
 	(d,e) ? e(f1<4), c(4<f1). 
 	(e,b,c) ? d(4<f1), e(f1<4). 
 	(d,e) ? ( @12am ? p ), f(f6~2). 
-	a, b ? 'f1++', f26, 'f5=(f2/f4)' , next.
+	a, b ? f1++, f26, f5=(f2/f4) , next.
 
 
 87bd8e4f-1a79-4b01-8032-5a3a296edaba: {
 		ticks @4a.
 		timer1  @5m12s.
 		holiday_days @Dec25 @Jul4 @Feb2.
-		Fixed=1   %b   "Fixed".
-		date1='01/15/2013' %t "Date".
+		Fixed 1  %b   "Fixed".
+		date1 @01/15/2013 %t "Date".
 }
 
 ######################################################
