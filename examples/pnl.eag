@@ -20,7 +20,7 @@ association stmt: ltype, ltype, association stmt;
 
 ltype: str; field rights; input type. 
 
-stack assignment: stack, eq, border crossings.
+stack assignment(>i+","+j): stack(>i, eq, border crossings(>j).
 
 stack: var.
 
@@ -79,7 +79,7 @@ push pull: {\-+}, {\-+}, state or val.
 
 field rights: {\-+}, {\-+}, var.
 
-var: {a-zA-Z },{a-zA-Z0-9 }*!, l.
+var: {a-zA-Z},{a-zA-Z0-9}*!, l.
 
 vargus: {a-zA-Z },{a-zA-Z0-9 }*!.
 
