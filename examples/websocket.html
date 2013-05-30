@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>WebSocket Echo Client</title>
+  <meta charset="UTF-8" />
+  <script>
+    "use strict";
+    // Initialize everything when the window finishes loading
+    window.addEventListener("load", function(event) {
+      var status = document.getElementById("status");
+      var url = document.getElementById("url");
+      var open = document.getElementById("open");
+      var close = document.getElementById("close");
+      var send = document.getElementById("send");
+      var text = document.getElementById("text");
+	  var image = document.getElementById("orb");
+      var message = document.getElementById("message");
+	  var node1 = document.getElementById('node1');
+      var socket, mydata;
+
+      status.textContent = "Not Connected";
+      url.value = "ws://fdcdwdevdb01:8888";
+      close.disabled = true;
+      send.disabled = true;
+
+      // Create a new connection when the Connect button is clicked
+      open.addEventListener("click", function(event) {
+        open.disabled = true;
+        socket = new WebSocket(url.value, "echo-protocol");
+
+        socket.addEventListener("open", function(event) {
+          close.disabled = false;
+          send.disabled = false;
+          status.textContent = "Connected";
+        });
+
+        // Display messages received from the server
+        socket.addEventListener("message", function(event) {
+		  mydata = event.data;
+		  message.textContent = "Server Says: " + event.data;
+		  image.src='green.png';
+		  if ( mydata.charAt(1) === '1' ) {
+			node1.setAttribute("stroke","red");
+			node3.setAttribute("stroke","black");
+			node5.setAttribute("stroke","black");
+			node7.setAttribute("stroke","black");
+			node9.setAttribute("stroke","black");
+		  } else if ( mydata.charAt(1) === '2' ) {
+			node3.setAttribute("stroke","red");
+			node1.setAttribute("stroke","black");
+			node5.setAttribute("stroke","black");
+			node7.setAttribute("stroke","black");
+			node9.setAttribute("stroke","black");
+		   } else if ( mydata.charAt(1) === '3' ) {
+			node5.setAttribute("stroke","red");
+			node1.setAttribute("stroke","black");
+			node3.setAttribute("stroke","black");
+			node7.setAttribute("stroke","black");
+			node9.setAttribute("stroke","black");
+		   } else if ( mydata.charAt(1) === '4' ) {
+			node7.setAttribute("stroke","red");
+			node1.setAttribute("stroke","black");
+			node3.setAttribute("stroke","black");
+			node5.setAttribute("stroke","black");
+			node9.setAttribute("stroke","black");
+		   } else if ( mydata.charAt(1) === '5' ) {
+			node9.setAttribute("stroke","red");
+			node1.setAttribute("stroke","black");
+			node3.setAttribute("stroke","black");
+			node5.setAttribute("stroke","black");
+			node7.setAttribute("stroke","black");
+		   }
+        });
+
+        // Display any errors that occur
+        socket.addEventListener("error", function(event) {
+          message.textContent = "Error: " + event;
+        });
+
+        socket.addEventListener("close", function(event) {
+          open.disabled = false;
+          status.textContent = "Not Connected";
+        });
+      });
+
+      // Close the connection when the Disconnect button is clicked
+      close.addEventListener("click", function(event) {
+        close.disabled = true;
+        send.disabled = true;
+        message.textContent = "";
+        socket.close();
+      });
+
+      // Send text to the server when the Send button is clicked
+      send.addEventListener("click", function(event) {
+        socket.send(text.value);
+        text.value = "";
+      });
+    });
+  </script>
+</head>
+<body>
+  Status: <span id="status"></span><br />
+  URL: <input id="url" /><br />
+  <input id="open" type="button" value="Connect" />&nbsp;
+  <input id="close" type="button" value="Disconnect" /><br />
+  <input id="send" type="button" value="Send" />&nbsp;
+  <input id="text" /><br />
+  <span id="message"></span><br />
+   <img id="orb" alt="" src="red.png"/><br />
+<svg width="1.85in" height="4.05in"
+ xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1.33333 1.33333) rotate(0) translate(4 288)">
+<title>WF</title>
+<polygon style="fill:white;stroke:white;" points="-4,4 -4,-288 130,-288 130,4 -4,4"/>
+<!-- rfp -->
+<g id="node1" class="node"><title>rfp</title>
+<ellipse style="fill:none;stroke:black;" cx="63" cy="-266" rx="27" ry="18"/>
+<text text-anchor="middle" x="63" y="-260" style="font-family:Nimbus Roman No9 L;font-weight:regular;font-size:11.34pt;">1</text>
+</g>
+<!-- fsm -->
+<g id="node3" class="node"><title>fsm</title>
+<polygon style="fill:none;stroke:black;" points="63,-210 36,-186 63,-162 90,-186 63,-210"/>
+<text text-anchor="middle" x="63" y="-180" style="font-family:Nimbus Roman No9 L;font-weight:regular;font-size:11.34pt;">2</text>
+</g>
+<!-- rfp&#45;&gt;fsm -->
+<g id="edge2" class="edge"><title>rfp&#45;&gt;fsm</title>
+<path style="fill:none;stroke:black;" d="M63,-248C63,-240 63,-230 63,-220"/>
+<polygon style="fill:black;stroke:black;" points="66.5001,-220 63,-210 59.5001,-220 66.5001,-220"/>
+</g>
+<!-- frg -->
+<g id="node5" class="node"><title>frg</title>
+<ellipse style="fill:none;stroke:black;" cx="27" cy="-92" rx="27" ry="18"/>
+<text text-anchor="middle" x="27" y="-86" style="font-family:Nimbus Roman No9 L;font-weight:regular;font-size:11.34pt;">3</text>
+</g>
+<!-- fsm&#45;&gt;frg -->
+<g id="edge4" class="edge"><title>fsm&#45;&gt;frg</title>
+<path style="fill:none;stroke:black;" d="M56,-168C51,-154 43,-135 38,-119"/>
+<polygon style="fill:black;stroke:black;" points="41.2598,-117.717 34,-110 34.8631,-120.56 41.2598,-117.717"/>
+<a xlink:title="Yes">
+</a>
+<a xlink:title="Yes">
+</a>
+<text text-anchor="middle" x="58" y="-130" style="font-family:Nimbus Roman No9 L;font-weight:regular;font-size:11.34pt;">Yes</text>
+</g>
+<!-- fsr -->
+<g id="node7" class="node"><title>fsr</title>
+<ellipse style="fill:none;stroke:black;" cx="99" cy="-92" rx="27" ry="18"/>
+<text text-anchor="middle" x="99" y="-86" style="font-family:Nimbus Roman No9 L;font-weight:regular;font-size:11.34pt;">4</text>
+</g>
+<!-- fsm&#45;&gt;fsr -->
+<g id="edge6" class="edge"><title>fsm&#45;&gt;fsr</title>
+<path style="fill:none;stroke:black;" d="M70,-168C75,-154 83,-135 88,-119"/>
+<polygon style="fill:black;stroke:black;" points="91.1369,-120.56 92,-110 84.7402,-117.717 91.1369,-120.56"/>
+<a xlink:title="No">
+</a>
+<a xlink:title="No">
+</a>
+<text text-anchor="middle" x="92" y="-130" style="font-family:Nimbus Roman No9 L;font-weight:regular;font-size:11.34pt;">No</text>
+</g>
+<!-- fff -->
+<g id="node9" class="node"><title>fff</title>
+<ellipse style="fill:none;stroke:black;" cx="68" cy="-18" rx="27" ry="18"/>
+<text text-anchor="middle" x="68" y="-12" style="font-family:Nimbus Roman No9 L;font-weight:regular;font-size:11.34pt;">5</text>
+</g>
+<!-- frg&#45;&gt;fff -->
+<g id="edge10" class="edge"><title>frg&#45;&gt;fff</title>
+<path style="fill:none;stroke:black;" d="M37,-75C42,-66 48,-54 54,-44"/>
+<polygon style="fill:black;stroke:black;" points="57.2031,-45.4414 59,-35 51.084,-42.0418 57.2031,-45.4414"/>
+</g>
+<!-- fsr&#45;&gt;fff -->
+<g id="edge8" class="edge"><title>fsr&#45;&gt;fff</title>
+<path style="fill:none;stroke:black;" d="M92,-74C88,-66 83,-55 79,-45"/>
+<polygon style="fill:black;stroke:black;" points="82.2598,-43.7166 75,-36 75.8631,-46.5596 82.2598,-43.7166"/>
+</g>
+</g>
+</svg>
+
+
+</body>
+</html>
