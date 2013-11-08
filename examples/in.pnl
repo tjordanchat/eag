@@ -13,7 +13,7 @@
 
 	@2m ?  a : @2m  ? b. # Only the first one triggers continuence to b.
 
-  a : @2m  ? b.  # means when each arrives but will wait for all.
+        a : @2m  ? b.  # means when each arrives but will wait for all.
 
 	@2m ? a, ( @2m ? b ).
 
