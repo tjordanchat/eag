@@ -2,24 +2,41 @@
 
 	++cpl me@company.com.
 
-	guest *@company.org ++add_issue.
+	guest *@company.org ++create_issue.
 
-	L1 {[(f1 f2 f3)(f4 f5)f6]} {(f1 f2)}.
-	L2 {[(f1 f2 f3) L1 (f1 f2)]}.
+	L1 [f3 (f4 f5) f6 ].
+	L2 [(f1 f2 f3) [L1 (f1 f2)].
 
-	srv1 https://company.com/func1.
+	srv1 'https://company.com/func1'.
+ 
+        srv1 : data. #data from srv1 is placed in channel data.
 
-	a ? $handle.
+	data ? handle.
 
 	@2m ?  a : @2m  ? b. # Only the first one triggers continuence to b.
 
-        a : @2m  ? b.  # means when each arrives but will wait for all.
+        a , @2am  ? b.  # means when each arrives but will wait for all.
 
 	@2m ? a, ( @2m ? b ).
 
 	var1=(5*f5-sin(f6)).
 
 	f1=5,f2=4,f3=7.
+	
+	b1 %() "Add User".
+	
+	f1 %/[a-z0-9]+/ "User Id";
+	f1, f2 , b1 ? !users[f1] ? f1 : users.
+	
+	f1.email=f2;
+	
+	A(users)E(users.email~/@google.com/) : channel1;
+	
+	users [?] "Users" %/[a-z]+/;
+	
+	"Submit" %(add_user) submit1;
+	
+	L1 [f1 f2 f3] (f4 f5);
 
 	a,b,c,d.
 
