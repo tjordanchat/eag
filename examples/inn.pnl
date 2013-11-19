@@ -1,28 +1,32 @@
 #!/bin/pnl
 
-	++cpl 'me@company.com'.
 
-	guest '*@company.com' ++add_issue.
+	PM %role.
+	
+	$user1 >> PM.
 
-	L1 '[(f1 f2 f3)(f4 f5)f6]' '(f1 f2)'.
-	L2 '[(f1 f2 f3) L1 (f1 f2)]'.
+	guest.email '/.*@company\.com/' ++add_issue.
+
+	L1 '[(f1 f2 f3)(f4 f5)f6]' '(f1 f2)' .
+	L2 '[(f1 f2 f3) L1 (f1 f2)]' .
 
 	srv1 'https://company.com/func1'.
 
-	a ? srv1.handle.
+        'cron:23 0-23/2 1-5 * *' ? ... 
 
-	@2m ? E[ a, @2m ] ? b. # Only the first one triggers continuence to b.
+        (a,b) ? [ [^c,e], [d,e] ] ? ...
 
-  A[ a, @2m ] ? b.  # means when each arrives but will wait for all.
+	var2 '=(5*$f5-sin(f6))'.
 
-	@2m ? a, ( @2m ? b ).
+	f1 '=5+5'. 
+	
+	f2 '=4+$var2'.
+	
+	f3 '=7'.
+	
+	$data1 >> 'jpath:["foo"]["bar"]["baz"] array[-1].attr[3]' >> sr1.
 
-	'var1=(5*f5-sin(f6))'.
-
-	'f1=5;f2=4;f3=7'.
-
-	a,b,c,d.
-
+	a , b , c , d .
 
 	layout_B '(f4 [f5 f6] [f1 f5 f6])'.
 	layout_B '(f4 [f1 f5 f6])'.
