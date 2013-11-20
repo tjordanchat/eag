@@ -3,28 +3,30 @@
 
 	PM %role.
 	
-	$user1 >> PM.
-
-	guest.email '/.*@company\.com/' ++add_issue.
-
-	L1 '[(f1 f2 f3)(f4 f5)f6]' '(f1 f2)' .
-	L2 '[(f1 f2 f3) L1 (f1 f2)]' .
-
-	srv1 'https://company.com/func1'.
-
-        'cron:23 0-23/2 1-5 * *' ? ... 
-
-        (a,b) ? [ [^c,e], [d,e] ] ? ...
-
-	var2 '=(5*$f5-sin(f6))'.
-
-	f1 '=5+5'. 
+	srv1 https(//company.com/func1).
 	
-	f2 '=4+$var2'.
+	$user1 -> PM.
+
+	add_user /.*@company\.com/(guest.email).
+
+	L1 [(f1 f2 f3)(f4 f5)f6] | (f1 f2).
+	L2 [(f1 f2 f3) L1 (f1 f2)].
+
+	add_user ? a & b ? ( a ? b ) | ( b ? a ) ? ... 
+
+	srv1 https(//company.com/func1:8192).
+
+        timeToArchive cron(23 0-23/2 1-5 * *). 
+
+        a & b ? ( c | d ) | ( d ^ e ) ? f ? g. #The ^ (exclusive or) means the other token wont get gobbled
+
+	var2 =(5*$f5-sin(f6)).
+
+	f1 =(5+5). 
 	
-	f3 '=7'.
+	f2 =(4+$var2).
 	
-	$data1 >> 'jpath:["foo"]["bar"]["baz"] array[-1].attr[3]' >> sr1.
+	srv1 -> 'jpath:["foo"]["bar"]["baz"] array[-1].attr[3]' -> sr1.
 
 	a , b , c , d .
 
