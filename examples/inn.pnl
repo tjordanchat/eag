@@ -1,6 +1,8 @@
 #!/bin/pnl
 
 
+	# web pages and users should be part of the language. So should logging in and roles.
+	
 	PM %r "Proj Mgr".
 	
 	PM >> GUEST.
