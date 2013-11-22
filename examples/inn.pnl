@@ -1,13 +1,15 @@
 #!/bin/pnl
 
 
-	PM %role.
+	PM %r "Proj Mgr".
+	
+	PM >> GUEST.
+	
+	n ? "calling all cars" >> user.
 	
 	srv1 https(//company.com/func1).
-	
-	$user1 -> PM.
 
-	add_user /.*@company\.com/(guest.email).
+	email >> /.*@company\.com/ >> add_user.
 
 	L1 [(f1 f2 f3)(f4 f5)f6] | (f1 f2).
 	L2 [(f1 f2 f3) L1 (f1 f2)].
@@ -18,7 +20,7 @@
 
         timeToArchive cron(23 0-23/2 1-5 * *). 
 
-        a & b ? ( c | d ) | ( d ^ e ) ? f ? g. #The ^ (exclusive or) means the other token wont get gobbled
+        a & b ? ( c | d ) | ( d ^ e & w ) ? f ? g. #The ^ (exclusive or) means the other token wont get gobbled
 
 	var2 =(5*$f5-sin(f6)).
 
@@ -26,7 +28,7 @@
 	
 	f2 =(4+$var2).
 	
-	srv1 -> 'jpath:["foo"]["bar"]["baz"] array[-1].attr[3]' -> sr1.
+	srv1 >> /["foo"]["bar"]["baz"] array[-1].attr[3]/j >> sr1. # /j means json-path
 
 	a , b , c , d .
 
