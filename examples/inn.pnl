@@ -32,11 +32,10 @@
 	
 	srv1 >> /["foo"]["bar"]["baz"] array[-1].attr[3]/j >> sr1. # /j means json-path
 
-	a , b , c , d .
+	a ^ b ^ c ^ d .
 
-	layout_B '(f4 [f5 f6] [f1 f5 f6])'.
-	layout_B '(f4 [f1 f5 f6])'.
-	layout_C '(f2 [f1 f5 f6])'.
+	layout_B: (f4 [f5 f6] [f1 f5 f6]),(f4 [f1 f5 f6]).
+	layout_C: (f2 [f1 f5 f6]).
 
 	PM ++users ++user ++releases ++issues ++issue ++pair_release_issue.
 
