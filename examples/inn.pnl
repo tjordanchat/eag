@@ -1,6 +1,10 @@
 #!/bin/pnl
 
-
+	# Primitives:
+	#  *  roles
+	#  *  groups
+	#  *  people
+	#     * email - a person can have multiple email addresses.   
 	# web pages and users should be part of the language. So should logging in and roles.
 	
 	PM %r "Proj Mgr".
@@ -13,8 +17,8 @@
 
 	email >> /.*@company\.com/ >> add_user.
 
-	L1 [(f1 f2 f3)(f4 f5)f6] | (f1 f2).
-	L2 [(f1 f2 f3) L1 (f1 f2)].
+	L1: [(f1 f2 f3)(f4 f5)f6] (f1 f2).
+	L2: [(f1 f2 f3) L1 (f1 f2)].
 
 	add_user ? a & b ? ( a ? b ) | ( b ? a ) ? ... 
 
