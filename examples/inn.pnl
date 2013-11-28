@@ -5,11 +5,16 @@
 	#  *  groups
 	#  *  people
 	#     * email - a person can have multiple email addresses.   
+	#     * name.
 	# web pages and users should be part of the language. So should logging in and roles.
 	
-	PM %r "Proj Mgr".
+	%r ADMIN "Administrator".
+	%r PM "Proj Mgr".
+	%p USER "User".
+	%i ISSUE "Issue Id".
+	%s DESC "Description".
 	
-	PM >> GUEST.
+	a ? USER >> PM.
 	
 	n ? "calling all cars" >> user.
 	
