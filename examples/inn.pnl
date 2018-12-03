@@ -140,7 +140,7 @@
 	l2  [ "Gathering Information" "Reject" ].
 	l3  [ "Bug" "Feature" "Enhancement" ].
 	issue_id  0.
-	holiday_days @Dec25 @Jul4 @Feb2.
+	holiday_days @Dec25 @Jul4 @Jan25.
 	timer1  @5m12s.
 	ticks  @4a.
 	secondtuesecmonth  @2M2tue.
