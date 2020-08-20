@@ -180,3 +180,5 @@ START: a -> b -> c -> d & e -> f.
 e: a -> b -> c -> d | e -> f, !-> g.
 f: w | x -> END.
 
+a: better().
+
