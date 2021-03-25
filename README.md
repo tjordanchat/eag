@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/tjordanchat/eag.svg?branch=master)](https://travis-ci.org/tjordanchat/eag)
 This is the (intermediate) version 2.5 of EAG. If you encounter any problems
 while compiling or testing EAG, do hesitate to email me (marcs@cs.kun.nl)
 and I will try and correct the problems.
