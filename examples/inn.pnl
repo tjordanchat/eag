@@ -134,7 +134,7 @@
   button1_pushed   %b   "Button 1".
 	hello_world   "Hello world".
 	comment   %30s   "Add Comment" (comments=+comment?comment=).
-	comments "Previous Comments" [].
+	comments "Previous Comments #1" [].
 	tstrslt  l1 "Test Results". 
 	l1  [ "accept" "reject" "abstain" ] (env=qa?adv_issue).
 	l2  [ "Gathering Information" "Reject" ].
