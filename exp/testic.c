@@ -6,14 +6,14 @@
 #include <stdio.h>
 
 /* libebs includes */
-#include <export.h>
+/* A#include <export.h>
 #include <bst.h>
 #include <cst.h>
 #include <value.h>
 
-/* libeag includes */
+libeag includes 
 #include <ds.h>
-#include <c_interface.h>
+#include <c_interface.h> */
 
 public int main ()
 	{ int nrparses, ix;
